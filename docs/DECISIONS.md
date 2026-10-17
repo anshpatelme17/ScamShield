@@ -22,3 +22,5 @@ Record of significant technical decisions (ADR-style, lightweight).
 | D-016 | Weak signals never produce SUSPICIOUS alone | Single weak signal keeps verdict at NO_STRONG_WARNING_SIGNS_FOUND, with disclaimer | 4 |
 | D-017 | Request text is never logged | Avoids persisting untrusted/raw suspicious content (privacy + security) | 5 |
 | D-018 | Input limits enforced at both Pydantic and normalizer layers | Defense in depth; either layer rejects oversized input | 5 |
+| D-019 | Dataset lives in `tests/data/` with exact-verdict expectations | Harness checks binary detection AND exact deterministic verdict | 6 |
+| D-020 | Offline is enforced by a socket-blocking test | Proves R-015 instead of assuming it | 6 |

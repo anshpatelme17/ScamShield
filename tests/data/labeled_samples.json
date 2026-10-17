@@ -1,0 +1,153 @@
+{
+  "version": "1.0",
+  "description": "Labelled India-focused evaluation dataset. label=scam samples must be detected; label=safe samples are hard negatives and must not be flagged. expected_verdict is the exact verdict the deterministic policy must produce.",
+  "samples": [
+    {
+      "id": "pos-kyc-001",
+      "label": "scam",
+      "category": "bank_kyc_impersonation",
+      "expected_verdict": "suspicious",
+      "text": "Dear customer, your bank KYC is expiring. Update your KYC now at http://sbi-kyc-update.top/verify to avoid deactivation."
+    },
+    {
+      "id": "pos-suspend-001",
+      "label": "scam",
+      "category": "account_suspension",
+      "expected_verdict": "suspicious",
+      "text": "Your SBI account will be permanently suspended within 24 hours. Verify immediately at https://sbi-alert-verify.top/secure/login"
+    },
+    {
+      "id": "pos-collect-001",
+      "label": "scam",
+      "category": "upi_collect_request",
+      "expected_verdict": "highly_suspicious",
+      "text": "You have received a payment request of Rs.2000. Approve the collect request to receive money in your account."
+    },
+    {
+      "id": "pos-upipin-001",
+      "label": "scam",
+      "category": "upi_pin_request",
+      "expected_verdict": "highly_suspicious",
+      "text": "To receive Rs.5000, enter your UPI PIN when the app asks. This is required to accept the payment."
+    },
+    {
+      "id": "pos-otp-001",
+      "label": "scam",
+      "category": "otp_credential_theft",
+      "expected_verdict": "highly_suspicious",
+      "text": "Share the OTP you received to verify your shipment delivery."
+    },
+    {
+      "id": "pos-arrest-001",
+      "label": "scam",
+      "category": "digital_arrest",
+      "expected_verdict": "highly_suspicious",
+      "text": "This is the Mumbai Cyber Cell. A customs parcel with your name contains illegal items. You are under digital arrest. Transfer funds to the investigation account to clear the case, otherwise you will be arrested."
+    },
+    {
+      "id": "pos-job-001",
+      "label": "scam",
+      "category": "fake_job_task",
+      "expected_verdict": "suspicious",
+      "text": "Congratulations! You are selected for our work from home part time job. Earn Rs.3000 daily with a simple task. Pay registration fee Rs.999 on Telegram to start."
+    },
+    {
+      "id": "pos-invest-001",
+      "label": "scam",
+      "category": "investment_trading",
+      "expected_verdict": "suspicious",
+      "text": "Guaranteed return of 5x. Join our trading tips group and double your money in 30 days."
+    },
+    {
+      "id": "pos-loan-001",
+      "label": "scam",
+      "category": "fake_loan",
+      "expected_verdict": "suspicious",
+      "text": "Your pre-approved personal loan of Rs.5,00,000 is ready. Pay a small processing fee of Rs.1,499 to release the amount."
+    },
+    {
+      "id": "pos-elec-001",
+      "label": "scam",
+      "category": "electricity_disconnection",
+      "expected_verdict": "suspicious",
+      "text": "Urgent: Your electricity will be disconnected tonight due to unpaid bill. Pay immediately at https://mseb-bill-pay.top/unpaid"
+    },
+    {
+      "id": "pos-apk-001",
+      "label": "scam",
+      "category": "malicious_apk",
+      "expected_verdict": "highly_suspicious",
+      "text": "You have won a cash reward. Download the reward app from http://win-reward.xyz/app.apk and install this app to claim your prize."
+    },
+    {
+      "id": "pos-sextort-001",
+      "label": "scam",
+      "category": "sextortion",
+      "expected_verdict": "highly_suspicious",
+      "text": "I have a recording of your private video call. Send money within 6 hours or I will make your video viral to your family."
+    },
+    {
+      "id": "pos-url-001",
+      "label": "scam",
+      "category": "url_anomaly",
+      "expected_verdict": "suspicious",
+      "text": "Verify your KYC here: http://203.0.113.77/session/update"
+    },
+    {
+      "id": "neg-bankwarning-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Never share your OTP or UPI PIN with anyone. Your bank will never ask you for your PIN over the phone."
+    },
+    {
+      "id": "neg-elecbill-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Dear customer, your June electricity bill of Rs.1,450 has been generated. Pay online before 10 June through the official app."
+    },
+    {
+      "id": "neg-otpdigest-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Your OTP for net banking login is 483291. It is valid for 10 minutes. Do not share it with anyone."
+    },
+    {
+      "id": "neg-friendpay-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Thanks for dinner yesterday, sending you Rs.500 for the movie tickets by evening."
+    },
+    {
+      "id": "neg-statement-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Monthly e-statement for your card ending 1234 is now available on the official mobile application."
+    },
+    {
+      "id": "neg-notice-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Team, the parent-teacher meeting is on Saturday at 10 AM in the auditorium. Please inform your students."
+    },
+    {
+      "id": "neg-govurl-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Track your parcel: https://www.indiapost.gov.in/en/track"
+    },
+    {
+      "id": "neg-charity-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Our city is collecting winter clothes for flood relief. Drop off at the community centre if you wish to help."
+    }
+  ]
+}

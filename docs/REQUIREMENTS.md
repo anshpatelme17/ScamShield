@@ -25,7 +25,7 @@ its result inspected.
 | R-009 | Action recommendations and reporting guidance | TESTED |
 | R-010 | FastAPI backend endpoint | TESTED |
 | R-011 | Simple usable frontend | NOT_STARTED |
-| R-012 | Automated tests, including hard negatives | NOT_STARTED |
-| R-013 | Labelled India-focused evaluation dataset | NOT_STARTED |
-| R-014 | Security and privacy safeguards | NOT_STARTED |
-| R-015 | Offline operation for core analysis | NOT_STARTED |
+| R-012 | Automated tests, including hard negatives | TESTED |
+| R-013 | Labelled India-focused evaluation dataset | TESTED |
+| R-014 | Security and privacy safeguards | IN_PROGRESS |
+| R-015 | Offline operation for core analysis | TESTED |

@@ -68,3 +68,19 @@
   - Live smoke test: `uvicorn app.main:app --port 8765`; `GET /api/health`
     -> `{"status":"ok"}`; `POST /api/analyze` with a UPI-PIN request ->
     `highly_suspicious`, headline "Strong scam indicators found", 2 findings.
+- Committed: `0eef6ba`.
+
+## Phase 6 — Labelled evaluation dataset & harness
+- Status: IN_PROGRESS
+- Created: `tests/data/labeled_samples.json` (21 samples: 13 scam positives
+  covering 13 categories, 8 hard negatives incl. the bank OTP/UPI-PIN
+  warning), `app/eval.py` (harness with precision/recall/F1 + per-category
+  reports), `tests/test_eval.py`, `tests/test_offline.py`.
+- Verified:
+  - `ruff check .` -> `All checks passed!` (exit 0; 2 import-order errors
+    auto-fixed)
+  - `pytest` -> `92 passed, 1 warning in 0.68s`
+  - Eval metrics: accuracy 1.0, precision 1.0, recall 1.0, F1 1.0,
+    13 TP / 0 FN / 8 TN / 0 FP, 0 failures.
+  - Offline proof: socket-creation is blocked by a test fixture and the full
+    evaluation still passes (no network access during analysis).
