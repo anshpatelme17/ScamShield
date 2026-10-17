@@ -15,8 +15,8 @@ its result inspected.
 | ID | Requirement | Status |
 |----|-------------|--------|
 | R-001 | Repository, tooling, and virtual environment skeleton | IN_PROGRESS |
-| R-002 | Structured evidence model (Finding, Scam Case File) | NOT_STARTED |
-| R-003 | Input validation and normalization with length limits | NOT_STARTED |
+| R-002 | Structured evidence model (Finding, Scam Case File) | TESTED |
+| R-003 | Input validation and normalization with length limits | TESTED |
 | R-004 | Indicator extraction (URLs, keywords, entities) | NOT_STARTED |
 | R-005 | India-specific scam detection rules | NOT_STARTED |
 | R-006 | Offline URL heuristics | NOT_STARTED |
