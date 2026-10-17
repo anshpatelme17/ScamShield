@@ -1,33 +1,52 @@
 # Architecture
 
-Status: `NOT_STARTED` (design captured below; implementation begins in Phase 2).
+Status: `IMPLEMENTED` (verified through Phases 1–8).
 
-## Intended flow
+## Implemented flow
 
 ```
-User Input
-    -> Validation and Normalization
-    -> Input Classification and Indicator Extraction
-    -> Small Analysis Router
+User Input (browser or API client)
+    -> Validation and Normalization      app/validation.py
+    -> Input Classification              InputType (text | url)
+    -> Indicator Extraction              app/extractors.py
+    -> Small Analysis Router             app/router.py
     -> Relevant Local Analyzers
-    -> Structured Evidence Findings
-    -> Scam Case File
-    -> Deterministic Verdict Policy
-    -> Explanation and Action Recommendations
-    -> Frontend Results
+         India rules                     app/analyzers/india_rules.py
+         URL heuristics (offline)        app/analyzers/url_heuristics.py
+         Text signals                    app/analyzers/text_signals.py
+    -> Structured Evidence Findings      app/models.py (Finding)
+    -> Scam Case File (+ sha256 only)    app/models.py (ScamCaseFile)
+    -> Deterministic Verdict Policy      app/verdict.py
+    -> Explanation and Action Guidance   app/explanations.py
+    -> HTTP results                      app/api/routes.py + app/main.py
+    -> Frontend results                  frontend/ (React 19 + Vite 6 + Tailwind 4)
 ```
+
+No orchestration engine exists by design; `app/router.py` is ~60 lines.
+
+## Components and verified versions
+
+- Python 3.13.5, FastAPI 0.116.1, Pydantic 2.11.7, uvicorn 0.35.0, pytest 8.4.1,
+  ruff 0.9.10 (all pinned in `requirements.txt`).
+- Node.js v22.23.3 (portable), npm 10.9.9, React 19.x, Vite 6.4.4, Tailwind 4.x.
+- Backend listens on port **8765**, frontend dev server on **5175** with an
+  `/api` proxy (Docker Desktop occupies 8000/5173 on this machine).
 
 ## Principles
 
-- Small, understandable architecture. No complex orchestration engine.
-- Each analyzer is an independent module that returns structured `Finding` objects.
+- Small, understandable architecture; each analyzer is an independent module
+  returning structured `Finding` objects.
 - Evidence is data; the verdict is a deterministic policy over that data.
-- Core analysis is fully offline and does not depend on an external API or LLM.
-- The system must never claim an input is safe merely because no indicators were found.
+- Core analysis is fully offline (enforced by `tests/test_offline.py`) and does
+  not depend on an external API or LLM.
+- The system never claims an input is safe merely because no indicators were
+  found; the disclaimer travels with every artifact.
+- Rule ids (`IN-*`, `URL-*`, `TXT-*`) are traceable from finding to reason.
 
-## Stack (subject to verification in later phases)
+## Extension points (deferred, not implemented)
 
-- Backend: Python, FastAPI, Pydantic
-- Testing: pytest
-- Frontend: React and Tailwind CSS (added later; requires Node.js)
-- Version control: Git
+- OCR / QR-code / APK file analysis (would join as additional analyzers).
+- Optional external threat intelligence (must produce `external_intel`
+  source findings and `unverified` status entries only).
+- Local persistence (not present; privacy posture documented in
+  `THREAT_MODEL.md`).

@@ -26,3 +26,6 @@ Record of significant technical decisions (ADR-style, lightweight).
 | D-020 | Offline is enforced by a socket-blocking test | Proves R-015 instead of assuming it | 6 |
 | D-021 | Backend on 8765, frontend dev on 5175 | Docker Desktop occupies 8000/5173 on this machine; avoid collision | 7 |
 | D-022 | Vite dev proxy instead of CORS config | Frontend proxies `/api` to localhost in dev; browser setup stays simple and local | 7 |
+| D-023 | No rate limiting/auth in MVP | Single-user local deployment; documented as residual risk, required before any public exposure (THREAT_MODEL) | 8 |
+| D-024 | Input is data, never instructions | Deterministic rules cannot be reprogrammed by submitted text; LLM prompt injection is structurally impossible in core | 8 |
+| D-025 | ReDoS guarded by bounded probes at max length | Patterns are simple, but the guarantee is enforced by tests, not assumptions | 8 |

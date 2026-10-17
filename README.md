@@ -6,9 +6,12 @@ An India-focused, offline-first scam investigation platform. It analyzes suspici
 messages and links and produces an **evidence-backed Scam Case File** rather than a
 single opaque risk score.
 
-## Status
+# Status
 
-Phase 1 (repository & tooling skeleton) — in progress.
+All core phases complete (Phases 1-8): offline analysis engine, deterministic
+verdict policy, evidence-backed Scam Case File, FastAPI backend, React
+frontend, labelled evaluation dataset (21/21, zero false positives), and a
+security audit suite with ReDoS probes. 121 automated tests pass locally.
 
 ## Project layout
 

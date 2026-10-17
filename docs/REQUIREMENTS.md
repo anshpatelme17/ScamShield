@@ -27,5 +27,5 @@ its result inspected.
 | R-011 | Simple usable frontend | TESTED |
 | R-012 | Automated tests, including hard negatives | TESTED |
 | R-013 | Labelled India-focused evaluation dataset | TESTED |
-| R-014 | Security and privacy safeguards | IN_PROGRESS |
+| R-014 | Security and privacy safeguards | TESTED |
 | R-015 | Offline operation for core analysis | TESTED |

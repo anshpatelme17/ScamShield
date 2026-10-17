@@ -107,3 +107,21 @@
     - empty text -> HTTP 422
 - Note: an intermediate `422 json_invalid` during manual POST testing was a
   PowerShell 5.1 -> curl.exe quoting artifact, not an app bug.
+- Committed: `b5bcab0`.
+
+## Phase 8 — Security & documentation hardening
+- Status: IN_PROGRESS
+- Audited `app/` for logging, secrets, HTTP clients, subprocess, eval/exec -
+  clean (no logging exists; no network primitives).
+- Created: `tests/test_redos.py` - 29 adversarial probes at the exact
+  maximum input length, each with a 5 s time budget.
+- Fixed during verification: initial probe harness had (a) probes exceeding
+  the max length (correctly rejected by validation), (b) Windows 32,767-char
+  test-id/env issue from pytest parametrize, (c) a pure-NUL probe that
+  validation correctly rejects (kept as an explicit rejection test).
+- Verified:
+  - `ruff check .` -> `All checks passed!`
+  - `tests/test_redos.py` -> `29 passed in 0.29s`
+  - full `pytest` -> `121 passed, 1 warning in 0.81s`
+- Finalized `docs/THREAT_MODEL.md`, `docs/ARCHITECTURE.md`, `docs/TESTING.md`
+  to match the implemented reality with evidence.
