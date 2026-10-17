@@ -125,3 +125,24 @@
   - full `pytest` -> `121 passed, 1 warning in 0.81s`
 - Finalized `docs/THREAT_MODEL.md`, `docs/ARCHITECTURE.md`, `docs/TESTING.md`
   to match the implemented reality with evidence.
+- Committed: `f5c1224`.
+
+## Phase 9 — Hinglish/Devanagari rules (bilingual layer)
+- Status: IN_PROGRESS
+- Root causes fixed during verification:
+  - Python `re` treats Devanagari matras as non-word; trailing `\b` fails on
+    tokens like "केवाईसी". All hinglish boundaries now use a unified wrapper
+    (`(?<![\w\u0900-\u097F])…(?![\w\u0900-\u097F])`).
+  - Window clipping could cut a negator in half ("Never" -> "er"); negation
+    now checked in the original text at absolute verb positions.
+  - URL fragments ("/otp/verify") could trigger credential solicitation;
+    URLs are masked (position-preserving) before solicitation analysis.
+- Added: `app/analyzers/hinglish_rules.py` (11 rules IN-H-*), router wiring,
+  strong-rule set extension in `app/verdict.py`, `tests/test_hinglish.py`
+  (22 tests), 19 new labelled samples (v1.1: 14 scam, 5 hard negatives incl.
+  Devanagari bank warning, postal pin code, benign meeting).
+- Verified:
+  - `ruff check .` -> `All checks passed!`
+  - eval: accuracy=1.0, 27 TP / 0 FP / 0 FN / 13 TN (40 samples)
+  - full `pytest` -> `143 passed, 1 warning in 0.87s`
+  - live E2E on 8765: hinglish KYC -> suspicious; hinglish OTP -> highly_suspicious

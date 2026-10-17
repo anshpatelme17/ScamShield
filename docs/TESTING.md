@@ -19,7 +19,7 @@ ruff check .
 
 ## Current suite (executed results)
 
-- **121 passed** in ~0.8 s (single warning: starlette testclient deprecation,
+- **143 passed** in ~0.9 s (single warning: starlette testclient deprecation,
   library-internal).
 - `tests/test_environment.py` — Python/dependency smoke.
 - `tests/test_models.py` — evidence model integrity (unique ids, strict/frozen).
@@ -28,6 +28,9 @@ ruff check .
 - `tests/test_extractors.py` — URL/UPI/phone/APK/amount extraction.
 - `tests/test_analyzers.py` — India rules incl. the **hard negative** ("Never
   share your OTP or UPI PIN...") must produce zero findings.
+- `tests/test_hinglish.py` — Hinglish/Devanagari rules incl. Devanagari bank
+  warning hard negative, postal "pin code" guard, and negated-security
+  variants ("share na karein" / "शेयर न करें").
 - `tests/test_url_heuristics.py` — offline URL checks incl. `CHECK_FAILED`
   path for unparseable URLs.
 - `tests/test_router.py` — sequential ids, dedupe by rule, verdict outcomes.
@@ -39,7 +42,8 @@ ruff check .
   verdicts, response shape.
 - `tests/test_eval.py` — labelled dataset gate: hard negatives must all pass,
   zero false positives, precision/recall >= 0.9, every scam category fully
-  detected (executed metrics: 21/21, precision = recall = F1 = 1.0).
+  detected (executed metrics: 40/40 samples, accuracy = precision = recall =
+  F1 = 1.0; 27 scam / 13 hard negatives).
 - `tests/test_offline.py` — **sockets are blocked** while the whole pipeline
   and the full evaluation run (prove R-015).
 - `tests/test_redos.py` — 29 adversarial probes at the exact input-size limit

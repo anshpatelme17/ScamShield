@@ -29,6 +29,11 @@ _STRONG_RULES = frozenset(
         "IN-ARREST-001",
         "IN-SEXTORT-001",
         "IN-APK-001",
+        "IN-H-SECRET-001",
+        "IN-H-COLLECT-001",
+        "IN-H-ARREST-001",
+        "IN-H-SEXTORT-001",
+        "IN-H-APK-001",
     }
 )
 

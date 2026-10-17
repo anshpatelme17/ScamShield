@@ -8,10 +8,11 @@ single opaque risk score.
 
 # Status
 
-All core phases complete (Phases 1-8): offline analysis engine, deterministic
+All core phases complete (Phases 1-9): offline analysis engine, deterministic
 verdict policy, evidence-backed Scam Case File, FastAPI backend, React
-frontend, labelled evaluation dataset (21/21, zero false positives), and a
-security audit suite with ReDoS probes. 121 automated tests pass locally.
+frontend, labelled evaluation dataset (40 samples: English + Hinglish +
+Devanagari; accuracy 1.0, zero false positives), bilingual scam rules, and a
+security audit suite with ReDoS probes. 143 automated tests pass locally.
 
 ## Project layout
 

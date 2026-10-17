@@ -11,9 +11,10 @@ User Input (browser or API client)
     -> Indicator Extraction              app/extractors.py
     -> Small Analysis Router             app/router.py
     -> Relevant Local Analyzers
-         India rules                     app/analyzers/india_rules.py
-         URL heuristics (offline)        app/analyzers/url_heuristics.py
-         Text signals                    app/analyzers/text_signals.py
+         India rules                      app/analyzers/india_rules.py
+         Hinglish/Devanagari rules        app/analyzers/hinglish_rules.py
+         URL heuristics (offline)         app/analyzers/url_heuristics.py
+         Text signals                     app/analyzers/text_signals.py
     -> Structured Evidence Findings      app/models.py (Finding)
     -> Scam Case File (+ sha256 only)    app/models.py (ScamCaseFile)
     -> Deterministic Verdict Policy      app/verdict.py

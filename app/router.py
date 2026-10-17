@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from uuid import uuid4
 
+from app.analyzers.hinglish_rules import analyze_hinglish_rules
 from app.analyzers.india_rules import analyze_india_rules
 from app.analyzers.text_signals import analyze_text_signals
 from app.analyzers.url_heuristics import analyze_urls
@@ -22,6 +23,7 @@ def run_analysis(normalized: NormalizedInput) -> list[Finding]:
 
     findings: list[Finding] = []
     findings.extend(analyze_india_rules(normalized.text, indicators))
+    findings.extend(analyze_hinglish_rules(normalized.text, indicators))
     findings.extend(analyze_text_signals(normalized.text))
     if indicators.urls:
         findings.extend(analyze_urls(indicators.urls))

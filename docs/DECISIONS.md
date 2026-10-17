@@ -29,3 +29,6 @@ Record of significant technical decisions (ADR-style, lightweight).
 | D-023 | No rate limiting/auth in MVP | Single-user local deployment; documented as residual risk, required before any public exposure (THREAT_MODEL) | 8 |
 | D-024 | Input is data, never instructions | Deterministic rules cannot be reprogrammed by submitted text; LLM prompt injection is structurally impossible in core | 8 |
 | D-025 | ReDoS guarded by bounded probes at max length | Patterns are simple, but the guarantee is enforced by tests, not assumptions | 8 |
+| D-026 | Hinglish/Devanagari boundaries via lookaround, not `\b` | Python `re` treats matras as non-word; a unified `[\w\u0900-\u097F]` boundary wrapper passes tokens like "केवाईसी" | 9 |
+| D-027 | Solicitation negation checked at absolute text positions around the verb | Hindi word order puts verb after secret and negator after verb; clipped windows cut negators in half | 9 |
+| D-028 | URLs masked before credential-solicitation analysis | URL path fragments ("/otp/verify") are handled by URL heuristics, not text rules | 9 |

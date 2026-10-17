@@ -14,7 +14,7 @@ its result inspected.
 
 | ID | Requirement | Status |
 |----|-------------|--------|
-| R-001 | Repository, tooling, and virtual environment skeleton | IN_PROGRESS |
+| R-001 | Repository, tooling, and virtual environment skeleton | TESTED |
 | R-002 | Structured evidence model (Finding, Scam Case File) | TESTED |
 | R-003 | Input validation and normalization with length limits | TESTED |
 | R-004 | Indicator extraction (URLs, keywords, entities) | TESTED |
@@ -29,3 +29,4 @@ its result inspected.
 | R-013 | Labelled India-focused evaluation dataset | TESTED |
 | R-014 | Security and privacy safeguards | TESTED |
 | R-015 | Offline operation for core analysis | TESTED |
+| R-016 | Bilingual Hinglish and Devanagari scam rules with hard negatives | TESTED |

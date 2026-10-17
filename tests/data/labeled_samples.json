@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "description": "Labelled India-focused evaluation dataset. label=scam samples must be detected; label=safe samples are hard negatives and must not be flagged. expected_verdict is the exact verdict the deterministic policy must produce.",
+  "version": "1.1",
+  "description": "Labelled India-focused evaluation dataset (English + Hinglish + Devanagari). label=scam samples must be detected; label=safe samples are hard negatives and must not be flagged. expected_verdict is the exact verdict the deterministic policy must produce.",
   "samples": [
     {
       "id": "pos-kyc-001",
@@ -134,6 +134,139 @@
       "category": "hard_negative",
       "expected_verdict": "no_strong_warning_signs_found",
       "text": "Team, the parent-teacher meeting is on Saturday at 10 AM in the auditorium. Please inform your students."
+    },
+    {
+      "id": "pos-hinglish-kyc-001",
+      "label": "scam",
+      "category": "bank_kyc_impersonation",
+      "expected_verdict": "suspicious",
+      "text": "Aapka bank account ka KYC khatam hone wala hai. Turant update karein: http://sbi-kyc-update.top/verify"
+    },
+    {
+      "id": "pos-hinglish-upipin-001",
+      "label": "scam",
+      "category": "upi_pin_request",
+      "expected_verdict": "highly_suspicious",
+      "text": "Paise lene ke liye apna UPI PIN daalein aur screen par jo amount aaye usko confirm karein."
+    },
+    {
+      "id": "pos-hinglish-otp-001",
+      "label": "scam",
+      "category": "otp_credential_theft",
+      "expected_verdict": "highly_suspicious",
+      "text": "Apna OTP share karein taaki delivery verify ho sake."
+    },
+    {
+      "id": "pos-hinglish-collect-001",
+      "label": "scam",
+      "category": "upi_collect_request",
+      "expected_verdict": "highly_suspicious",
+      "text": "Aapke account me payment request aaya hai. Paise lene ke liye collect request approve karein."
+    },
+    {
+      "id": "pos-devanagari-otp-001",
+      "label": "scam",
+      "category": "otp_credential_theft",
+      "expected_verdict": "highly_suspicious",
+      "text": "अपना ओटीपी शेयर करें और पैसे उसी समय मिलेंगे।"
+    },
+    {
+      "id": "pos-devanagari-kyc-001",
+      "label": "scam",
+      "category": "bank_kyc_impersonation",
+      "expected_verdict": "suspicious",
+      "text": "आपका बैंक खाते का केवाईसी खत्म हो रहा है। तुरंत अपडेट करें।"
+    },
+    {
+      "id": "pos-hinglish-arrest-001",
+      "label": "scam",
+      "category": "digital_arrest",
+      "expected_verdict": "highly_suspicious",
+      "text": "CP Mumbai Cyber Cell: Aap digital arrest me hain. Case clear karne ke liye funds transfer karein."
+    },
+    {
+      "id": "pos-hinglish-job-001",
+      "label": "scam",
+      "category": "fake_job_task",
+      "expected_verdict": "suspicious",
+      "text": "Ghar baithe kaam hai. Registration fee dena hoga Telegram par. Daily 3000 rupaye earn karein."
+    },
+    {
+      "id": "pos-hinglish-invest-001",
+      "label": "scam",
+      "category": "investment_trading",
+      "expected_verdict": "suspicious",
+      "text": "Guaranteed return 5x. Hamare trading tips group join karein aur paisa double karein."
+    },
+    {
+      "id": "pos-hinglish-loan-001",
+      "label": "scam",
+      "category": "fake_loan",
+      "expected_verdict": "suspicious",
+      "text": "Aapka pre-approved loan ready hai. Sirf Rs.1499 processing fee jama karein."
+    },
+    {
+      "id": "pos-hinglish-apk-001",
+      "label": "scam",
+      "category": "malicious_apk",
+      "expected_verdict": "highly_suspicious",
+      "text": "Cash reward app ka APK: http://win-reward.xyz/app.apk. Claim karne ke liye install karein."
+    },
+    {
+      "id": "pos-hinglish-sextort-001",
+      "label": "scam",
+      "category": "sextortion",
+      "expected_verdict": "highly_suspicious",
+      "text": "Maine aapka private video call record kar liya hai. Paise bhejo warna viral kar dunga."
+    },
+    {
+      "id": "pos-hinglish-elec-001",
+      "label": "scam",
+      "category": "electricity_disconnection",
+      "expected_verdict": "suspicious",
+      "text": "Bijli aaj raat 12 baje cut jayegi. Bakaya bill turant jama karein: http://mseb-bill-pay.top/unpaid"
+    },
+    {
+      "id": "pos-hinglish-suspend-001",
+      "label": "scam",
+      "category": "account_suspension",
+      "expected_verdict": "suspicious",
+      "text": "Aapka SBI account 24 ghante me suspend ho jayega. Turant verify karein."
+    },
+    {
+      "id": "neg-devanagari-warning-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "अपना OTP या UPI PIN किसी से शेयर न करें। आपका बैंक कभी भी आपसे ओटीपी या पिन नहीं मांगेगा।"
+    },
+    {
+      "id": "neg-hinglish-warning-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Paise lene ke liye UPI PIN daalne ki zaroorat nahi hoti. Kabhi pin daalein na."
+    },
+    {
+      "id": "neg-hinglish-chai-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Mummy ko bolo kal chai pe aayein; 500 rupaye wapas kar dunga."
+    },
+    {
+      "id": "neg-hinglish-meeting-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Aaj shaam me meeting hai. Video call pe join karke batana."
+    },
+    {
+      "id": "neg-hinglish-pincode-001",
+      "label": "safe",
+      "category": "hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "text": "Aapka pin code 110001 hai, parcel 2 din me pahunch jayega."
     },
     {
       "id": "neg-govurl-001",
