@@ -54,3 +54,17 @@
   - `pytest` -> `74 passed in 0.57s` (exit 0)
 - First pytest run had 2 test failures (test premise errors, not app bugs) and
   1 lint error (E501); all fixed and re-verified.
+- Committed: `5c8b56f`.
+
+## Phase 5 — FastAPI API
+- Status: IN_PROGRESS
+- Created: `app/api/__init__.py`, `app/api/routes.py` (`POST /api/analyze`,
+  `GET /api/health`), `app/main.py`, `tests/test_api.py`.
+- Added dev dependency `httpx 0.28.1` (needed by Starlette TestClient).
+- Verified:
+  - `ruff check .` -> `All checks passed!` (exit 0)
+  - `pytest` -> `84 passed, 1 warning in 0.65s` (warning is a starlette
+    testclient deprecation, not project code)
+  - Live smoke test: `uvicorn app.main:app --port 8765`; `GET /api/health`
+    -> `{"status":"ok"}`; `POST /api/analyze` with a UPI-PIN request ->
+    `highly_suspicious`, headline "Strong scam indicators found", 2 findings.

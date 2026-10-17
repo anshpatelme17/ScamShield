@@ -20,3 +20,5 @@ Record of significant technical decisions (ADR-style, lightweight).
 | D-014 | Verdict precedence order is fixed and categorical | Strong evidence > incomplete analysis > medium patterns > weak signals; no numeric score | 4 |
 | D-015 | Strong rules are a curated, explicit set | Only near-uniquely-scam indicators (PIN/OTP solicitation, collect request, digital arrest, sextortion, APK) escalate to HIGHLY_SUSPICIOUS | 4 |
 | D-016 | Weak signals never produce SUSPICIOUS alone | Single weak signal keeps verdict at NO_STRONG_WARNING_SIGNS_FOUND, with disclaimer | 4 |
+| D-017 | Request text is never logged | Avoids persisting untrusted/raw suspicious content (privacy + security) | 5 |
+| D-018 | Input limits enforced at both Pydantic and normalizer layers | Defense in depth; either layer rejects oversized input | 5 |

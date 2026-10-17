@@ -23,7 +23,7 @@ its result inspected.
 | R-007 | Deterministic verdict policy (no arbitrary risk score) | TESTED |
 | R-008 | Template-based explanations | TESTED |
 | R-009 | Action recommendations and reporting guidance | TESTED |
-| R-010 | FastAPI backend endpoint | NOT_STARTED |
+| R-010 | FastAPI backend endpoint | TESTED |
 | R-011 | Simple usable frontend | NOT_STARTED |
 | R-012 | Automated tests, including hard negatives | NOT_STARTED |
 | R-013 | Labelled India-focused evaluation dataset | NOT_STARTED |

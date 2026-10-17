@@ -37,7 +37,17 @@ pytest
 
 # Lint
 ruff check .
+
+# Run the API
+python -m uvicorn app.main:app --reload
 ```
+
+The API exposes:
+
+- `GET /api/health` - service check
+- `POST /api/analyze` with JSON body `{"text": "<message or URL>"}`
+  - returns the Scam Case File (findings + verdict) and a plain-language
+    explanation with recommended actions and reporting guidance.
 
 ## Documentation
 
