@@ -38,9 +38,18 @@ pytest
 # Lint
 ruff check .
 
-# Run the API
-python -m uvicorn app.main:app --reload
+# Run the API (port 8765; port 8000 is taken by Docker on this machine)
+python -m uvicorn app.main:app --port 8765
+
+# Run the frontend (in a second terminal, from the frontend/ folder)
+# Node.js 22 is installed at %LOCALAPPDATA%\Programs\nodejs\node-v22.23.3-win-x64
+cd frontend
+npm install
+npm run dev
 ```
+
+Open `http://localhost:5175`. The vite dev server proxies `/api/*` to the
+backend at `127.0.0.1:8765`.
 
 The API exposes:
 

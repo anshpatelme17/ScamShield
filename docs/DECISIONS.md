@@ -24,3 +24,5 @@ Record of significant technical decisions (ADR-style, lightweight).
 | D-018 | Input limits enforced at both Pydantic and normalizer layers | Defense in depth; either layer rejects oversized input | 5 |
 | D-019 | Dataset lives in `tests/data/` with exact-verdict expectations | Harness checks binary detection AND exact deterministic verdict | 6 |
 | D-020 | Offline is enforced by a socket-blocking test | Proves R-015 instead of assuming it | 6 |
+| D-021 | Backend on 8765, frontend dev on 5175 | Docker Desktop occupies 8000/5173 on this machine; avoid collision | 7 |
+| D-022 | Vite dev proxy instead of CORS config | Frontend proxies `/api` to localhost in dev; browser setup stays simple and local | 7 |

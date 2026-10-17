@@ -84,3 +84,26 @@
     13 TP / 0 FN / 8 TN / 0 FP, 0 failures.
   - Offline proof: socket-creation is blocked by a test fixture and the full
     evaluation still passes (no network access during analysis).
+- Committed: `a145140`.
+
+## Phase 7 — React + Tailwind frontend
+- Status: IN_PROGRESS
+- Environment: Node.js v22.23.3 + npm 10.9.9 installed (portable, no admin) at
+  `%LOCALAPPDATA%\Programs\nodejs\node-v22.23.3-win-x64`.
+- Created: `frontend/` (Vite + React 19 + Tailwind 4): `package.json`,
+  `vite.config.js` (dev proxy `/api` -> `127.0.0.1:8765`), `index.html`,
+  `src/{main.jsx,index.css,App.jsx}`.
+- Port conflict found and resolved: Docker Desktop (`com.docker.backend`)
+  occupies ports 8000 and 5173 on this machine; backend moved to 8765,
+  frontend dev server fixed to 5175 (`strictPort`).
+- Verified:
+  - `npm install` -> 78 packages; `npm run build` -> successful production
+    build (vite 6.4.4, 29 modules)
+  - Live full-stack smoke: backend on 8765 + vite on 5175 via `Invoke-RestMethod`
+    - page served (HTTP 200)
+    - `GET /api/health` via proxy -> `{"status":"ok"}`
+    - `POST /api/analyze` via proxy -> `suspicious` / "Warning signs found",
+      3 findings, 4 actions, reporting guidance present
+    - empty text -> HTTP 422
+- Note: an intermediate `422 json_invalid` during manual POST testing was a
+  PowerShell 5.1 -> curl.exe quoting artifact, not an app bug.
