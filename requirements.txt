@@ -1,0 +1,8 @@
+# Runtime dependencies (pinned for reproducibility)
+fastapi==0.116.1
+uvicorn==0.35.0
+pydantic==2.11.7
+
+# Development / test tooling
+pytest==8.4.1
+ruff==0.9.10

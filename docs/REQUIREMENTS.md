@@ -1,0 +1,31 @@
+# Requirements
+
+Status vocabulary used throughout this document:
+
+- `NOT_STARTED`
+- `IN_PROGRESS`
+- `IMPLEMENTED`
+- `TESTED`
+- `BLOCKED`
+- `DEFERRED`
+
+A requirement is marked `TESTED` only after the relevant test has been executed and
+its result inspected.
+
+| ID | Requirement | Status |
+|----|-------------|--------|
+| R-001 | Repository, tooling, and virtual environment skeleton | IN_PROGRESS |
+| R-002 | Structured evidence model (Finding, Scam Case File) | NOT_STARTED |
+| R-003 | Input validation and normalization with length limits | NOT_STARTED |
+| R-004 | Indicator extraction (URLs, keywords, entities) | NOT_STARTED |
+| R-005 | India-specific scam detection rules | NOT_STARTED |
+| R-006 | Offline URL heuristics | NOT_STARTED |
+| R-007 | Deterministic verdict policy (no arbitrary risk score) | NOT_STARTED |
+| R-008 | Template-based explanations | NOT_STARTED |
+| R-009 | Action recommendations and reporting guidance | NOT_STARTED |
+| R-010 | FastAPI backend endpoint | NOT_STARTED |
+| R-011 | Simple usable frontend | NOT_STARTED |
+| R-012 | Automated tests, including hard negatives | NOT_STARTED |
+| R-013 | Labelled India-focused evaluation dataset | NOT_STARTED |
+| R-014 | Security and privacy safeguards | NOT_STARTED |
+| R-015 | Offline operation for core analysis | NOT_STARTED |
