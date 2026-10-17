@@ -17,9 +17,9 @@ its result inspected.
 | R-001 | Repository, tooling, and virtual environment skeleton | IN_PROGRESS |
 | R-002 | Structured evidence model (Finding, Scam Case File) | TESTED |
 | R-003 | Input validation and normalization with length limits | TESTED |
-| R-004 | Indicator extraction (URLs, keywords, entities) | NOT_STARTED |
-| R-005 | India-specific scam detection rules | NOT_STARTED |
-| R-006 | Offline URL heuristics | NOT_STARTED |
+| R-004 | Indicator extraction (URLs, keywords, entities) | TESTED |
+| R-005 | India-specific scam detection rules | TESTED |
+| R-006 | Offline URL heuristics | TESTED |
 | R-007 | Deterministic verdict policy (no arbitrary risk score) | NOT_STARTED |
 | R-008 | Template-based explanations | NOT_STARTED |
 | R-009 | Action recommendations and reporting guidance | NOT_STARTED |

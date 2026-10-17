@@ -24,3 +24,18 @@
   - `pytest -v` -> `21 passed in 0.48s` (exit 0)
 - Notes: verdict logic intentionally deferred to Phase 4; `ScamCaseFile` has no
   verdict field yet.
+- Committed: `502f0ad`.
+
+## Phase 3 — Analyzers, extraction, and analysis router
+- Status: IN_PROGRESS
+- Created: `app/extractors.py`, `app/analyzers/{__init__,base,india_rules,
+  url_heuristics,text_signals}.py`, `app/router.py`, and
+  `tests/test_{extractors,analyzers,url_heuristics,router}.py`.
+- Verified:
+  - `ruff check .` -> `All checks passed!` (exit 0)
+  - `pytest` -> `55 passed in 0.52s` (exit 0)
+- Bug fixed during verification: negation context was clipped at the
+  80-char window edge in `_secret_solicitation`, causing the hard negative
+  ("Never share your OTP or UPI PIN...") to fire `IN-SECRET-001`.
+  Fixed by anchoring the negator check at the verb's absolute text position.
+- The hard-negative test passes.

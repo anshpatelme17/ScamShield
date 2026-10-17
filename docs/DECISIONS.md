@@ -14,3 +14,6 @@ Record of significant technical decisions (ADR-style, lightweight).
 | D-008 | Finding status/source are explicit enums | Distinguish observed input, local rules, external intel, unverified claims, and failed checks | 2 |
 | D-009 | Over-length input is rejected, not truncated | Avoid analyzing partial content that could mislead the verdict | 2 |
 | D-010 | Store sha256 + length, not raw input, in the case file | Privacy: reference submissions without persisting raw content | 2 |
+| D-011 | India rules are contextual, not keyword-only | Negated security warnings must not be flagged (hard-negative requirement) | 3 |
+| D-012 | Each rule fires at most once per analysis | Prevent correlated indicators from being counted repeatedly | 3 |
+| D-013 | URLs are parsed, never fetched | Offline MVP; avoids SSRF and malicious-content risks | 3 |
