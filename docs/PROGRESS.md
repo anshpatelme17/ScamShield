@@ -39,3 +39,18 @@
   ("Never share your OTP or UPI PIN...") to fire `IN-SECRET-001`.
   Fixed by anchoring the negator check at the verb's absolute text position.
 - The hard-negative test passes.
+- Committed: `84ca213`.
+
+## Phase 4 — Deterministic verdict policy & explanations
+- Status: IN_PROGRESS
+- Created: `app/verdict.py`, `app/explanations.py`,
+  `tests/test_verdict.py`, `tests/test_explanations.py`.
+- Modified: `app/models.py` (VerdictCategory enum; verdict fields on
+  `ScamCaseFile`), `app/analyzers/url_heuristics.py` (CHECK_FAILED finding for
+  unparseable URLs), `app/router.py` (verdict computed in `build_case_file`),
+  `tests/test_url_heuristics.py`, `tests/test_router.py`.
+- Verified:
+  - `ruff check .` -> `All checks passed!` (exit 0)
+  - `pytest` -> `74 passed in 0.57s` (exit 0)
+- First pytest run had 2 test failures (test premise errors, not app bugs) and
+  1 lint error (E501); all fixed and re-verified.

@@ -14,6 +14,7 @@ from app.analyzers.url_heuristics import analyze_urls
 from app.extractors import extract_indicators
 from app.models import Finding, ScamCaseFile
 from app.validation import NormalizedInput
+from app.verdict import determine_verdict
 
 
 def run_analysis(normalized: NormalizedInput) -> list[Finding]:
@@ -47,10 +48,13 @@ def build_case_file(
 ) -> ScamCaseFile:
     if findings is None:
         findings = run_analysis(normalized)
+    verdict_result = determine_verdict(tuple(findings))
     return ScamCaseFile(
         case_id=uuid4().hex,
         input_type=normalized.input_type,
         input_length=normalized.input_length,
         input_sha256=normalized.sha256,
         findings=tuple(findings),
+        verdict=verdict_result.verdict,
+        verdict_reasons=verdict_result.reasons,
     )

@@ -1,4 +1,4 @@
-from app.models import InputType
+from app.models import InputType, VerdictCategory
 from app.router import build_case_file, run_analysis
 from app.validation import normalize_input
 
@@ -56,3 +56,17 @@ def test_url_input_type_run_through_router():
 def test_benign_url_yields_no_findings():
     normalized = normalize_input("https://www.example.com/about-us")
     assert run_analysis(normalized) == []
+
+
+def test_unparseable_url_case_is_unable_to_determine():
+    case = build_case_file(normalize_input("http:///path"))
+    assert case.verdict is VerdictCategory.UNABLE_TO_DETERMINE
+
+
+def test_suspicious_case_verdict():
+    case = build_case_file(
+        normalize_input(
+            "Your KYC is expiring. Approve the collect request. Pay Rs.500 immediately."
+        )
+    )
+    assert case.verdict is VerdictCategory.HIGHLY_SUSPICIOUS

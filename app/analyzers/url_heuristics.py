@@ -39,8 +39,14 @@ def _is_ip_host(host: str) -> bool:
 
 
 def _add(
-    findings: list[Finding], rule_id: str, title: str, url: str, limitations: str,
-    action: str, confidence: Confidence | None = None,
+    findings: list[Finding],
+    rule_id: str,
+    title: str,
+    url: str,
+    limitations: str,
+    action: str,
+    confidence: Confidence | None = None,
+    status: FindingStatus = FindingStatus.RULE_MATCH,
 ) -> None:
     if any(f.rule_id == rule_id for f in findings):
         return
@@ -50,7 +56,7 @@ def _add(
             category=FindingCategory.URL_ANOMALY,
             title=title,
             evidence=url,
-            status=FindingStatus.RULE_MATCH,
+            status=status,
             limitations=limitations,
             recommended_action=action,
             confidence=confidence,
@@ -64,9 +70,27 @@ def analyze_urls(urls: tuple[str, ...]) -> list[Finding]:
         try:
             parts = urlsplit(url if "://" in url else f"http://{url}")
         except ValueError:
+            _add(
+                findings,
+                "URL-ERR-001",
+                "URL could not be parsed",
+                url,
+                "The URL syntax is malformed, so no structural checks could run.",
+                "Do not visit it; if needed, report it as suspicious.",
+                status=FindingStatus.CHECK_FAILED,
+            )
             continue
         host = (parts.hostname or "").lower()
         if not host:
+            _add(
+                findings,
+                "URL-ERR-001",
+                "URL could not be parsed",
+                url,
+                "No host could be extracted, so no structural checks could run.",
+                "Do not visit it; if needed, report it as suspicious.",
+                status=FindingStatus.CHECK_FAILED,
+            )
             continue
         path_query = f"{parts.path}?{parts.query}".lower()
 

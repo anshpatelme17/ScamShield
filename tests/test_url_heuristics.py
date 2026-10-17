@@ -1,4 +1,5 @@
 from app.analyzers.url_heuristics import analyze_urls
+from app.models import FindingStatus
 
 
 def _rule_ids(urls):
@@ -44,3 +45,9 @@ def test_each_rule_fires_once_across_multiple_urls():
     ip_rules = [f for f in findings if f.rule_id == "URL-IP-001"]
     assert len(ip_rules) == 1
     assert analyze_urls(("https://bit.ly/short",))[0].rule_id == "URL-SHORT-001"
+
+
+def test_unparseable_url_produces_check_failed():
+    findings = analyze_urls(("http://",))
+    assert [f.rule_id for f in findings] == ["URL-ERR-001"]
+    assert findings[0].status is FindingStatus.CHECK_FAILED

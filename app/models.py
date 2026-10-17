@@ -57,6 +57,13 @@ class Confidence(str, Enum):
     HIGH = "high"
 
 
+class VerdictCategory(str, Enum):
+    HIGHLY_SUSPICIOUS = "highly_suspicious"
+    SUSPICIOUS = "suspicious"
+    NO_STRONG_WARNING_SIGNS_FOUND = "no_strong_warning_signs_found"
+    UNABLE_TO_DETERMINE = "unable_to_determine"
+
+
 class Finding(BaseModel):
     """A single, attributable piece of evidence about the submitted input."""
 
@@ -96,6 +103,8 @@ class ScamCaseFile(BaseModel):
     findings: tuple[Finding, ...] = ()
     limitations: tuple[str, ...] = ()
     checks_not_completed: tuple[str, ...] = ()
+    verdict: VerdictCategory | None = None
+    verdict_reasons: tuple[str, ...] = ()
     disclaimer: str = DEFAULT_DISCLAIMER
 
     @field_validator("input_sha256")

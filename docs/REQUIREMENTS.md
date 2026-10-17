@@ -20,9 +20,9 @@ its result inspected.
 | R-004 | Indicator extraction (URLs, keywords, entities) | TESTED |
 | R-005 | India-specific scam detection rules | TESTED |
 | R-006 | Offline URL heuristics | TESTED |
-| R-007 | Deterministic verdict policy (no arbitrary risk score) | NOT_STARTED |
-| R-008 | Template-based explanations | NOT_STARTED |
-| R-009 | Action recommendations and reporting guidance | NOT_STARTED |
+| R-007 | Deterministic verdict policy (no arbitrary risk score) | TESTED |
+| R-008 | Template-based explanations | TESTED |
+| R-009 | Action recommendations and reporting guidance | TESTED |
 | R-010 | FastAPI backend endpoint | NOT_STARTED |
 | R-011 | Simple usable frontend | NOT_STARTED |
 | R-012 | Automated tests, including hard negatives | NOT_STARTED |

@@ -17,3 +17,6 @@ Record of significant technical decisions (ADR-style, lightweight).
 | D-011 | India rules are contextual, not keyword-only | Negated security warnings must not be flagged (hard-negative requirement) | 3 |
 | D-012 | Each rule fires at most once per analysis | Prevent correlated indicators from being counted repeatedly | 3 |
 | D-013 | URLs are parsed, never fetched | Offline MVP; avoids SSRF and malicious-content risks | 3 |
+| D-014 | Verdict precedence order is fixed and categorical | Strong evidence > incomplete analysis > medium patterns > weak signals; no numeric score | 4 |
+| D-015 | Strong rules are a curated, explicit set | Only near-uniquely-scam indicators (PIN/OTP solicitation, collect request, digital arrest, sextortion, APK) escalate to HIGHLY_SUSPICIOUS | 4 |
+| D-016 | Weak signals never produce SUSPICIOUS alone | Single weak signal keeps verdict at NO_STRONG_WARNING_SIGNS_FOUND, with disclaimer | 4 |
