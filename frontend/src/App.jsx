@@ -103,11 +103,11 @@ export function Dashboard() {
             <VerdictSummary caseFile={result.case_file} explanation={result.explanation} />
           </section>
 
-          <section
-            aria-label="Evidence and verification"
-            className="mt-6 grid items-start gap-4 md:grid-cols-2"
-          >
+          <section aria-label="Evidence findings" className="mt-6">
             <FindingsList findings={result.case_file.findings} />
+          </section>
+
+          <section aria-label="What could not be verified" className="mt-6">
             <UnverifiedList explanation={result.explanation} />
           </section>
 

@@ -9,7 +9,7 @@ export default function FindingsList({ findings }) {
       {findings.length === 0 ? (
         <p className="mt-2 text-sm text-slate-600">{t("findings.empty")}</p>
       ) : (
-        <div className="mt-3 space-y-3">
+        <div className="mt-3 grid items-start gap-4 md:grid-cols-2">
           {findings.map((finding) => (
             <FindingCard key={finding.id} finding={finding} />
           ))}
