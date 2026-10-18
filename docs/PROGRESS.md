@@ -208,3 +208,19 @@
   - live: index + bundle served, tabs/history/copy/download/skeleton/QR-preview
     present in bundle; /api unaffected
 - Committed: `cad8046`.
+
+## Phase 13 — Frontend component tests
+- Status: IN_PROGRESS
+- Added Vitest + Testing Library (jsdom) with `npm test`; test config in
+  `vite.config.js`, setup in `src/test/setup.js`, real backend payloads in
+  `src/test/fixtures.js` (generated from the live pipeline).
+- 41 tests across 4 files: VerdictBadge/metadata rendering, FindingCard
+  evidence/limitations, FindingsList empty state, VerdictSummary, ExplanationPanel,
+  CaseFileActions clipboard + download, history lib (localStorage cap/dedupe/
+  careful corruption handling), HistoryPanel interactions, InputPanel tabs/
+  counter/oversize/file flows, App integration (mocked fetch: success,
+  pending-skeleton, API error, restore-from-history, delete).
+- Known quirk documented: dispatching a change event with a `Uint8Array`
+  -backed File hangs the test runner in jsdom; string-backed Files are fine.
+- Verified: `npm test` -> **41 passed** (~4 s), `npm run build` clean.
+- Committed: (pending).

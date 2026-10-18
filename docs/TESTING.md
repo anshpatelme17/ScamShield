@@ -57,14 +57,26 @@ ruff check .
   (max length), each must finish analysis in < 5 s. Executed: all pass in
   ~0.3 s total, worst probe ~0.05 s.
 
-### Frontend (Phase 12)
+### Frontend (Phases 12-13)
 
-- No automated JS test suite yet. Verified via `npm run build` (clean, 42
-  modules) plus a live end-to-end check against the packaged app: index and
-  bundle served, all new UI features present in the bundle (tabs, history,
-  copy/download JSON, skeletons, QR preview), and /api verdicts unchanged
-  (text + QR cases). A component test layer (e.g. Vitest + Testing Library)
-  is a candidate follow-up.
+- Component + integration tests via **Vitest** + Testing Library (jsdom;
+  `npm test`). **41 passed** in ~4 s across 4 files, using real backend
+  payloads (generated from the live pipeline) as fixtures:
+  - presentation: VerdictBadge, FindingCard, FindingsList, VerdictSummary,
+    ExplanationPanel (incl. empty states / style fallbacks).
+  - actions: CaseFileActions clipboard copy + JSON download via blob anchor.
+  - history lib: newest-first, 30-entry cap, dedupe on re-analysis, single
+    delete, storage-unavailable and corrupt-storage resilience.
+  - HistoryPanel: restore/delete/clear, collapse/expand, privacy note.
+  - InputPanel: tab switching, character counter, disabled submit, oversize
+    image rejection, preview + remove, data-URL submission, busy state.
+  - App integration (mocked fetch): full result render, pending-skeleton flow,
+    API error surfacing, restore-from-history without a network call, delete.
+- Known quirk: jsdom + vitest hang when dispatching a change event with a
+  `Uint8Array`-backed `File`; string-backed `File` objects are safe (fixture
+  content type chosen accordingly).
+- End-to-end verified via production build + live server checks (see PROGRESS
+  Phase 12).
 
 ## Policy
 

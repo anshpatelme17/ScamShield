@@ -34,3 +34,4 @@ its result inspected.
 | R-018 | Frontend QR screenshot attachment | TESTED |
 | R-019 | Production packaging: static frontend served by backend with hardened defaults | TESTED |
 | R-020 | Frontend build-out: component structure, input tabs, history, case export | TESTED |
+| R-021 | Frontend component/integration test layer (Vitest + Testing Library) | TESTED |
