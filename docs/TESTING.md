@@ -19,7 +19,7 @@ ruff check .
 
 ## Current suite (executed results)
 
-- **143 passed** in ~0.9 s (single warning: starlette testclient deprecation,
+- **157 passed** in ~1.0 s (single warning: starlette testclient deprecation,
   library-internal).
 - `tests/test_environment.py` — Python/dependency smoke.
 - `tests/test_models.py` — evidence model integrity (unique ids, strict/frozen).
@@ -40,6 +40,10 @@ ruff check .
   disclaimers.
 - `tests/test_api.py` — FastAPI integration: valid/invalid inputs, 422s,
   verdicts, response shape.
+- `tests/test_qr.py` — QR ingestion: generated QR fixtures decoded in-process
+  (UPI payload -> suspicious, scam text payload via the text pipeline, benign
+  payload clean, no-symbol observed, undecodable -> CHECK_FAILED ->
+  unable_to_determine, oversize -> 422, text+image combined).
 - `tests/test_eval.py` — labelled dataset gate: hard negatives must all pass,
   zero false positives, precision/recall >= 0.9, every scam category fully
   detected (executed metrics: 40/40 samples, accuracy = precision = recall =

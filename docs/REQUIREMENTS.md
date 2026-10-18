@@ -30,3 +30,5 @@ its result inspected.
 | R-014 | Security and privacy safeguards | TESTED |
 | R-015 | Offline operation for core analysis | TESTED |
 | R-016 | Bilingual Hinglish and Devanagari scam rules with hard negatives | TESTED |
+| R-017 | Offline QR-code submission (base64 image) with payload analysis | TESTED |
+| R-018 | Frontend QR screenshot attachment | TESTED |

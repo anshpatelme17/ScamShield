@@ -17,6 +17,7 @@ from app.config import DEFAULT_DISCLAIMER, SCHEMA_VERSION
 class InputType(str, Enum):
     TEXT = "text"
     URL = "url"
+    IMAGE = "image"
 
 
 class FindingCategory(str, Enum):

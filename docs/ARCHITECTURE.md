@@ -5,14 +5,15 @@ Status: `IMPLEMENTED` (verified through Phases 1–8).
 ## Implemented flow
 
 ```
-User Input (browser or API client)
+User Input (browser or API client; typed text and/or base64 image)
     -> Validation and Normalization      app/validation.py
-    -> Input Classification              InputType (text | url)
+    -> Input Classification              InputType (text | url | image)
     -> Indicator Extraction              app/extractors.py
     -> Small Analysis Router             app/router.py
     -> Relevant Local Analyzers
          India rules                      app/analyzers/india_rules.py
          Hinglish/Devanagari rules        app/analyzers/hinglish_rules.py
+         QR analysis (local zxing-cpp)    app/analyzers/qr_analysis.py
          URL heuristics (offline)         app/analyzers/url_heuristics.py
          Text signals                     app/analyzers/text_signals.py
     -> Structured Evidence Findings      app/models.py (Finding)
@@ -23,7 +24,8 @@ User Input (browser or API client)
     -> Frontend results                  frontend/ (React 19 + Vite 6 + Tailwind 4)
 ```
 
-No orchestration engine exists by design; `app/router.py` is ~60 lines.
+No orchestration engine exists by design. Decoded QR payloads flow through
+the same validation and rule pipeline as typed text.
 
 ## Components and verified versions
 

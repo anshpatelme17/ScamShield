@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const MAX_LENGTH = 10000;
+const MAX_IMAGE_BYTES = 2000000;
 
 const VERDICT_STYLES = {
   highly_suspicious: "bg-red-600",
@@ -74,27 +75,33 @@ function FindingCard({ finding }) {
 
 export default function App() {
   const [text, setText] = useState("");
+  const [imageB64, setImageB64] = useState(null);
+  const [imageName, setImageName] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
+  const fileInputRef = useRef(null);
 
   async function analyze(event) {
     event.preventDefault();
-    if (!text.trim()) return;
+    if (!text.trim() && !imageB64) return;
     setLoading(true);
     setError(null);
     setResult(null);
     try {
+      const body = {};
+      if (text.trim()) body.text = text;
+      if (imageB64) body.image_b64 = imageB64;
       const response = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify(body),
       });
-      const body = await response.json();
+      const bodyResult = await response.json();
       if (!response.ok) {
-        setError(body?.detail ?? `Request failed with status ${response.status}`);
+        setError(bodyResult?.detail ?? `Request failed with status ${response.status}`);
       } else {
-        setResult(body);
+        setResult(bodyResult);
       }
     } catch {
       setError(
@@ -103,6 +110,38 @@ export default function App() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleImageChange(event) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    if (file.size > MAX_IMAGE_BYTES) {
+      setError("Image is larger than the 2 MB limit; choose a smaller screenshot.");
+      setImageB64(null);
+      setImageName(null);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = String(reader.result ?? "");
+      const base64 = dataUrl.split(",")[1] ?? "";
+      if (!base64) {
+        setError("Could not read the image file.");
+        return;
+      }
+      setError(null);
+      setImageB64(`data:image/png;base64,${base64}`);
+      setImageName(file.name);
+    };
+    reader.onerror = () => setError("Could not read the image file.");
+    reader.readAsDataURL(file);
+  }
+
+  function clearImage() {
+    setImageB64(null);
+    setImageName(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   return (
@@ -126,9 +165,39 @@ export default function App() {
           {text.length}/{MAX_LENGTH} characters. Your message is sent only to the local analysis
           service and is not stored or logged.
         </p>
+
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <input
+            ref={fileInputRef}
+            id="qr-image-input"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            className="hidden"
+            onChange={handleImageChange}
+          />
+          <label
+            htmlFor="qr-image-input"
+            className="cursor-pointer rounded border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
+          >
+            Attach QR screenshot (PNG/JPEG, up to 2 MB)
+          </label>
+          {imageName && (
+            <span className="flex items-center gap-2 rounded bg-slate-100 px-2 py-1 text-xs text-slate-700">
+              <span className="max-w-48 truncate">{imageName}</span>
+              <button
+                type="button"
+                onClick={clearImage}
+                className="rounded px-1 text-slate-500 hover:bg-slate-200 hover:text-red-600"
+              >
+                Remove
+              </button>
+            </span>
+          )}
+        </div>
+
         <button
           type="submit"
-          disabled={loading || !text.trim()}
+          disabled={loading || (!text.trim() && !imageB64)}
           className="mt-3 w-full rounded bg-slate-900 py-2 font-semibold text-white disabled:opacity-50"
         >
           {loading ? "Analyzing…" : "Analyze"}

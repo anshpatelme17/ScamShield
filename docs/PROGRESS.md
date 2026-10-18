@@ -146,3 +146,30 @@
   - eval: accuracy=1.0, 27 TP / 0 FP / 0 FN / 13 TN (40 samples)
   - full `pytest` -> `143 passed, 1 warning in 0.87s`
   - live E2E on 8765: hinglish KYC -> suspicious; hinglish OTP -> highly_suspicious
+- Committed: `7b93b35`.
+
+## Phase 10 — Offline QR-code analysis
+- Status: IN_PROGRESS
+- Added `app/analyzers/qr_analysis.py`: base64 image -> zxing-cpp local QR
+  decode (QRCode/MicroQR/RMQR only, 2 MB byte limit, 25 MP pixel limit,
+  max 8 payloads). Decoded payloads flow through the SAME validation/rule
+  pipeline as typed text. New rules: `QR-IMG-001` (observed/check_failed),
+  `IN-QR-UPI-001` (medium; upi:// payloads).
+- API: `POST /api/analyze` now accepts optional `image_b64` with `text`;
+  text or image required; oversize -> 422; undecodable/invalid base64 ->
+  CHECK_FAILED finding so the verdict honestly reads UNABLE_TO_DETERMINE.
+- Router: `run_analysis`/`build_case_file` accept optional image; case
+  identity for image-only submissions: input_type=image, sha256 of image
+  bytes. `models.InputType` gained `IMAGE`.
+- Frontend: QR screenshot file picker (PNG/JPEG/WebP, 2 MB client cap),
+  remove button, works with or without text.
+- Pinned `zxing-cpp==3.1.1`, `Pillow==13.0.0` in requirements.txt.
+- Verified:
+  - `ruff check .` -> `All checks passed!`
+  - full `pytest` -> `157 passed` (14 new QR tests incl. offline-pure decode
+    fixtures generated in-process)
+  - `npm run build` clean (frontend)
+  - live E2E on 8765: UPI QR -> suspicious; OTP-text QR -> highly_suspicious;
+    garbage image -> unable_to_determine; health ok
+- Scope note: general OCR of text inside images is NOT implemented (needs a
+  native OCR engine; deferred as D-029).

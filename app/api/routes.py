@@ -1,15 +1,15 @@
 """API routes.
 
-The submitted text is treated as untrusted. It is validated and normalized
-before analysis. Submitted content is never logged.
+The submitted text and image are treated as untrusted. They are validated
+and normalized before analysis. Submitted content is never logged.
 """
 
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
-from app.config import MAX_INPUT_LENGTH
+from app.config import MAX_IMAGE_BYTES, MAX_INPUT_LENGTH
 from app.explanations import Explanation, explain
 from app.models import ScamCaseFile
 from app.router import build_case_file
@@ -19,7 +19,16 @@ router = APIRouter(prefix="/api")
 
 
 class AnalyzeRequest(BaseModel):
-    text: str = Field(min_length=1, max_length=MAX_INPUT_LENGTH)
+    text: str | None = Field(default=None, max_length=MAX_INPUT_LENGTH)
+    image_b64: str | None = Field(
+        default=None, max_length=(MAX_IMAGE_BYTES * 4 + 3) // 3 + 8
+    )
+
+    @model_validator(mode="after")
+    def _require_at_least_one_source(self) -> AnalyzeRequest:
+        if self.text is None and self.image_b64 is None:
+            raise ValueError("provide text and/or image_b64")
+        return self
 
 
 class AnalyzeResponse(BaseModel):
@@ -38,10 +47,14 @@ def health() -> HealthResponse:
 
 @router.post("/analyze", response_model=AnalyzeResponse)
 def analyze(request: AnalyzeRequest) -> AnalyzeResponse:
+    normalized = None
+    if request.text is not None:
+        try:
+            normalized = normalize_input(request.text)
+        except InputValidationError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
     try:
-        normalized = normalize_input(request.text)
+        case_file = build_case_file(normalized, image_b64=request.image_b64)
     except InputValidationError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
-
-    case_file = build_case_file(normalized)
     return AnalyzeResponse(case_file=case_file, explanation=explain(case_file))

@@ -32,3 +32,5 @@ Record of significant technical decisions (ADR-style, lightweight).
 | D-026 | Hinglish/Devanagari boundaries via lookaround, not `\b` | Python `re` treats matras as non-word; a unified `[\w\u0900-\u097F]` boundary wrapper passes tokens like "केवाईसी" | 9 |
 | D-027 | Solicitation negation checked at absolute text positions around the verb | Hindi word order puts verb after secret and negator after verb; clipped windows cut negators in half | 9 |
 | D-028 | URLs masked before credential-solicitation analysis | URL path fragments ("/otp/verify") are handled by URL heuristics, not text rules | 9 |
+| D-029 | QR decoding supported; general OCR deferred | QR payloads are structured text and pipeline cleanly; OCR needs a native engine (native vendor trust + size) and is documented as future work | 10 |
+| D-030 | Undecodable QR images are CHECK_FAILED evidence, not errors | Honesty: the verdict says UNABLE_TO_DETERMINE instead of pretending the image was analyzed | 10 |
