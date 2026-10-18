@@ -1,9 +1,12 @@
+import base64
+import io
 import socket
 
 import pytest
+from PIL import Image, ImageDraw, ImageFont
 
 from app.eval import evaluate, load_dataset
-from app.router import run_analysis
+from app.router import build_case_file, run_analysis
 from app.validation import normalize_input
 
 
@@ -25,3 +28,14 @@ def test_analysis_runs_fully_offline():
 def test_full_evaluation_runs_fully_offline():
     report = evaluate(load_dataset())
     assert report.total >= 20
+
+
+def test_image_ocr_runs_fully_offline():
+    img = Image.new("RGB", (640, 80), "white")
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.truetype("C:/Windows/Fonts/arial.ttf", 30)
+    draw.text((20, 25), "Enter your UPI PIN to receive the money", fill="black", font=font)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    case = build_case_file(image_b64=base64.b64encode(buf.getvalue()).decode())
+    assert case.verdict.value == "highly_suspicious"

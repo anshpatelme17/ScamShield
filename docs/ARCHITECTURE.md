@@ -14,6 +14,7 @@ User Input (browser or API client; typed text and/or base64 image)
          India rules                      app/analyzers/india_rules.py
          Hinglish/Devanagari rules        app/analyzers/hinglish_rules.py
          QR analysis (local zxing-cpp)    app/analyzers/qr_analysis.py
+         Image OCR (rapidocr, offline)    app/analyzers/image_text.py
          URL heuristics (offline)         app/analyzers/url_heuristics.py
          Text signals                     app/analyzers/text_signals.py
     -> Structured Evidence Findings      app/models.py (Finding)
@@ -48,7 +49,8 @@ the same validation and rule pipeline as typed text.
 
 ## Extension points (deferred, not implemented)
 
-- OCR / QR-code / APK file analysis (would join as additional analyzers).
+- Devanagari-in-image OCR (needs a non-bundled external rec model; typed
+  text and QR payloads cover Devanagari today).
 - Optional external threat intelligence (must produce `external_intel`
   source findings and `unverified` status entries only).
 - Local persistence (not present; privacy posture documented in

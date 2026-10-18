@@ -19,7 +19,7 @@ ruff check .
 
 ## Current suite (executed results)
 
-- **162 passed** in ~1.1 s (single warning: starlette testclient deprecation,
+- **174 passed** in ~13 s (single warning: starlette testclient deprecation,
   library-internal).
 - `tests/test_environment.py` — Python/dependency smoke.
 - `tests/test_models.py` — evidence model integrity (unique ids, strict/frozen).
@@ -52,10 +52,17 @@ ruff check .
   detected (executed metrics: 40/40 samples, accuracy = precision = recall =
   F1 = 1.0; 27 scam / 13 hard negatives).
 - `tests/test_offline.py` — **sockets are blocked** while the whole pipeline
-  and the full evaluation run (prove R-015).
+  and the full evaluation run (prove R-015), plus a live OCR-based image
+  analysis with sockets blocked (prove R-022 offline claim).
 - `tests/test_redos.py` — 29 adversarial probes at the exact input-size limit
   (max length), each must finish analysis in < 5 s. Executed: all pass in
   ~0.3 s total, worst probe ~0.05 s.
+- `tests/test_image_text.py` — local OCR of images: synthetic PNGs are read by
+  rapidocr (English/Hinglish scam text -> strong verdicts, URL lines -> URL
+  checks, benign text -> clean, blank -> CHECK_FAILED
+  IN-IMG-NO-CONTENT-001 -> UNABLE_TO_DETERMINE); unit tests cover score
+  filtering, short-text rejection, engine-failure path, and typed-vs-OCR
+  dedupe. Executed: 11 passed (~8 s, engine initialized once per process).
 
 ### Frontend (Phases 12-13)
 

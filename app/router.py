@@ -2,7 +2,8 @@
 
 Wires extraction and the relevant local analyzers together, then assembles a
 Scam Case File. Deliberately simple: no orchestration engine. A submission is
-either typed text, a base64 image (QR analysis), or both.
+typed text, a base64 image (QR analysis plus local OCR of readable text), or
+both.
 """
 
 from __future__ import annotations
@@ -10,13 +11,15 @@ from __future__ import annotations
 import hashlib
 from uuid import uuid4
 
+from app.analyzers.base import make_finding
 from app.analyzers.hinglish_rules import analyze_hinglish_rules
+from app.analyzers.image_text import extract_text
 from app.analyzers.india_rules import analyze_india_rules
 from app.analyzers.qr_analysis import QRSubmission, analyze_qr_submission, prepare_qr_submission
 from app.analyzers.text_signals import analyze_text_signals
 from app.analyzers.url_heuristics import analyze_urls
 from app.extractors import extract_indicators
-from app.models import Finding, InputType, ScamCaseFile
+from app.models import Finding, FindingCategory, FindingStatus, InputType, ScamCaseFile
 from app.validation import InputValidationError, NormalizedInput, normalize_input
 from app.verdict import determine_verdict
 
@@ -32,6 +35,34 @@ def _text_findings(text: str) -> list[Finding]:
     return findings
 
 
+def _ocr_findings(submission: QRSubmission) -> list[Finding]:
+    if submission.decode_failed or submission.byte_length == 0:
+        return []
+    ocr_text = extract_text(submission.image_bytes)
+    if ocr_text:
+        try:
+            normalized = normalize_input(ocr_text)
+        except InputValidationError:
+            return []
+        return _text_findings(normalized.text)
+    if not submission.payloads:
+        return [
+            make_finding(
+                rule_id="IN-IMG-NO-CONTENT-001",
+                category=FindingCategory.OTHER,
+                title="No analyzable content found in image",
+                evidence="no QR symbol decoded and no readable text extracted",
+                status=FindingStatus.CHECK_FAILED,
+                limitations=(
+                    "The image contained neither a QR symbol nor text readable "
+                    "by the local OCR (Latin-script text only). The verdict "
+                    "reflects that nothing could be analyzed."
+                ),
+            )
+        ]
+    return []
+
+
 def _submission_findings(
     normalized: NormalizedInput | None, submission: QRSubmission | None
 ) -> list[Finding]:
@@ -41,6 +72,7 @@ def _submission_findings(
     if normalized is not None:
         findings.extend(_text_findings(normalized.text))
     if submission is not None:
+        findings.extend(_ocr_findings(submission))
         findings.extend(analyze_qr_submission(submission))
         for payload in submission.payloads:
             try:

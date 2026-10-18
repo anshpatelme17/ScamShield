@@ -210,7 +210,7 @@
 - Committed: `cad8046`.
 
 ## Phase 13 — Frontend component tests
-- Status: IN_PROGRESS
+- Status: COMPLETE
 - Added Vitest + Testing Library (jsdom) with `npm test`; test config in
   `vite.config.js`, setup in `src/test/setup.js`, real backend payloads in
   `src/test/fixtures.js` (generated from the live pipeline).
@@ -223,4 +223,28 @@
 - Known quirk documented: dispatching a change event with a `Uint8Array`
   -backed File hangs the test runner in jsdom; string-backed Files are fine.
 - Verified: `npm test` -> **41 passed** (~4 s), `npm run build` clean.
+- Committed: `f0aac20`.
+
+## Phase 14 — Local OCR of image text
+- Status: COMPLETE
+- Adopted rapidocr 3.10.0 + onnxruntime 1.31.0 (bundled CH/EN onnx models,
+  fully offline, no system deps). New analyzer `app/analyzers/image_text.py`
+  (thread-safe lazy engine singleton; >=0.5 box score, >=3 chars; text is
+  truncated to the input limit).
+- Design (D-032): every image submission now also gets OCR; extracted text
+  flows through the normal validation + text rule pipeline. A scanned image
+  with neither QR payload nor readable text is a new CHECK_FAILED rule
+  IN-IMG-NO-CONTENT-001 -> verdict UNABLE_TO_DETERMINE (replaces the old
+  silent "clean" result for blank images). Limitation documented: the bundled
+  recognition model reads Latin script only (English/Hinglish); Devanagari
+  text inside images is not OCR'd (external rec model would require a
+  network download, contradicting offline-first).
+- Interactions: typed text and QR payload findings dedupe against OCR text
+  findings by rule id; decode-failed / invalid-base64 images skip OCR.
+- Verified:
+  - `pytest` -> **174 passed** (11 new in `tests/test_image_text.py`, plus
+    updated blank-image expectations and a sockets-blocked OCR test in
+    `tests/test_offline.py`); `ruff check .` clean
+  - pipeline probe: 640x80 image with scam text -> highly_suspicious,
+    IN-SECRET-001; two-line URL image -> suspicious with URL rules
 - Committed: (pending).

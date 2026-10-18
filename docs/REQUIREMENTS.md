@@ -35,3 +35,4 @@ its result inspected.
 | R-019 | Production packaging: static frontend served by backend with hardened defaults | TESTED |
 | R-020 | Frontend build-out: component structure, input tabs, history, case export | TESTED |
 | R-021 | Frontend component/integration test layer (Vitest + Testing Library) | TESTED |
+| R-022 | OCR of Latin-script text inside images via local rapidocr; image with neither QR nor readable text is CHECK_FAILED -> UNABLE_TO_DETERMINE | TESTED |

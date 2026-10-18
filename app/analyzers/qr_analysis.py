@@ -5,8 +5,8 @@ zxing-cpp. Decoded payloads are untrusted text: they flow through the same
 validation and rule pipeline as typed text. Nothing here touches the
 network, and image data is never logged.
 
-OCR of arbitrary text inside images is out of scope: it would require a
-native OCR engine (see docs/DECISIONS.md D-029).
+Text inside the image (non-QR) is handled by app.analyzers.image_text via
+local OCR (see docs/DECISIONS.md D-032).
 """
 
 from __future__ import annotations
@@ -49,6 +49,7 @@ class QRSubmission:
     decode_failed: bool
     error_note: str | None
     format_names: tuple[str, ...] = ()
+    image_bytes: bytes = b""
 
 
 def _failed_submission(
@@ -60,6 +61,7 @@ def _failed_submission(
         payloads=(),
         decode_failed=True,
         error_note=error_note,
+        image_bytes=image_bytes,
     )
 
 
@@ -130,6 +132,7 @@ def prepare_qr_submission(image_b64: str) -> QRSubmission:
         decode_failed=False,
         error_note=None,
         format_names=tuple(format_names),
+        image_bytes=image_bytes,
     )
 
 

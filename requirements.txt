@@ -4,6 +4,8 @@ uvicorn==0.35.0
 pydantic==2.11.7
 zxing-cpp==3.1.1
 Pillow==13.0.0
+rapidocr==3.10.0
+onnxruntime==1.31.0
 
 # Development / test tooling
 pytest==8.4.1

@@ -82,7 +82,7 @@ def test_qr_benign_payload_is_not_flagged(client):
     assert rule_ids == ["QR-IMG-001"]
 
 
-def test_qr_image_without_symbol_is_observed(client):
+def test_qr_image_without_symbol_or_text_is_unable_to_determine(client):
     blank = Image.new("L", (120, 120), color=255)
     out = io.BytesIO()
     blank.save(out, format="PNG")
@@ -90,10 +90,11 @@ def test_qr_image_without_symbol_is_observed(client):
     assert response.status_code == 200
     case = response.json()["case_file"]
     rule_ids = [f["rule_id"] for f in case["findings"]]
-    assert rule_ids == ["QR-IMG-001"]
-    statuses = [f["status"] for f in case["findings"]]
-    assert statuses == ["observed"]
-    assert case["verdict"] == "no_strong_warning_signs_found"
+    assert "QR-IMG-001" in rule_ids
+    assert "IN-IMG-NO-CONTENT-001" in rule_ids
+    no_content = [f for f in case["findings"] if f["rule_id"] == "IN-IMG-NO-CONTENT-001"][0]
+    assert no_content["status"] == "check_failed"
+    assert case["verdict"] == "unable_to_determine"
 
 
 def test_qr_undecodable_image_yields_check_failed_and_unable(client):

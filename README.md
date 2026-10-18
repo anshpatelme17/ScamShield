@@ -8,13 +8,15 @@ single opaque risk score.
 
 # Status
 
-All core phases complete (Phases 1-12): offline analysis engine, deterministic
+All core phases complete (Phases 1-14): offline analysis engine, deterministic
 verdict policy, evidence-backed Scam Case File, FastAPI backend, component-based
-React frontend (input tabs, case history, JSON export), labelled evaluation
-dataset (40 samples: English + Hinglish + Devanagari; accuracy 1.0, zero false
-positives), bilingual scam rules, offline QR-code analysis, security audit
-suite with ReDoS probes, and production packaging (single loopback process
-serving API + UI with hardened headers). 162 automated tests pass locally.
+React frontend (input tabs, case history, JSON export) with its own component
+test suite, labelled evaluation dataset (40 samples: English + Hinglish +
+Devanagari; accuracy 1.0, zero false positives), bilingual scam rules, offline
+QR-code analysis, offline OCR of Latin-script text inside scam screenshots,
+security audit suite with ReDoS probes, and production packaging (single
+loopback process serving API + UI with hardened headers). 174 backend tests
+and 41 frontend tests pass locally.
 
 ## Project layout
 
@@ -74,8 +76,11 @@ loopback-only by default.
 The API exposes:
 
 - `GET /api/health` - service check
-- `POST /api/analyze` with JSON body `{"text": "<message or URL>", "image_b64": "<optional base64 QR screenshot>"}`
+- `POST /api/analyze` with JSON body `{"text": "<message or URL>", "image_b64": "<optional base64 screenshot>"}`
   - at least one of `text` / `image_b64` is required
+  - images are decoded locally: QR payloads via zxing-cpp and visible text
+    via local OCR (Latin script); an image with neither QR nor readable text
+    is reported as UNABLE_TO_DETERMINE rather than "clean"
   - returns the Scam Case File (findings + verdict) and a plain-language
     explanation with recommended actions and reporting guidance.
 
