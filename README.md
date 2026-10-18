@@ -8,21 +8,22 @@ single opaque risk score.
 
 # Status
 
-All core phases complete (Phases 1-10): offline analysis engine, deterministic
+All core phases complete (Phases 1-11): offline analysis engine, deterministic
 verdict policy, evidence-backed Scam Case File, FastAPI backend, React
 frontend, labelled evaluation dataset (40 samples: English + Hinglish +
 Devanagari; accuracy 1.0, zero false positives), bilingual scam rules, offline
-QR-code analysis, and a security audit suite with ReDoS probes. 157 automated
-tests pass locally.
+QR-code analysis, security audit suite with ReDoS probes, and production
+packaging (single loopback process serving API + UI with hardened headers).
+162 automated tests pass locally.
 
 ## Project layout
 
 ```
-app/        Backend analysis package (added in later phases)
+app/        Backend analysis package
 tests/      Automated tests
 data/rules/ Rule data (JSON)
 docs/       Project documentation
-frontend/   Web UI (added in a later phase)
+frontend/   Web UI (React + Vite + Tailwind)
 ```
 
 ## Development
@@ -56,10 +57,25 @@ npm run dev
 Open `http://localhost:5175`. The vite dev server proxies `/api/*` to the
 backend at `127.0.0.1:8765`.
 
+## Production run (single process)
+
+```powershell
+# Build the frontend once (inside frontend/)
+npm run build
+
+# From the repository root: serve API + UI together on loopback only
+.\.venv\Scripts\python.exe -m app.serve
+```
+
+Open `http://127.0.0.1:8765/`. The built UI is served by FastAPI with
+hardened security headers (CSP, nosniff, DENY, no-referrer); the bind is
+loopback-only by default.
+
 The API exposes:
 
 - `GET /api/health` - service check
-- `POST /api/analyze` with JSON body `{"text": "<message or URL>"}`
+- `POST /api/analyze` with JSON body `{"text": "<message or URL>", "image_b64": "<optional base64 QR screenshot>"}`
+  - at least one of `text` / `image_b64` is required
   - returns the Scam Case File (findings + verdict) and a plain-language
     explanation with recommended actions and reporting guidance.
 

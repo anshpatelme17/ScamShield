@@ -29,6 +29,8 @@ Browser (untrusted input)  ->  vite dev proxy  ->  FastAPI (untrusted input)
 | Prompt injection | Core analysis is deterministic Python rules, not an LLM. Text with instructions in it cannot alter behavior; it can only match pre-built patterns | By design |
 | XSS via extracted evidence | React escapes all rendered text; no `dangerouslySetInnerHTML` anywhere in the frontend | Implemented |
 | Verdict gaming / false sense of safety | `NO_STRONG_WARNING_SIGNS_FOUND` explicitly disclaims safety; disclaimer + reporting guidance are always included | TESTED |
+| XSS / UI tampering via HTTP layer | Security headers on every response: CSP `default-src 'self'`, `X-Frame-Options: DENY` (also CSP `frame-ancestors 'none'`), `nosniff`, `no-referrer` (`app/main.py`) | TESTED |
+| Exposure to network peers | Production launcher binds to 127.0.0.1 only (`app/serve.py`); no NAT traversal or `--host` public overwrites unless the operator explicitly asks for it | TESTED |
 | Correlated indicator inflation | Router emits each rule at most once; verdict counts distinct rule ids | TESTED |
 | Unavailable dependencies / services | Analysis has no external dependencies or services; API errors map to clean 4xx/5xx without leaking internals | Implemented |
 | Trusted feedback | No user-feedback or voting feature exists | Implemented (feature absent) |

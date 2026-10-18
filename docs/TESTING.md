@@ -19,7 +19,7 @@ ruff check .
 
 ## Current suite (executed results)
 
-- **157 passed** in ~1.0 s (single warning: starlette testclient deprecation,
+- **162 passed** in ~1.1 s (single warning: starlette testclient deprecation,
   library-internal).
 - `tests/test_environment.py` — Python/dependency smoke.
 - `tests/test_models.py` — evidence model integrity (unique ids, strict/frozen).
@@ -44,6 +44,9 @@ ruff check .
   (UPI payload -> suspicious, scam text payload via the text pipeline, benign
   payload clean, no-symbol observed, undecodable -> CHECK_FAILED ->
   unable_to_determine, oversize -> 422, text+image combined).
+- `tests/test_serve.py` — production packaging: security headers on every
+  response, built frontend served at "/", API reachable under the mount,
+  unknown path -> 404 (static-content tests skip when frontend is unbuilt).
 - `tests/test_eval.py` — labelled dataset gate: hard negatives must all pass,
   zero false positives, precision/recall >= 0.9, every scam category fully
   detected (executed metrics: 40/40 samples, accuracy = precision = recall =

@@ -32,3 +32,4 @@ its result inspected.
 | R-016 | Bilingual Hinglish and Devanagari scam rules with hard negatives | TESTED |
 | R-017 | Offline QR-code submission (base64 image) with payload analysis | TESTED |
 | R-018 | Frontend QR screenshot attachment | TESTED |
+| R-019 | Production packaging: static frontend served by backend with hardened defaults | TESTED |

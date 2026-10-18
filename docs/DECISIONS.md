@@ -34,3 +34,4 @@ Record of significant technical decisions (ADR-style, lightweight).
 | D-028 | URLs masked before credential-solicitation analysis | URL path fragments ("/otp/verify") are handled by URL heuristics, not text rules | 9 |
 | D-029 | QR decoding supported; general OCR deferred | QR payloads are structured text and pipeline cleanly; OCR needs a native engine (native vendor trust + size) and is documented as future work | 10 |
 | D-030 | Undecodable QR images are CHECK_FAILED evidence, not errors | Honesty: the verdict says UNABLE_TO_DETERMINE instead of pretending the image was analyzed | 10 |
+| D-031 | Production serves everything from one loopback process | Frontend dist mounted at "/", security headers always applied, loopback bind default; no reverse proxy needed for single-user local use | 11 |

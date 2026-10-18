@@ -173,3 +173,21 @@
     garbage image -> unable_to_determine; health ok
 - Scope note: general OCR of text inside images is NOT implemented (needs a
   native OCR engine; deferred as D-029).
+- Committed: `7fd3d30`.
+
+## Phase 11 — Production packaging
+- Status: IN_PROGRESS
+- Added `app/serve.py` (`python -m app.serve`): uvicorn with loopback-only
+  bind (127.0.0.1 default), no reload/dev features, optional --host/--port.
+- `app/main.py`: security headers on every response (CSP default-src 'self'
+  + frame-ancestors 'none', nosniff, DENY, no-referrer); frontend/dist
+  mounted at "/" with html=True when built; /api router takes precedence.
+- Added `tests/test_serve.py` (5 tests: headers on API + analyze,
+  index served, API reachable under mount, unknown path -> 404; static
+  tests skip cleanly when frontend is not built).
+- Verified:
+  - `ruff check .` -> `All checks passed!`
+  - full `pytest` -> `162 passed`
+  - `npm run build` clean
+  - live: `python -m app.serve --port 8766` -> / serves index (root div),
+    /api/health ok, analyze verdicts correct, headers present
