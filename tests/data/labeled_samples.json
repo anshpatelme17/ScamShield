@@ -1,6 +1,6 @@
 {
-  "version": "1.1",
-  "description": "Labelled India-focused evaluation dataset (English + Hinglish + Devanagari). label=scam samples must be detected; label=safe samples are hard negatives and must not be flagged. expected_verdict is the exact verdict the deterministic policy must produce.",
+  "version": "1.2",
+  "description": "Labelled India-focused evaluation dataset (English + Hinglish + Devanagari text, plus an OCR channel where `image_lines` is rendered to PNG and read by the production OCR path). label=scam samples must be detected; label=safe samples are hard negatives and must not be flagged. expected_verdict is the exact verdict the deterministic policy must produce.",
   "samples": [
     {
       "id": "pos-kyc-001",
@@ -281,6 +281,83 @@
       "category": "hard_negative",
       "expected_verdict": "no_strong_warning_signs_found",
       "text": "Our city is collecting winter clothes for flood relief. Drop off at the community centre if you wish to help."
+    },
+    {
+      "id": "ocr-kyc-001",
+      "label": "scam",
+      "category": "ocr_bank_kyc_impersonation",
+      "expected_verdict": "suspicious",
+      "image_lines": ["Your KYC will today expire", "Update now: http://sbi-kyc-update.top/check"]
+    },
+    {
+      "id": "ocr-upipin-001",
+      "label": "scam",
+      "category": "ocr_upi_pin_request",
+      "expected_verdict": "highly_suspicious",
+      "image_lines": ["Enter your UPI PIN to", "receive Rs 5000 cashback"]
+    },
+    {
+      "id": "ocr-otp-001",
+      "label": "scam",
+      "category": "ocr_otp_credential_theft",
+      "expected_verdict": "highly_suspicious",
+      "image_lines": ["Apna OTP share karein", "taaki delivery verify ho sake."]
+    },
+    {
+      "id": "ocr-collect-001",
+      "label": "scam",
+      "category": "ocr_upi_collect_request",
+      "expected_verdict": "highly_suspicious",
+      "image_lines": ["Approve the collect request of", "Rs 2000 to receive money."]
+    },
+    {
+      "id": "ocr-kbc-001",
+      "label": "scam",
+      "category": "ocr_lottery_url_lure",
+      "expected_verdict": "suspicious",
+      "image_lines": ["kbc lottery win, click below", "http://kbc-lottery-winner.tk/claim"]
+    },
+    {
+      "id": "ocr-neg-meeting-001",
+      "label": "safe",
+      "category": "ocr_hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "image_lines": ["Team meeting at 6 pm", "please join on time."]
+    },
+    {
+      "id": "ocr-neg-bill-001",
+      "label": "safe",
+      "category": "ocr_hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "image_lines": ["Your electricity bill of Rs 850", "was paid successfully."]
+    },
+    {
+      "id": "ocr-neg-function-001",
+      "label": "safe",
+      "category": "ocr_hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "image_lines": ["Happy Teachers Day.", "Function starts at 10 am."]
+    },
+    {
+      "id": "ocr-neg-banknote-001",
+      "label": "safe",
+      "category": "ocr_hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "image_lines": ["UPI payment was successful", "Reference 9876 was sent."]
+    },
+    {
+      "id": "ocr-neg-shop-001",
+      "label": "safe",
+      "category": "ocr_hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "image_lines": ["Shop closed on Sunday", "Visit Monday 10 am to 8 pm."]
+    },
+    {
+      "id": "ocr-neg-relief-001",
+      "label": "safe",
+      "category": "ocr_hard_negative",
+      "expected_verdict": "no_strong_warning_signs_found",
+      "image_lines": ["Happy Teachers Day everyone!", "Enjoy the celebrations."]
     }
   ]
 }

@@ -1,20 +1,25 @@
 """Evaluation harness for the labelled dataset.
 
 Runs every labelled sample through the full analysis pipeline and computes
-deterministic metrics. No randomness, no network access.
+deterministic metrics. No randomness, no network access. Image-channel
+samples are rendered from their text lines with a fixed system font before
+analysis, so OCR quality is exercised exactly as in production.
 """
 
 from __future__ import annotations
 
+import base64
+import io
 import json
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict
+from PIL import Image, ImageDraw, ImageFont
+from pydantic import BaseModel, ConfigDict, model_validator
 
 from app.models import ScamCaseFile, VerdictCategory
 from app.router import build_case_file
-from app.validation import NormalizedInput, normalize_input
+from app.validation import normalize_input
 
 DATASET_PATH = (
     Path(__file__).resolve().parent.parent / "tests" / "data" / "labeled_samples.json"
@@ -27,15 +32,28 @@ SCAM_VERDICTS = frozenset(
     }
 )
 
+_OCR_FONT_PATH = "C:/Windows/Fonts/arial.ttf"
+_IMAGE_LINE_STEP = 60
+_IMAGE_PADDING = 20
+_IMAGE_WIDTH = 800
+
 
 class Sample(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     id: str
-    text: str
     label: str
     category: str
     expected_verdict: VerdictCategory
+    text: str = ""
+    image_lines: tuple[str, ...] = ()
+    font_size: int = 30
+
+    @model_validator(mode="after")
+    def _require_one_channel(self) -> Sample:
+        if bool(self.text) == bool(self.image_lines):
+            raise ValueError("exactly one of text or image_lines is required")
+        return self
 
 
 class SampleResult(BaseModel):
@@ -76,17 +94,41 @@ def load_dataset(path: Path | None = None) -> tuple[Sample, ...]:
     return tuple(Sample(**item) for item in raw["samples"])
 
 
-def _analyze(text: str) -> tuple[NormalizedInput, ScamCaseFile]:
+def render_text_image(lines: tuple[str, ...], size: int = 30) -> str:
+    """Render text lines to base64 PNG the way OCR samples are scanned."""
+    img = Image.new(
+        "RGB",
+        (_IMAGE_WIDTH, _IMAGE_LINE_STEP * len(lines) + 2 * _IMAGE_PADDING),
+        "white",
+    )
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.truetype(_OCR_FONT_PATH, size)
+    for index, line in enumerate(lines):
+        draw.text(
+            (_IMAGE_PADDING, _IMAGE_PADDING + _IMAGE_LINE_STEP * index),
+            line,
+            fill="black",
+            font=font,
+        )
+    out = io.BytesIO()
+    img.save(out, format="PNG")
+    return base64.b64encode(out.getvalue()).decode()
+
+
+def _analyze(text: str) -> ScamCaseFile:
     normalized = normalize_input(text)
-    case = build_case_file(normalized)
-    return normalized, case
+    return build_case_file(normalized)
 
 
 def evaluate(samples: tuple[Sample, ...]) -> EvalReport:
     results: list[SampleResult] = []
 
     for sample in samples:
-        _, case = _analyze(sample.text)
+        if sample.image_lines:
+            image_b64 = render_text_image(sample.image_lines, sample.font_size)
+            case = build_case_file(image_b64=image_b64)
+        else:
+            case = _analyze(sample.text)
         detected = case.verdict in SCAM_VERDICTS
         labeled_scam = sample.label == "scam"
         passed = case.verdict is sample.expected_verdict

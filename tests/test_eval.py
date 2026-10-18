@@ -20,6 +20,8 @@ def test_dataset_basics(samples):
     assert labels == {"scam", "safe"}
     assert len(samples) >= 20
     assert any(s.category == "hard_negative" for s in samples)
+    assert any(s.category == "ocr_hard_negative" for s in samples)
+    assert any(s.image_lines for s in samples)
 
 
 def test_all_hard_negatives_pass(report):

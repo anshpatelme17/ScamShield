@@ -36,3 +36,4 @@ its result inspected.
 | R-020 | Frontend build-out: component structure, input tabs, history, case export | TESTED |
 | R-021 | Frontend component/integration test layer (Vitest + Testing Library) | TESTED |
 | R-022 | OCR of Latin-script text inside images via local rapidocr; image with neither QR nor readable text is CHECK_FAILED -> UNABLE_TO_DETERMINE | TESTED |
+| R-023 | Evaluation dataset v1.2 with OCR-image channel samples included in the gates | TESTED |

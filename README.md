@@ -11,8 +11,9 @@ single opaque risk score.
 All core phases complete (Phases 1-14): offline analysis engine, deterministic
 verdict policy, evidence-backed Scam Case File, FastAPI backend, component-based
 React frontend (input tabs, case history, JSON export) with its own component
-test suite, labelled evaluation dataset (40 samples: English + Hinglish +
-Devanagari; accuracy 1.0, zero false positives), bilingual scam rules, offline
+test suite, labelled evaluation dataset (51 samples: English + Hinglish +
+Devanagari text, plus an OCR-image channel; accuracy 1.0, zero false
+positives), bilingual scam rules, offline
 QR-code analysis, offline OCR of Latin-script text inside scam screenshots,
 security audit suite with ReDoS probes, and production packaging (single
 loopback process serving API + UI with hardened headers). 174 backend tests

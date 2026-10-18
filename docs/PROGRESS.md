@@ -247,4 +247,25 @@
     `tests/test_offline.py`); `ruff check .` clean
   - pipeline probe: 640x80 image with scam text -> highly_suspicious,
     IN-SECRET-001; two-line URL image -> suspicious with URL rules
+- Committed: `41faf0c`.
+
+## Phase 15 — Dataset expansion: OCR channel
+- Status: COMPLETE
+- `app.eval` now supports an image channel: `Sample.image_lines` (validated:
+  exactly one of text/image_lines) rendered to PNG via `render_text_image`
+  with a fixed system font, then analyzed through the production OCR path.
+- Dataset v1.2: 51 samples (32 scam / 19 hard negatives). Added 11 OCR
+  samples: 5 scam (English KYC+URL, UPI-PIN, Hinglish OTP, UPI collect,
+  lottery URL lure -> suspicious/highly_suspicious as labelled) and 6
+  OCR hard negatives (meeting, bill, function, bank confirmation, shop
+  timings, greeting -> no_strong_warning_signs_found, zero false positives).
+- Incident fixed: an intermediate PowerShell text-rewrite mojibake'd the
+  Devanagari samples; restored from git and re-applied edits with proper
+  UTF-8 tooling (PS 5.1 Get/Set-Content reads BOM-less UTF-8 as ANSI - do
+  not use it on UTF-8 data files).
+- Verified:
+  - `pytest` -> **174 passed** (~22 s; OCR engine init + 11 image samples
+    dominate the extra time); `ruff check .` clean
+  - executed metrics: 51/51 passed, accuracy = precision = recall = F1 = 1.0;
+    tp 32 / fn 0 / tn 19 / fp 0
 - Committed: (pending).

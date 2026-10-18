@@ -19,8 +19,9 @@ ruff check .
 
 ## Current suite (executed results)
 
-- **174 passed** in ~13 s (single warning: starlette testclient deprecation,
-  library-internal).
+- **174 passed** in ~22 s (single warning: starlette testclient deprecation,
+  library-internal; timing dominated by OCR engine init and the 11 OCR-image
+  samples in the evaluation gate).
 - `tests/test_environment.py` — Python/dependency smoke.
 - `tests/test_models.py` — evidence model integrity (unique ids, strict/frozen).
 - `tests/test_validation.py` — input limits, control-character stripping,
@@ -49,8 +50,9 @@ ruff check .
   unknown path -> 404 (static-content tests skip when frontend is unbuilt).
 - `tests/test_eval.py` — labelled dataset gate: hard negatives must all pass,
   zero false positives, precision/recall >= 0.9, every scam category fully
-  detected (executed metrics: 40/40 samples, accuracy = precision = recall =
-  F1 = 1.0; 27 scam / 13 hard negatives).
+  detected (executed metrics: 51/51 samples incl. the OCR-image channel,
+  accuracy = precision = recall = F1 = 1.0; 32 scam / 19 hard negatives of
+  which 6 are OCR-image hard negatives).
 - `tests/test_offline.py` — **sockets are blocked** while the whole pipeline
   and the full evaluation run (prove R-015), plus a live OCR-based image
   analysis with sockets blocked (prove R-022 offline claim).
