@@ -304,3 +304,21 @@
   applied at container level and visually unreviewed (no pixel/screenshot
   tooling in the loop); translations authored without native-speaker review.
 
+## Phase 17 — Dashboard layout refinement per UI reference
+- Status: COMPLETE
+- Restructured `frontend/src/App.jsx` result sections to match the hand-drawn
+  reference: verdict summary, findings, unverified list and recommended next
+  steps became full-width single-column bands (InputPanel + CaseHistoryPanel
+  keep the 65/35 top row above them).
+- `frontend/src/components/FindingsList.jsx`: findings now render in a two
+  column grid on md+ screens (`grid items-start gap-4 md:grid-cols-2`), one
+  card per row on mobile.
+- Verified with real headless-Chrome CDP screenshots (not just code review):
+  desktop 1280px, tablet 800px and mobile 390px result pages match the
+  reference layout; desktop initial page matches; no broken overlap at any
+  width.
+- npm test -> **56 passed**; npm run build clean; live server serves the
+  re-bundled layout.
+- Committed as two commits: `1cda739` (Phase 16 i18n) and the layout commit
+  (Phase 17).
+
