@@ -57,6 +57,15 @@ ruff check .
   (max length), each must finish analysis in < 5 s. Executed: all pass in
   ~0.3 s total, worst probe ~0.05 s.
 
+### Frontend (Phase 12)
+
+- No automated JS test suite yet. Verified via `npm run build` (clean, 42
+  modules) plus a live end-to-end check against the packaged app: index and
+  bundle served, all new UI features present in the bundle (tabs, history,
+  copy/download JSON, skeletons, QR preview), and /api verdicts unchanged
+  (text + QR cases). A component test layer (e.g. Vitest + Testing Library)
+  is a candidate follow-up.
+
 ## Policy
 
 - A requirement is only marked `TESTED` after the relevant test is executed and

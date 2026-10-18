@@ -191,3 +191,20 @@
   - `npm run build` clean
   - live: `python -m app.serve --port 8766` -> / serves index (root div),
     /api/health ok, analyze verdicts correct, headers present
+- Committed: `600917d`.
+
+## Phase 12 — Frontend build-out
+- Status: IN_PROGRESS
+- Rebuilt the frontend as a component tree: `components/` (InputPanel with
+  tablist, VerdictSummary, FindingsList, ExplanationPanel, CaseFileActions,
+  HistoryPanel, Skeletons, VerdictBadge, FindingCard) + `lib/` (api, history,
+  casefile, verdict). Single-file App.jsx reduced to a layout orchestrator.
+- Features: Message/QR input tabs with drag-drop + QR preview; analysis
+  history in localStorage (30 cases, restore/delete/clear, browser-only);
+  copy + download case-file JSON; loading skeletons; two-column responsive
+  layout on wide screens.
+- Verified:
+  - `npm run build` clean (42 modules)
+  - live: index + bundle served, tabs/history/copy/download/skeleton/QR-preview
+    present in bundle; /api unaffected
+- Committed: `cad8046`.

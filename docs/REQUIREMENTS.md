@@ -33,3 +33,4 @@ its result inspected.
 | R-017 | Offline QR-code submission (base64 image) with payload analysis | TESTED |
 | R-018 | Frontend QR screenshot attachment | TESTED |
 | R-019 | Production packaging: static frontend served by backend with hardened defaults | TESTED |
+| R-020 | Frontend build-out: component structure, input tabs, history, case export | TESTED |
