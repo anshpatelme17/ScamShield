@@ -1,14 +1,11 @@
 import { useRef, useState } from "react";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const MAX_LENGTH = 10000;
 const MAX_IMAGE_BYTES = 2000000;
 
-const TABS = [
-  { id: "message", label: "Message or link" },
-  { id: "qr", label: "QR screenshot" },
-];
-
 export default function InputPanel({ onSubmit, loading }) {
+  const { t } = useLanguage();
   const [tab, setTab] = useState("message");
   const [text, setText] = useState("");
   const [imageB64, setImageB64] = useState(null);
@@ -17,13 +14,17 @@ export default function InputPanel({ onSubmit, loading }) {
   const fileInputRef = useRef(null);
 
   const hasContent = Boolean(text.trim()) || Boolean(imageB64);
+  const tabs = [
+    { id: "message", label: t("tabs.message") },
+    { id: "qr", label: t("tabs.qr") },
+  ];
 
   function handleImageChange(event) {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
     if (file.size > MAX_IMAGE_BYTES) {
-      setImageError("Image is larger than the 2 MB limit; choose a smaller screenshot.");
+      setImageError(t("input.error.oversize"));
       return;
     }
     const reader = new FileReader();
@@ -31,14 +32,14 @@ export default function InputPanel({ onSubmit, loading }) {
       const dataUrl = String(reader.result ?? "");
       const base64 = dataUrl.split(",")[1] ?? "";
       if (!base64) {
-        setImageError("Could not read the image file.");
+        setImageError(t("input.error.read"));
         return;
       }
       setImageError(null);
       setImageB64(`data:${file.type || "image/png"};base64,${base64}`);
       setImageName(file.name);
     };
-    reader.onerror = () => setImageError("Could not read the image file.");
+    reader.onerror = () => setImageError(t("input.error.read"));
     reader.readAsDataURL(file);
   }
 
@@ -61,7 +62,7 @@ export default function InputPanel({ onSubmit, loading }) {
       className="rounded-lg bg-white p-4 shadow-sm ring-1 ring-slate-200"
     >
       <div className="flex gap-1 rounded-md bg-slate-100 p-1" role="tablist">
-        {TABS.map(({ id, label }) => (
+        {tabs.map(({ id, label }) => (
           <button
             key={id}
             type="button"
@@ -82,13 +83,12 @@ export default function InputPanel({ onSubmit, loading }) {
           <textarea
             className="mt-3 min-h-40 w-full resize-y rounded border border-slate-300 p-3 text-sm focus:border-slate-500 focus:outline-none"
             maxLength={MAX_LENGTH}
-            placeholder="Paste a suspicious SMS, WhatsApp message, email, or link. Nothing is sent anywhere else; analysis runs locally."
+            placeholder={t("input.placeholder")}
             value={text}
             onChange={(event) => setText(event.target.value)}
           />
           <p className="mt-1 text-xs text-slate-500">
-            {text.length}/{MAX_LENGTH} characters. Your message is sent only to the local analysis
-            service and is not stored or logged.
+            {t("input.counter", { count: text.length })} {t("input.privacy")}
           </p>
         </>
       ) : (
@@ -120,15 +120,12 @@ export default function InputPanel({ onSubmit, loading }) {
                   onClick={clearImage}
                   className="rounded border border-slate-300 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100"
                 >
-                  Remove image
+                  {t("input.qr.remove")}
                 </button>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-3 py-4">
-                <p className="text-sm text-slate-600">
-                  Drop a screenshot here, or choose a file. The QR code is decoded and its payload
-                  is analyzed on this machine.
-                </p>
+                <p className="text-sm text-slate-600">{t("input.qr.drop")}</p>
                 <input
                   ref={fileInputRef}
                   id="qr-image-input"
@@ -141,15 +138,13 @@ export default function InputPanel({ onSubmit, loading }) {
                   htmlFor="qr-image-input"
                   className="cursor-pointer rounded bg-slate-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-slate-700"
                 >
-                  Choose image (PNG/JPEG, up to 2 MB)
+                  {t("input.qr.choose")}
                 </label>
               </div>
             )}
           </div>
           {imageError && <p className="mt-2 text-xs text-red-600">{imageError}</p>}
-          <p className="mt-2 text-xs text-slate-500">
-            You can also add context text in the other tab before analyzing.
-          </p>
+          <p className="mt-2 text-xs text-slate-500">{t("input.qr.note")}</p>
         </div>
       )}
 
@@ -158,7 +153,7 @@ export default function InputPanel({ onSubmit, loading }) {
         disabled={loading || !hasContent}
         className="mt-4 w-full rounded bg-slate-900 py-2 font-semibold text-white disabled:opacity-50"
       >
-        {loading ? "Analyzing…" : "Analyze"}
+        {loading ? t("input.analyzing") : t("input.analyze")}
       </button>
     </form>
   );

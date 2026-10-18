@@ -1,38 +1,40 @@
 import { useState } from "react";
 import VerdictBadge from "./VerdictBadge";
+import { useLanguage } from "../i18n/LanguageContext";
 
-function shortLabel(entry) {
+function shortLabel(entry, t) {
   if (entry.label) return entry.label;
   const findingsTexts = entry.payload?.case_file?.findings ?? [];
   const firstEvidence = findingsTexts[0]?.evidence?.[0];
   return firstEvidence
     ? `…${String(firstEvidence).slice(0, 80)}…`
-    : entry.input_type === "image"
-      ? "QR screenshot"
-      : "Pasted message";
-}
-
-function formatWhen(iso) {
-  try {
-    return new Date(iso).toLocaleString();
-  } catch {
-    return iso;
-  }
+    : t(
+        entry.input_type === "image" ? "history.entry.image" : "history.entry.pasted"
+      );
 }
 
 export default function HistoryPanel({ entries, onRestore, onDelete, onClear }) {
+  const { t, dateLocale } = useLanguage();
   const [expanded, setExpanded] = useState(true);
+
+  function formatWhen(iso) {
+    try {
+      return new Date(iso).toLocaleString(dateLocale);
+    } catch {
+      return iso;
+    }
+  }
 
   return (
     <aside className="rounded-lg bg-white p-4 shadow-sm ring-1 ring-slate-200">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <button
           type="button"
           onClick={() => setExpanded((value) => !value)}
           className="flex items-center gap-2 font-semibold text-slate-800"
         >
           <span className={`text-xs transition-transform ${expanded ? "rotate-90" : ""}`}>▶</span>
-          Case history
+          {t("history.title")}
           <span className="rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
             {entries.length}
           </span>
@@ -43,7 +45,7 @@ export default function HistoryPanel({ entries, onRestore, onDelete, onClear }) 
             onClick={onClear}
             className="text-xs text-slate-500 hover:text-red-600"
           >
-            Clear all
+            {t("history.clear")}
           </button>
         )}
       </div>
@@ -51,12 +53,9 @@ export default function HistoryPanel({ entries, onRestore, onDelete, onClear }) 
       {expanded && (
         <>
           {entries.length === 0 ? (
-            <p className="mt-3 text-xs text-slate-500">
-              Analyzed cases appear here, stored only in this browser. Nothing is uploaded anywhere
-              else.
-            </p>
+            <p className="mt-3 text-xs text-slate-500">{t("history.empty")}</p>
           ) : (
-            <ul className="mt-3 max-h-96 space-y-2 overflow-y-auto pr-1">
+            <ul className="mt-3 max-h-96 space-y-2 overflow-y-auto">
               {entries.map((entry) => (
                 <li
                   key={entry.id}
@@ -69,16 +68,17 @@ export default function HistoryPanel({ entries, onRestore, onDelete, onClear }) 
                   <button
                     type="button"
                     onClick={() => onRestore(entry.id)}
-                    className="mt-2 block w-full break-words text-left text-xs text-slate-600 hover:text-slate-900"
+                    className="mt-2 block w-full text-left text-xs text-slate-600 wrap-anywhere hover:text-slate-900"
+                    dir="ltr"
                   >
-                    {shortLabel(entry)}
+                    {shortLabel(entry, t)}
                   </button>
                   <button
                     type="button"
                     onClick={() => onDelete(entry.id)}
                     className="mt-1 text-[10px] uppercase text-slate-400 hover:text-red-600"
                   >
-                    Delete
+                    {t("history.delete")}
                   </button>
                 </li>
               ))}

@@ -41,7 +41,7 @@ describe("FindingCard", () => {
     render(<FindingCard finding={finding} />);
     expect(screen.getByText(finding.title)).toBeInTheDocument();
     expect(screen.getByText(finding.id)).toBeInTheDocument();
-    expect(screen.getByText("rule_match")).toBeInTheDocument();
+    expect(screen.getByText("rule match")).toBeInTheDocument();
     expect(screen.getByText("local rule")).toBeInTheDocument();
     expect(screen.getByText(finding.rule_id)).toBeInTheDocument();
   });

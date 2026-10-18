@@ -69,7 +69,7 @@ ruff check .
 ### Frontend (Phases 12-13)
 
 - Component + integration tests via **Vitest** + Testing Library (jsdom;
-  `npm test`). **41 passed** in ~4 s across 4 files, using real backend
+  `npm test`). **56 passed** in ~5 s across 5 files, using real backend
   payloads (generated from the live pipeline) as fixtures:
   - presentation: VerdictBadge, FindingCard, FindingsList, VerdictSummary,
     ExplanationPanel (incl. empty states / style fallbacks).
@@ -81,6 +81,13 @@ ruff check .
     image rejection, preview + remove, data-URL submission, busy state.
   - App integration (mocked fetch): full result render, pending-skeleton flow,
     API error surfacing, restore-from-history without a network call, delete.
+  - i18n (`src/test/i18n.test.jsx`): pure helpers (resolve fallback,
+    interpolation, 15-language registry with ltr/rtl flags), header language
+    dropdown (15 options), Hindi header/placeholder switch, Bengali results
+    headings, stable finding id across languages, localStorage persistence +
+    restore, invalid-value fallback to English, RTL `dir` on `<main>` for
+    Arabic/Urdu and back to LTR, user input + results preserved across a
+    language switch, provider baseline render.
 - Known quirk: jsdom + vitest hang when dispatching a change event with a
   `Uint8Array`-backed `File`; string-backed `File` objects are safe (fixture
   content type chosen accordingly).

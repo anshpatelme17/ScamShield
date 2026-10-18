@@ -268,4 +268,39 @@
     dominate the extra time); `ruff check .` clean
   - executed metrics: 51/51 passed, accuracy = precision = recall = F1 = 1.0;
     tp 32 / fn 0 / tn 19 / fp 0
-- Committed: (pending).
+- Committed: `35c2a6a`.
+
+## Phase 16 — Global language selector (15 languages)
+- Status: COMPLETE
+- Added `frontend/src/i18n/`: `translations.js` (language registry + assembly),
+  `LanguageContext.jsx` (provider, `useLanguage` hook with `t`/`tEnum`,
+  `resolveLanguage`/`translate`/`lookup` pure helpers, localStorage key
+  `scamshield.language`, English fallback for unknown saved values), and 15
+  per-language dictionaries under `i18n/locales/` (en hi bn te mr ta gu kn ml
+  pa ur es fr ar pt; 67 keys each, key-parity and script-purity verified by a
+  node audit script).
+- Static dashboard UI fully translated: header/title/tagline, input tabs,
+  message/QR tabs including errors and privacy copy, history panel, verdict
+  badge + status/source/category chips, results and unverified headings,
+  actions, case-file buttons, skeletons, errors (own fetch errors carry
+  translation keys; backend `detail` strings stay raw), date formatting via
+  per-language locale.
+- Scope decisions: Arabic/Urdu set `dir="rtl"` on the main container with
+  `dir="ltr"` preserved on technical values (case id, sha256, rule ids,
+  evidence quotes, history labels); backend-generated dynamic text (finding
+  titles, evidence, explanations, limitations, actions, reporting) remains
+  English and an in-UI translated notice states this (collection summary chip
+  too). Disclaimer chip uses the translated key with the exact backend text.
+- LanguageSelect: native dropdown-style popover custom listbox (aria
+  haspopup/expanded/activedescendant, Arrow/Home/End/Enter/Escape/Tab keys,
+  click-away close, checkmark on selected, full-width mobile anchor), always
+  `dir="ltr"` in the popup itself.
+- Verified:
+  - npm test -> **56 passed** (41 pre-existing - one expectation updated for
+    the now-localized status chip - plus 15 new i18n tests)
+  - npm run build clean; live server serves the new bundle; spot-check of
+    Hindi/Tamil/Arabic/Urdu strings and /api/analyze still 200.
+- Limitations reported honestly: dynamic backend text English-only; RTL is
+  applied at container level and visually unreviewed (no pixel/screenshot
+  tooling in the loop); translations authored without native-speaker review.
+

@@ -1,6 +1,8 @@
-import { VERDICT_LABELS, VERDICT_STYLES } from "../lib/verdict";
+import { VERDICT_STYLES } from "../lib/verdict";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function VerdictBadge({ verdict, size = "md" }) {
+  const { tEnum } = useLanguage();
   const sizes = { md: "px-3 py-1 text-sm", sm: "px-2 py-0.5 text-xs" };
   return (
     <span
@@ -8,7 +10,7 @@ export default function VerdictBadge({ verdict, size = "md" }) {
         VERDICT_STYLES[verdict] ?? "bg-slate-400"
       } ${sizes[size] ?? sizes.md}`}
     >
-      {VERDICT_LABELS[verdict] ?? verdict}
+      {tEnum("verdict", verdict)}
     </span>
   );
 }

@@ -37,3 +37,4 @@ its result inspected.
 | R-021 | Frontend component/integration test layer (Vitest + Testing Library) | TESTED |
 | R-022 | OCR of Latin-script text inside images via local rapidocr; image with neither QR nor readable text is CHECK_FAILED -> UNABLE_TO_DETERMINE | TESTED |
 | R-023 | Evaluation dataset v1.2 with OCR-image channel samples included in the gates | TESTED |
+| R-024 | Global language selector with 15 UI languages (static UI strings), RTL for Arabic/Urdu, persisted preference; dynamic backend-generated text stays English with an in-UI notice | TESTED |

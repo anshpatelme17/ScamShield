@@ -1,3 +1,5 @@
+import { useLanguage } from "../i18n/LanguageContext";
+
 function SkeletonCard() {
   return (
     <div className="animate-pulse rounded-lg bg-white p-4 shadow-sm ring-1 ring-slate-200">
@@ -11,11 +13,12 @@ function SkeletonCard() {
 }
 
 export default function Skeletons() {
+  const { t } = useLanguage();
   return (
     <section className="mt-6 space-y-4" aria-hidden="true">
       <SkeletonCard />
       <SkeletonCard />
-      <p className="text-center text-xs text-slate-500">Analyzing locally…</p>
+      <p className="text-center text-xs text-slate-500">{t("skeleton.loading")}</p>
     </section>
   );
 }

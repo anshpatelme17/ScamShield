@@ -1,6 +1,8 @@
 import { copyCaseFile, downloadCaseFile } from "../lib/casefile";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function CaseFileActions({ payload }) {
+  const { t } = useLanguage();
   async function handleCopy() {
     try {
       await copyCaseFile(payload);
@@ -16,14 +18,14 @@ export default function CaseFileActions({ payload }) {
         onClick={handleCopy}
         className="rounded border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
       >
-        Copy case JSON
+        {t("casefile.copy")}
       </button>
       <button
         type="button"
         onClick={() => downloadCaseFile(payload)}
         className="rounded border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
       >
-        Download case JSON
+        {t("casefile.download")}
       </button>
     </div>
   );

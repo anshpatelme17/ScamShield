@@ -18,8 +18,9 @@ export async function analyzeApi({ text, imageB64 }) {
       body: JSON.stringify(body),
     });
   } catch {
-    throw new Error(
+    throw errorWithKey(
       "Could not reach the analysis service. Make sure the backend is running on port 8765.",
+      "errors.network"
     );
   }
 
@@ -30,7 +31,22 @@ export async function analyzeApi({ text, imageB64 }) {
     payload = null;
   }
   if (!response.ok) {
-    throw new Error(payload?.detail ?? `Request failed with status ${response.status}`);
+    const detail = payload?.detail;
+    if (detail) {
+      throw new Error(detail);
+    }
+    throw errorWithKey(`Request failed with status ${response.status}`, "errors.status", {
+      status: response.status,
+    });
   }
   return payload;
+}
+
+function errorWithKey(message, key, params = undefined) {
+  const error = new Error(message);
+  error.key = key;
+  if (params) {
+    error.params = params;
+  }
+  return error;
 }
