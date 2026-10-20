@@ -15,6 +15,7 @@ from app.analyzers.base import make_finding
 from app.analyzers.hinglish_rules import analyze_hinglish_rules
 from app.analyzers.image_text import extract_text
 from app.analyzers.india_rules import analyze_india_rules
+from app.analyzers.phone_number import analyze_phone_number
 from app.analyzers.qr_analysis import QRSubmission, analyze_qr_submission, prepare_qr_submission
 from app.analyzers.text_signals import analyze_text_signals
 from app.analyzers.url_heuristics import analyze_urls
@@ -71,6 +72,8 @@ def _submission_findings(
     findings: list[Finding] = []
     if normalized is not None:
         findings.extend(_text_findings(normalized.text))
+        if normalized.input_type is InputType.PHONENUMBER:
+            findings.extend(analyze_phone_number(normalized.text))
     if submission is not None:
         findings.extend(_ocr_findings(submission))
         findings.extend(analyze_qr_submission(submission))
@@ -141,4 +144,5 @@ def build_case_file(
         findings=tuple(findings),
         verdict=verdict_result.verdict,
         verdict_reasons=verdict_result.reasons,
+        verdict_reason_specs=verdict_result.reason_specs,
     )

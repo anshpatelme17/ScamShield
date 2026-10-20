@@ -1,12 +1,32 @@
-import { STATUS_STYLES } from "../lib/verdict";
 import { useLanguage } from "../i18n/LanguageContext";
+import { STATUS_STYLES } from "../lib/verdict";
+import { resolveFindingFields } from "../i18n/findings";
+
+function WithFallback({ field, plain }) {
+  const { t } = useLanguage();
+  const text = field ? field.text : plain;
+  if (!text) return null;
+  return (
+    <>
+      {text}
+      {field?.fallback && (
+        <span className="ms-1 text-xs text-slate-400">
+          {t(field.fallback)}
+        </span>
+      )}
+    </>
+  );
+}
 
 export default function FindingCard({ finding }) {
-  const { t, tEnum } = useLanguage();
+  const { t, tEnum, lang } = useLanguage();
+  const resolved = resolveFindingFields(finding, lang);
   return (
     <div className="rounded-lg border border-slate-300 bg-white p-4">
       <div className="flex items-center justify-between gap-2">
-        <h3 className="font-semibold text-slate-800">{finding.title}</h3>
+        <h3 className="font-semibold text-slate-800">
+          <WithFallback field={resolved?.title} plain={finding.title} />
+        </h3>
         <span className="rounded bg-slate-200 px-2 py-0.5 text-xs font-mono text-slate-700" dir="ltr">
           {finding.id}
         </span>
@@ -21,7 +41,7 @@ export default function FindingCard({ finding }) {
         <span className="rounded bg-slate-100 px-2 py-0.5 text-slate-600">
           {tEnum("source", finding.source)}
         </span>
-        {finding.rule_id && (
+        {finding.rule_id && finding.rule_id !== finding.id && (
           <span className="rounded bg-slate-100 px-2 py-0.5 font-mono text-slate-600" dir="ltr">
             {finding.rule_id}
           </span>
@@ -41,16 +61,19 @@ export default function FindingCard({ finding }) {
           </ul>
         </div>
       )}
-      {finding.limitations && (
+      {(resolved?.limitation ?? finding.limitations) && (
         <p className="mt-3 text-xs text-slate-500">
           <span className="font-semibold uppercase">{t("findings.limitation")}</span>{" "}
-          {finding.limitations}
+          <WithFallback
+            field={resolved?.limitation}
+            plain={finding.limitations}
+          />
         </p>
       )}
-      {finding.recommended_action && (
+      {(resolved?.action ?? finding.recommended_action) && (
         <p className="mt-2 text-sm text-slate-800">
           <span className="text-xs font-semibold uppercase">{t("findings.action")}</span>{" "}
-          {finding.recommended_action}
+          <WithFallback field={resolved?.action} plain={finding.recommended_action} />
         </p>
       )}
     </div>

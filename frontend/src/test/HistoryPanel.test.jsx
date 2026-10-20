@@ -59,13 +59,18 @@ describe("history lib", () => {
     expect(loadHistory()).toEqual([scamHistory()]);
   });
 
-  it("labels image submissions as QR screenshots", () => {
-    expect(scamHistory().label).toBe("Pasted message");
+  it("labels entries by input type key", () => {
+    expect(scamHistory().label_key).toBe("history.entry.pasted");
     expect(
       buildHistoryEntry({
         case_file: { ...payloads.scam_url.case_file, input_type: "image" },
-      }).label,
-    ).toBe("QR screenshot");
+      }).label_key,
+    ).toBe("history.entry.image");
+    expect(
+      buildHistoryEntry(
+        { case_file: { ...payloads.scam_url.case_file, input_type: "phone_number" } },
+      ).label_key,
+    ).toBe("history.entry.phone");
   });
 
   it("survives corrupt storage", () => {
@@ -94,8 +99,8 @@ describe("HistoryPanel", () => {
       />,
     );
     expect(screen.getByText("SUSPICIOUS")).toBeInTheDocument();
-    expect(screen.getByText(/Pasted message/)).toBeInTheDocument();
-    await user.click(screen.getByText(/Pasted message/));
+    expect(screen.getByText(/Message \/ link/)).toBeInTheDocument();
+    await user.click(screen.getByText(/Message \/ link/));
     expect(onRestore).toHaveBeenCalledWith(scamHistory().id);
     expect(screen.getByText(/Delete/)).toBeInTheDocument();
   });
@@ -129,10 +134,10 @@ describe("HistoryPanel", () => {
       />,
     );
     expect(screen.getByRole("button", { name: /Clear all/i })).toBeInTheDocument();
-    expect(screen.getByText(/Pasted message/)).toBeInTheDocument();
+    expect(screen.getByText(/Message \/ link/)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /Case history/i }));
-    expect(screen.queryByText(/Pasted message/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Message \/ link/)).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /Case history/i }));
-    expect(screen.getByText(/Pasted message/)).toBeInTheDocument();
+    expect(screen.getByText(/Message \/ link/)).toBeInTheDocument();
   });
 });

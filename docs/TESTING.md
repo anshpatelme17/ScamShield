@@ -1,4 +1,4 @@
-# Testing
+﻿# Testing
 
 Status: `IMPLEMENTED` (as of Phase 8; suite grows in later phases).
 
@@ -19,47 +19,47 @@ ruff check .
 
 ## Current suite (executed results)
 
-- **174 passed** in ~22 s (single warning: starlette testclient deprecation,
+- **180 passed** in ~26 s (single warning: starlette testclient deprecation,
   library-internal; timing dominated by OCR engine init and the 11 OCR-image
   samples in the evaluation gate).
-- `tests/test_environment.py` — Python/dependency smoke.
-- `tests/test_models.py` — evidence model integrity (unique ids, strict/frozen).
-- `tests/test_validation.py` — input limits, control-character stripping,
+- `tests/test_environment.py` â€” Python/dependency smoke.
+- `tests/test_models.py` â€” evidence model integrity (unique ids, strict/frozen).
+- `tests/test_validation.py` â€” input limits, control-character stripping,
   type/URL detection.
-- `tests/test_extractors.py` — URL/UPI/phone/APK/amount extraction.
-- `tests/test_analyzers.py` — India rules incl. the **hard negative** ("Never
+- `tests/test_extractors.py` â€” URL/UPI/phone/APK/amount extraction.
+- `tests/test_analyzers.py` â€” India rules incl. the **hard negative** ("Never
   share your OTP or UPI PIN...") must produce zero findings.
-- `tests/test_hinglish.py` — Hinglish/Devanagari rules incl. Devanagari bank
+- `tests/test_hinglish.py` â€” Hinglish/Devanagari rules incl. Devanagari bank
   warning hard negative, postal "pin code" guard, and negated-security
-  variants ("share na karein" / "शेयर न करें").
-- `tests/test_url_heuristics.py` — offline URL checks incl. `CHECK_FAILED`
+  variants ("share na karein" / "à¤¶à¥‡à¤¯à¤° à¤¨ à¤•à¤°à¥‡à¤‚").
+- `tests/test_url_heuristics.py` â€” offline URL checks incl. `CHECK_FAILED`
   path for unparseable URLs.
-- `tests/test_router.py` — sequential ids, dedupe by rule, verdict outcomes.
-- `tests/test_verdict.py` — deterministic precedence incl. strong-rule
+- `tests/test_router.py` â€” sequential ids, dedupe by rule, verdict outcomes.
+- `tests/test_verdict.py` â€” deterministic precedence incl. strong-rule
   dominance, check-failed -> UNABLE_TO_DETERMINE, weak-signal thresholds.
-- `tests/test_explanations.py` — templates, actions, unverified lists,
+- `tests/test_explanations.py` â€” templates, actions, unverified lists,
   disclaimers.
-- `tests/test_api.py` — FastAPI integration: valid/invalid inputs, 422s,
+- `tests/test_api.py` â€” FastAPI integration: valid/invalid inputs, 422s,
   verdicts, response shape.
-- `tests/test_qr.py` — QR ingestion: generated QR fixtures decoded in-process
+- `tests/test_qr.py` â€” QR ingestion: generated QR fixtures decoded in-process
   (UPI payload -> suspicious, scam text payload via the text pipeline, benign
   payload clean, no-symbol observed, undecodable -> CHECK_FAILED ->
   unable_to_determine, oversize -> 422, text+image combined).
-- `tests/test_serve.py` — production packaging: security headers on every
+- `tests/test_serve.py` â€” production packaging: security headers on every
   response, built frontend served at "/", API reachable under the mount,
   unknown path -> 404 (static-content tests skip when frontend is unbuilt).
-- `tests/test_eval.py` — labelled dataset gate: hard negatives must all pass,
+- `tests/test_eval.py` â€” labelled dataset gate: hard negatives must all pass,
   zero false positives, precision/recall >= 0.9, every scam category fully
   detected (executed metrics: 51/51 samples incl. the OCR-image channel,
   accuracy = precision = recall = F1 = 1.0; 32 scam / 19 hard negatives of
   which 6 are OCR-image hard negatives).
-- `tests/test_offline.py` — **sockets are blocked** while the whole pipeline
+- `tests/test_offline.py` â€” **sockets are blocked** while the whole pipeline
   and the full evaluation run (prove R-015), plus a live OCR-based image
   analysis with sockets blocked (prove R-022 offline claim).
-- `tests/test_redos.py` — 29 adversarial probes at the exact input-size limit
+- `tests/test_redos.py` â€” 29 adversarial probes at the exact input-size limit
   (max length), each must finish analysis in < 5 s. Executed: all pass in
   ~0.3 s total, worst probe ~0.05 s.
-- `tests/test_image_text.py` — local OCR of images: synthetic PNGs are read by
+- `tests/test_image_text.py` â€” local OCR of images: synthetic PNGs are read by
   rapidocr (English/Hinglish scam text -> strong verdicts, URL lines -> URL
   checks, benign text -> clean, blank -> CHECK_FAILED
   IN-IMG-NO-CONTENT-001 -> UNABLE_TO_DETERMINE); unit tests cover score
@@ -101,3 +101,37 @@ ruff check .
 - Hard negatives must remain in the suite; removing one is a regression.
 - New rules must ship with: matching positive test, at least one hard-negative
   guard, and a dataset sample if India-category specific.
+
+### Phone channel, universal input and i18n fallback policy (Phase 18)
+
+- `tests/test_phone.py` (6 tests): URL beats phone classification, letters
+  switch to text, "1930" stays text, valid +91-number format check produces
+  an `observed` finding (verdict unchanged), invalid numbers flagged, long
+  digit strings stay text. Category: format-only validation, no reputation
+  data (documented limitation in the finding itself).
+- `verdict_reason_specs` tested round-trip: every verdict branch emits
+  machine-resolvable reason specs; API payload includes them.
+- InputPanel tests rewritten for the universal input: no tabs, live
+  "Detected input" chip (url / phone number / message), oversize rejection,
+  audio/video rejection with explicit not-supported message, non-PNG/JPEG
+  rejection, JPEG magic-byte acceptance, text+image combined submission,
+  clear button, busy state. jsdom quirk note: magic-byte sniff runs on the
+  data-URL base64 prefix (`iVBORw...` / `/9j/...`), so byte-backed `File`
+  fixtures work there without string backing.
+- i18n suite now: 16-language registry (Odia included), static-key parity
+  enforced by `frontend/i18n-audit.mjs` (AUDIT OK), and the fallback-policy
+  unit tests: full dynamic `rule.*` catalogs exist only for en/hi/bn; every
+  other language must have zero rule keys and only the full statics set;
+  `resolveFindingFields` marks untranslated rule text with
+  `i18n.fallbackEnglish` for statics-only locales and no marker for
+  en/hi/bn. History entries moved from raw English `label` to `label_key`
+  (image / phone / pasted) so entries render in any selected language.
+- **Translation quality policy**: long-form safety translations were only
+  kept where they could be verified (en, hi, bn get the full dynamic
+  catalogs). For the other 13 languages the rule-text fields intentionally
+  remain English with the visible "(...)" no-translation marker in the
+  selected language, instead of unverifiable script text.
+- Executed results: backend 180 passed / ruff clean; frontend 67 passed;
+  production build clean; live CDP session verified phone analysis, Hindi
+  full UI, Telugu statics with marked-English rule sentences, and 3-width
+  layout screenshots (1440/800/390).

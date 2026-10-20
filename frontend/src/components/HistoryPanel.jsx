@@ -3,14 +3,12 @@ import VerdictBadge from "./VerdictBadge";
 import { useLanguage } from "../i18n/LanguageContext";
 
 function shortLabel(entry, t) {
-  if (entry.label) return entry.label;
+  if (entry.label_key) return t(entry.label_key);
   const findingsTexts = entry.payload?.case_file?.findings ?? [];
   const firstEvidence = findingsTexts[0]?.evidence?.[0];
   return firstEvidence
     ? `…${String(firstEvidence).slice(0, 80)}…`
-    : t(
-        entry.input_type === "image" ? "history.entry.image" : "history.entry.pasted"
-      );
+    : t(entry.label ?? "history.entry.pasted");
 }
 
 export default function HistoryPanel({ entries, onRestore, onDelete, onClear }) {

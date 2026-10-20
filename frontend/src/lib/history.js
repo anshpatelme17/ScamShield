@@ -39,13 +39,18 @@ export function clearHistory() {
 
 export function buildHistoryEntry(payload) {
   const caseFile = payload.case_file;
-  const label = caseFile.input_type === "image" ? "QR screenshot" : "Pasted message";
+  const labelKey =
+    caseFile.input_type === "image"
+      ? "history.entry.image"
+      : caseFile.input_type === "phone_number"
+        ? "history.entry.phone"
+        : "history.entry.pasted";
   return {
     id: caseFile.case_id,
     at: caseFile.generated_at,
     verdict: caseFile.verdict,
     input_type: caseFile.input_type,
-    label,
+    label_key: labelKey,
     payload,
   };
 }

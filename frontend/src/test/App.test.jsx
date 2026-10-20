@@ -89,7 +89,7 @@ describe("App integration", () => {
     vi.stubGlobal("fetch", fetchMock);
     render(<App />);
 
-    const chip = await screen.findByText(/Pasted message/);
+    const chip = await screen.findByText(/Message \/ link/);
     await user.click(chip);
 
     await waitFor(() =>
@@ -105,7 +105,7 @@ describe("App integration", () => {
 
     vi.stubGlobal("fetch", vi.fn());
     render(<App />);
-    await screen.findByText(/Pasted message/);
+    await screen.findByText(/Message \/ link/);
 
     await user.click(screen.getByRole("button", { name: /delete/i }));
     await waitFor(() =>

@@ -75,7 +75,10 @@ export function Dashboard() {
     <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6" dir={isRtl ? "rtl" : "ltr"}>
       <Header />
 
-      <section aria-label={`${t("tabs.message")} · ${t("history.title")}`} className="grid items-start gap-4 md:grid-cols-[65fr_35fr]">
+      <section
+        aria-label={`${t("input.title")} · ${t("history.title")}`}
+        className="grid items-start gap-4 md:grid-cols-[65fr_35fr]"
+      >
         <InputPanel onSubmit={analyze} loading={loading} />
         <HistoryPanel
           entries={history}
@@ -103,16 +106,16 @@ export function Dashboard() {
             <VerdictSummary caseFile={result.case_file} explanation={result.explanation} />
           </section>
 
-          <section aria-label="Evidence findings" className="mt-6">
+          <section
+            aria-label="Evidence findings and unverified checks"
+            className="mt-6 grid items-start gap-4 lg:grid-cols-[58fr_42fr]"
+          >
             <FindingsList findings={result.case_file.findings} />
-          </section>
-
-          <section aria-label="What could not be verified" className="mt-6">
             <UnverifiedList explanation={result.explanation} />
           </section>
 
           <section aria-label="Recommended actions" className="mt-6 space-y-4">
-            <ActionsCard explanation={result.explanation} />
+            <ActionsCard explanation={result.explanation} verdict={result.case_file.verdict} />
             <CaseFileActions payload={result} />
             <p className="text-xs text-slate-500">{t("case.disclaimer")}</p>
           </section>

@@ -2,29 +2,35 @@ const ar = {
   "app.title": "ScamShield AI 2.0",
   "app.tagline": "لا تكتفِ باكتشاف الاحتيال. حقّق في الأدلة.",
   "ui.language": "اللغة",
-  "tabs.message": "رسالة أو رابط",
-  "tabs.qr": "لقطة رمز QR",
+  "input.title": "إدخال موحّد",
   "input.placeholder":
-    "الصق رسالة نصية قصيرة أو رسالة واتساب أو بريدًا إلكترونيًا أو رابطًا مشتبهًا. لا يُرسل أي شيء إلى أي جهة أخرى؛ التحليل يجري محليًا.",
+    "الصق رسالة نصية قصيرة أو رسالة واتساب أو بريدًا إلكترونيًا أو رابطًا أو رقم هاتف (+91) مشتبهًا. لا يُرسل أي شيء إلى أي جهة أخرى؛ التحليل يجري محليًا.",
   "input.counter": "{count}/10000 حرفًا.",
   "input.privacy":
-    "يُرسَل رسالتك إلى خدمة التحليل المحلية فقط؛ ولا يُحفَظ ولا يُسجَّل.",
-  "input.qr.drop":
-    "أفلت لقطة شاشة هنا أو اختر ملفًا. يُفك تشفير رمز QR ويُحلَّل محتواه على هذه الآلة.",
-  "input.qr.choose": "اختر صورة (PNG/JPEG حتى 2 ميغابايت)",
-  "input.qr.remove": "إزالة الصورة",
-  "input.qr.note": "يمكنك أيضًا إضافة نص سياق في علامة التبويب الأخرى قبل التحليل.",
+    "يُرسَل نصّك وصورتك إلى خدمة التحليل المحلية فقط؛ ولا تُحفَظ ولا تُسجَّل.",
+  "input.supported":
+    "ما يُدعَم هنا: نصّ أو رابط ملصوق، رقم هاتف (+91)، أو لقطة شاشة PNG/JPEG حتى 2 ميغابايت (يُحلَّل محتوى رمز QR والنص المرئي محليًا).",
+  "input.attach": "إرفاق صورة",
+  "input.dropzone": "أفلت لقطة شاشة PNG/JPEG هنا أو اخترها من الزر أدناه.",
+  "input.imageAlt": "لقطة شاشة مرفقة للتحليل",
+  "input.remove": "إزالة الصورة",
   "input.analyze": "حلِّل",
   "input.analyzing": "جارٍ التحليل…",
+  "input.clear": "تفريغ",
+  "input.detected": "الإدخال المكتشف: {type}",
   "input.error.oversize": "الصورة أكبر من حد 2 ميغابايت؛ اختر لقطة شاشة أصغر.",
-  "input.error.read": "تعذّرت قراءة ملف الصورة.",
+  "input.error.read": "تعذّرت قراءة الملف.",
+  "input.invalidImage": "هذا الملف ليس صورة PNG أو JPEG صالحة؛ لم يُرسَل شيء.",
+  "input.unsupportedFile":
+    "نوع الملف هذا غير مدعوم في هذه النسخة دون اتصال (لا يوجد محرك تحليل محلي للصوت أو الفيديو وغيرها). لم يُرسَل شيء.",
   "history.title": "سجل القضايا",
   "history.clear": "حذف الكل",
   "history.delete": "حذف",
   "history.empty":
     "تظهر القضايا المحلَّلة هنا، وتُخزَّن في هذا المتصفح فقط. لا يُرفَع أي شيء إلى أي مكان آخر.",
-  "history.entry.pasted": "رسالة ملصوقة",
-  "history.entry.image": "لقطة رمز QR",
+  "history.entry.pasted": "رسالة / رابط",
+  "history.entry.image": "لقطة شاشة / رمز QR",
+  "history.entry.phone": "رقم الهاتف",
   "verdict.highly_suspicious": "شديد الشبهة",
   "verdict.suspicious": "مشبوه",
   "verdict.no_strong_warning_signs_found": "لا توجد علامات تحذير واضحة",
@@ -33,9 +39,14 @@ const ar = {
   "status.observed": "ملحوظ",
   "status.unverified": "غير مُتحقق",
   "status.check_failed": "فشل الفحص",
+  "status.not_applicable": "لا ينطبق",
   "source.submitted_input": "الإدخال",
   "source.local_rule": "قاعدة محلية",
   "source.external_intel": "معلومات خارجية",
+  "inputType.text": "رسالة / نصّ",
+  "inputType.url": "رابط",
+  "inputType.phone_number": "رقم الهاتف",
+  "inputType.image": "لقطة شاشة / صورة",
   "category.bank_kyc_impersonation": "انتحال تحقق هوية البنك",
   "category.account_suspension": "تهديد تعليق الحساب",
   "category.upi_collect_request": "طلب تحصيل UPI",
@@ -68,12 +79,43 @@ const ar = {
   "case.disclaimer":
     "يسرد هذا التقرير المؤشرات التي وجدتها فحوصات محلية حتمية. وهو ليس دليلًا على أن الرسالة احتيالية، وغياب المؤشرات ليس دليلًا على أنها آمنة. تحقق دائمًا عبر قنوات رسمية ومستقلة.",
   "notes.dynamicEnglish":
-    "عناوين النتائج واقتباسات الأدلة والتفسيرات التفصيلية يولّدها محرك التحليل المحلية وتُقدَّم حاليًا بالإنجليزية.",
+    "تُعرض تفاصيل كل نتيجة باللغة المختارة إن وجد ترجمة لها؛ وإلا فإنها تبقى بالإنجليزية.",
   "skeleton.loading": "جارٍ التحليل محليًا…",
   "errors.network":
     "تعذّر الوصول إلى خدمة التحليل. تأكد من أن الواجهة الخلفية تعمل على المنفذ 8765.",
-  "errors.nothing": "لا شيء لتحليله بعد. الصق رسالة أو أرفق لقطة رمز QR.",
+  "errors.nothing": "لا شيء لتحليله بعد. الصق رسالة أو أرفق لقطة شاشة.",
   "errors.status": "فشل الطلب بالحالة {status}.",
+
+  "verdictreason.strong": "تطابقت إشارات احتيال قوية: {ids}.",
+  "verdictreason.failed": "لم تكتمل واحد أو أكثر من عمليات الفحص؛ التحليل غير مكتمل.",
+  "verdictreason.indiaMedium": "تطابقت أنماط احتيال شائعة في الهند: {ids}.",
+  "verdictreason.urlAnomalies": "وُجدت {n} حالات شذوذ مختلفة في الروابط: {ids}.",
+  "verdictreason.textSignals": "وُجدت {n} إشارات داعمة مختلفة: {ids}.",
+  "verdictreason.weak": "تطابقت إشارات ضعيفة غير حاسمة فقط: {ids}.",
+  "verdictreason.none": "لم تتطابق أي قاعدة مع إشارات احتيال.",
+  "verdictdesc.highly_suspicious.headline": "وُجدت إشارات احتيال قوية",
+  "verdictdesc.highly_suspicious.summary":
+    "تطابق في هذا الإرسال إشارة واحدة أو أكثر تُستخدم عادةً في الاحتيال. اعتباره احتيالًا حتى تتحقق منه عبر القنوات الرسمية.",
+  "verdictdesc.suspicious.headline": "وُجدت إشارات تحذير",
+  "verdictdesc.suspicious.summary":
+    "يحتوي هذا الإرسال على إشارات تحذير تطابق أنماط احتيال معروفة. تحقق منه بشكل مستقل قبل اتخاذ أي إجراء.",
+  "verdictdesc.no_strong_warning_signs_found.headline": "لا توجد إشارات تحذير واضحة",
+  "verdictdesc.no_strong_warning_signs_found.summary":
+    "لم تتطابق أي إشارة تحذير قوية مع أنماط الاحتيال المعروفة. هذا ليس دليلًا على أن الرسالة آمنة: فالأساليب تتغير. تحقق عبر القنوات الرسمية عند الشك.",
+  "verdictdesc.unable_to_determine.headline": "تعذّر التحديد",
+  "verdictdesc.unable_to_determine.summary":
+    "بقيت واحدة أو أكثر من عمليات الفحص غير مكتملة، فالأدلة جزئية. الحكم يعكس ما تحقّق منه فقط.",
+  "explain.untrustedEvidence": "النص المقتبس مأخوذ من إدخال غير مُتحقق؛ وليس حقيقة مؤكدة",
+  "actions.default.highly_suspicious":
+    "لا تدفع ولا تشارك رموزًا ولا تنقر على روابط.",
+  "actions.default.suspicious": "لا تتصرف بناءً على هذه الرسالة حتى تتحقق منها.",
+  "actions.default.no_strong_warning_signs_found":
+    "ابقَ حذرًا؛ تحقق من الطلبات غير المتوقعة عبر القنوات الرسمية.",
+  "actions.default.unable_to_determine":
+    "تحقق بنفسك عبر القنوات الرسمية؛ كان التحليل غير مكتمل.",
+  "reporting.indiaGuidance":
+    "في الهند، أبلِغ عن الاحتيال المشتبه به عبر البوابة الوطنية لبلاغات الجرائم الإلكترونية (cybercrime.gov.in) أو خط المساعدة السيبرانية 1930. وفي الاحتيال المالي، أبلِغ بنكك فورًا.",
+  "i18n.fallbackEnglish": "(الإنجليزية — بلا ترجمة)",
 };
 
 export default ar;

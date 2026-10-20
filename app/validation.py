@@ -49,9 +49,15 @@ def normalize_input(raw: object) -> NormalizedInput:
     )
 
 
+_PHONEISH = re.compile(r"^[\d\s\-().+]{10,20}$")
+
+
 def detect_input_type(text: str) -> InputType:
     candidate = text.strip()
     if not candidate or any(ch.isspace() for ch in candidate):
+        # A bare phone number may be written with separators/spaces.
+        if _PHONEISH.match(candidate):
+            return InputType.PHONENUMBER
         return InputType.TEXT
 
     parsed = urlsplit(candidate)
@@ -59,4 +65,6 @@ def detect_input_type(text: str) -> InputType:
         return InputType.URL
     if candidate.lower().startswith("www."):
         return InputType.URL
+    if _PHONEISH.match(candidate):
+        return InputType.PHONENUMBER
     return InputType.TEXT

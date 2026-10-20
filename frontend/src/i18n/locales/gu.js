@@ -2,29 +2,35 @@ const gu = {
   "app.title": "ScamShield AI 2.0",
   "app.tagline": "માત્ર છેતરપિંડી ઓળખો નહીં, પુરાવાની તપાસ કરો.",
   "ui.language": "ભાષા",
-  "tabs.message": "સંદેશ કે લિંક",
-  "tabs.qr": "QR સ્ક્રીનશોટ",
+  "input.title": "સર્વસમાવેશી ઇનપુટ",
   "input.placeholder":
-    "શંકાસ્પદ SMS, WhatsApp સંદેશ, ઈમેલ કે લિંક અહીં પેસ્ટ કરો. કંઈપણ અહીંથી આગળ મોકલાતું નથી; વિશ્લેષણ સ્થાનિક સ્તરે જ ચાલે છે.",
+    "શંકાસ્પદ SMS, WhatsApp સંદેશ, ઈમેલ, લિંક કે ફોન નંબર (+91) અહીં પેસ્ટ કરો. કંઈપણ અહીંથી આગળ મોકલાતું નથી; વિશ્લેષણ સ્થાનિક સ્તરે જ ચાલે છે.",
   "input.counter": "{count}/10000 અક્ષરો.",
   "input.privacy":
-    "તમારો સંદેશ ફક્ત સ્થાનિક વિશ્લેષણ સેવાને મોકલાય છે; તે સાચવાતો કે લોગ થતો નથી.",
-  "input.qr.drop":
-    "સ્ક્રીનશોટ અહીં મૂકો અથવા ફાઇલ પસંદ કરો. QR કોડ ડીકોડ થાય છે અને તેનો પેલોડ આ જ મશીન પર વિશ્લેષણ થાય છે.",
-  "input.qr.choose": "ચિત્ર પસંદ કરો (PNG/JPEG, 2 MB સુધી)",
-  "input.qr.remove": "ચિત્ર કાઢી નાખો",
-  "input.qr.note": "તપાસ પહેલાં બીજા ટેબમાં સંદર્ભ લખાણ ઉમેરી શકો છો.",
+    "તમારું લખાણ અને ચિત્ર ફક્ત સ્થાનિક વિશ્લેષણ સેવાને મોકલાય છે; તે સાચવાતું કે લોગ થતું નથી.",
+  "input.supported":
+    "અહીં સમર્થિત: પેસ્ટ કરેલું લખાણ કે લિંક, ફોન નંબર (+91), અથવા 2 MB સુધીનો PNG/JPEG સ્ક્રીનશોટ (QR પેલોડ અને દેખાતું લખાણ સ્થાનિક સ્તરે જ વિશ્લેષણ થાય છે).",
+  "input.attach": "ચિત્ર જોડો",
+  "input.dropzone": "PNG/JPEG સ્ક્રીનશોટ અહીં મૂકો, અથવા નીચેના બટનથી પસંદ કરો.",
+  "input.imageAlt": "વિશ્લેષણ માટે જોડાયેલો સ્ક્રીનશોટ",
+  "input.remove": "ચિત્ર કાઢી નાખો",
   "input.analyze": "વિશ્લેષણ કરો",
   "input.analyzing": "વિશ્લેષણ થઈ રહ્યું છે…",
+  "input.clear": "ખાલી કરો",
+  "input.detected": "ઓળખાયેલ ઇનપુટ: {type}",
   "input.error.oversize": "ચિત્ર 2 MB મર્યાદા કરતાં મોટું છે; નાનો સ્ક્રીનશોટ પસંદ કરો.",
-  "input.error.read": "ચિત્ર ફાઇલ વાંચી શકાયી નહીં.",
+  "input.error.read": "ફાઇલ વાંચી શકાઈ નહીં.",
+  "input.invalidImage": "આ ફાઇલ યોગ્ય PNG કે JPEG ચિત્ર નથી; કંઈ સબમિટ થયું નથી.",
+  "input.unsupportedFile":
+    "આ પ્રકારની ફાઇલ આ ઓફલાઇન બિલ્ડમાં સમર્થિત નથી (ઓડિયો, વિડિયો વગેરે માટે સ્થાનિક વિશ્લેષણ ઇન્જિન નથી). કંઈ સબમિટ થયું નથી.",
   "history.title": "કેસ ઇતિહાસ",
   "history.clear": "બધું કાઢી નાખો",
   "history.delete": "કાઢી નાખો",
   "history.empty":
     "વિશ્લેષિત કેસ અહીં દેખાય છે; માત્ર આ બ્રાઉઝરમાં સાચવાય છે. બીજે ક્યાંય કંઈ અપલોડ થતું નથી.",
-  "history.entry.pasted": "પેસ્ટ કરેલો સંદેશ",
-  "history.entry.image": "QR સ્ક્રીનશોટ",
+  "history.entry.pasted": "સંદેશ / લિંક",
+  "history.entry.image": "સ્ક્રીનશોટ / QR",
+  "history.entry.phone": "ફોન નંબર",
   "verdict.highly_suspicious": "અત્યંત શંકાસ્પદ",
   "verdict.suspicious": "શંકાસ્પદ",
   "verdict.no_strong_warning_signs_found": "કોઈ મોટી મુનસબાનીનાં સંકેત નથી",
@@ -33,9 +39,14 @@ const gu = {
   "status.observed": "નિરીક્ષિત",
   "status.unverified": "અપ્રમાણિત",
   "status.check_failed": "તપાસ નિષ્ફળ",
+  "status.not_applicable": "લાગુ પડતું નથી",
   "source.submitted_input": "ઇનપુટ",
   "source.local_rule": "સ્થાનિક નિયમ",
   "source.external_intel": "બાહ્ય માહિતી",
+  "inputType.text": "સંદેશ / લખાણ",
+  "inputType.url": "લિંક",
+  "inputType.phone_number": "ફોન નંબર",
+  "inputType.image": "સ્ક્રીનશોટ / ચિત્ર",
   "category.bank_kyc_impersonation": "બેંક KYC બહાનું",
   "category.account_suspension": "ખાતું બંધ થવાની ધમકી",
   "category.upi_collect_request": "UPI કલેક્ટ વિનંતી",
@@ -69,13 +80,43 @@ const gu = {
   "case.disclaimer":
     "આ રિપોર્ટમાં સ્થાનિક નિયમોથી મળેલા સંકેતોની યાદી છે. સંદેશ છેતરપિંડી છે એનો પુરાવો નથી; સંકેતો ન હોવાનો અર્થ સંદેશ સુરક્ષિત છે એવો પણ નથી. ચકાસણી હંમેશા સત્તાવાર, સ્વતંત્ર માર્ગેથી જ કરો.",
   "notes.dynamicEnglish":
-    "નિષ્કર્ષોનાં શીર્ષકો, પુરાવાનાં ઉદ્ધરણો અને વિગતવાર સમજૂતી સ્થાનિક વિશ્લેષણ ઇન્જિન તૈયાર કરે છે; અત્યારે તે અંગ્રેજીમાં જ આવે છે.",
+    "નિષ્કર્ષની વિગત અનુવાદ ઉપલબ્ધ હોય તો પસંદ કરેલ ભાષામાં બતાવાય છે; ન હોય તો તે અંગ્રેજીમાં જ રહે છે.",
   "skeleton.loading": "અહીં જ સ્થાનિક સ્તરે વિશ્લેષણ ચાલુ છે…",
   "errors.network":
     "વિશ્લેષણ સેવા સુધી પહોંચી શકાયું નહીં. બેકએન્ડ 8765 પોર્ટ પર ચાલુ છે તેની ખાતરી કરો.",
   "errors.nothing":
-    "વિશ્લેષણ માટે હજી કંઈ નથી. સંદેશ પેસ્ટ કરો અથવા QR સ્ક્રીનશોટ જોડો.",
+    "વિશ્લેષણ માટે હજી કંઈ નથી. સંદેશ પેસ્ટ કરો અથવા સ્ક્રીનશોટ જોડો.",
   "errors.status": "વિનંતી નિષ્ફળ, સ્થિતિ {status}.",
+
+  "verdictreason.strong": "છેતરપિંડીના મજબૂત સંકેતો મળ્યા: {ids}.",
+  "verdictreason.failed": "એક કે વધુ તપાસ પૂરી થઈ નથી; વિશ્લેષણ અધૂરું છે.",
+  "verdictreason.indiaMedium": "ભારત-વિશિષ્ટ છેતરપિંડી ભાત મળ્યા: {ids}.",
+  "verdictreason.urlAnomalies": "{n} અલગ URL વિસંગતતા મળી: {ids}.",
+  "verdictreason.textSignals": "{n} અલગ સહાયક સંકેત મળ્યા: {ids}.",
+  "verdictreason.weak": "માત્ર નબળા, નિર્ણાયક ન હોય તેવા સંકેત મળ્યા: {ids}.",
+  "verdictreason.none": "કોઈ નિયમ છેતરપિંડીના સંકેતો સાથે મળ્યો નથી.",
+  "verdictdesc.highly_suspicious.headline": "છેતરપિંડીના મજબૂત સંકેતો મળ્યા",
+  "verdictdesc.highly_suspicious.summary":
+    "આ રજૂઆતમાં છેતરપિંડીમાં સામાન્ય રીતે વપરાતા એક કે વધુ મજબૂત સંકેતો મળ્યા છે. સત્તાવાર માર્ગે ચકાસાય ત્યાં સુધી તેને છેતરપિંડી જ ગણો.",
+  "verdictdesc.suspicious.headline": "ચેતવણીના સંકેતો મળ્યા",
+  "verdictdesc.suspicious.summary":
+    "આ રજૂઆતમાં જાણીતા છેતરપિંડી ભાત સાથે મળતા ચેતવણીના સંકેતો છે. પગલાં લેતા પહેલાં સ્વતંત્ર રીતે ચકાસો.",
+  "verdictdesc.no_strong_warning_signs_found.headline": "કોઈ મોટી ચેતવણીનાં સંકેત નથી",
+  "verdictdesc.no_strong_warning_signs_found.summary":
+    "તપાસમાં મોટી ચેતવણીનાં સંકેત મળ્યા નથી. તેનો અર્થ સંદેશ સુરક્ષિત છે એવો નથી: છેતરપિંડી બદલાતી રહે છે. શંકા હોય તો સત્તાવાર માર્ગે ચકાસો.",
+  "verdictdesc.unable_to_determine.headline": "નક્કી કરી શકાયું નહીં",
+  "verdictdesc.unable_to_determine.summary":
+    "એક કે વધુ તપાસ અધૂરી રહી, જેથી પુરાવો અધૂરો છે. નિષ્કર્ષ ફક્ત તપાસાયેલ વસ્તુઓને જ પ્રતિબિંબિત કરે છે.",
+  "explain.untrustedEvidence": "ટાંકવામાં આવેલું લખાણ ચકાસાયેલ ન હોય તેવું ઇનપુટ છે, પ્રમાણિત હકીકત નથી",
+  "actions.default.highly_suspicious": "પૈસા આપશો નહીં, કોડ શેર કરશો નહીં, લિંક પર ક્લિક કરશો નહીં.",
+  "actions.default.suspicious": "ચકાસાય ત્યાં સુધી આ સંદેશ પર કોઈ ક્રિયા કરશો નહીં.",
+  "actions.default.no_strong_warning_signs_found":
+    "સાવધ રહો; અનપેક્ષિત વિનંતીઓ સત્તાવાર માર્ગે ચકાસો.",
+  "actions.default.unable_to_determine":
+    "સત્તાવાર માર્ગે જાતે ચકાસો; સ્વયં-વિશ્લેષણ અધૂરું હતું.",
+  "reporting.indiaGuidance":
+    "ભારતમાં શંકાસ્પદ છેતરપિંડી નેશનલ સાયબર ક્રાઈમ રિપોર્ટિંગ પોર્ટલ (cybercrime.gov.in) કે સાયબર હેલ્પલાઈન 1930 પર નોંધાવો. નાણાકીય છેતરપિંડીમાં તરત બેંકને જણાવો.",
+  "i18n.fallbackEnglish": "(અંગ્રેજી — અનુવાદ નથી)",
 };
 
 export default gu;

@@ -2,29 +2,35 @@ const es = {
   "app.title": "ScamShield AI 2.0",
   "app.tagline": "No te limites a detectar la estafa. Investiga la evidencia.",
   "ui.language": "Idioma",
-  "tabs.message": "Mensaje o enlace",
-  "tabs.qr": "Captura del código QR",
+  "input.title": "Entrada universal",
   "input.placeholder":
-    "Pega un SMS, mensaje de WhatsApp, correo o enlace sospechoso. No se envía nada a ningún otro sitio; el análisis se ejecuta localmente.",
+    "Pega un SMS, mensaje de WhatsApp, correo, enlace o número de teléfono (+91) sospechoso. No se envía nada a ningún otro sitio; el análisis se ejecuta localmente.",
   "input.counter": "{count}/10000 caracteres.",
   "input.privacy":
-    "Tu mensaje solo se envía al servicio de análisis local; no se guarda ni se registra.",
-  "input.qr.drop":
-    "Arrastra una captura aquí o elige un archivo. El código QR se decodifica y su contenido se analiza en esta máquina.",
-  "input.qr.choose": "Elegir imagen (PNG/JPEG, hasta 2 MB)",
-  "input.qr.remove": "Quitar imagen",
-  "input.qr.note": "También puedes añadir texto de contexto en la otra pestaña antes de analizar.",
+    "Tu texto e imagen solo se envían al servicio de análisis local; no se guardan ni se registran.",
+  "input.supported":
+    "Admitido aquí: texto o enlace pegado, número de teléfono (+91), o una captura PNG/JPEG de hasta 2 MB (el contenido del QR y el texto visible se analizan localmente).",
+  "input.attach": "Adjuntar imagen",
+  "input.dropzone": "Arrastra una captura PNG/JPEG aquí o elige una con el botón de abajo.",
+  "input.imageAlt": "Captura adjunta para su análisis",
+  "input.remove": "Quitar imagen",
   "input.analyze": "Analizar",
   "input.analyzing": "Analizando…",
+  "input.clear": "Limpiar",
+  "input.detected": "Entrada detectada: {type}",
   "input.error.oversize": "La imagen supera el límite de 2 MB; elige una captura más pequeña.",
-  "input.error.read": "No se pudo leer el archivo de imagen.",
+  "input.error.read": "No se pudo leer el archivo.",
+  "input.invalidImage": "El archivo no es una imagen PNG o JPEG válida; no se envió nada.",
+  "input.unsupportedFile":
+    "Este tipo de archivo no es compatible con esta versión sin conexión (no hay motor de análisis local para audio, vídeo, etc.). No se envió nada.",
   "history.title": "Historial de casos",
   "history.clear": "Borrar todo",
   "history.delete": "Eliminar",
   "history.empty":
     "Los casos analizados aparecen aquí, guardados solo en este navegador. Nada se sube a ningún otro sitio.",
-  "history.entry.pasted": "Mensaje pegado",
-  "history.entry.image": "Captura del código QR",
+  "history.entry.pasted": "Mensaje / enlace",
+  "history.entry.image": "Captura / QR",
+  "history.entry.phone": "Número de teléfono",
   "verdict.highly_suspicious": "MUY SOSPECHOSO",
   "verdict.suspicious": "SOSPECHOSO",
   "verdict.no_strong_warning_signs_found": "SIN SEÑALES FUERTES DE ALERTA",
@@ -33,9 +39,14 @@ const es = {
   "status.observed": "observado",
   "status.unverified": "sin verificar",
   "status.check_failed": "verificación fallida",
+  "status.not_applicable": "no aplicable",
   "source.submitted_input": "entrada",
   "source.local_rule": "regla local",
   "source.external_intel": "información externa",
+  "inputType.text": "Mensaje / texto",
+  "inputType.url": "Enlace",
+  "inputType.phone_number": "Número de teléfono",
+  "inputType.image": "Captura / imagen",
   "category.bank_kyc_impersonation": "Fraude de KYC bancario",
   "category.account_suspension": "Amenaza de suspensión de cuenta",
   "category.upi_collect_request": "Solicitud de cobro UPI",
@@ -69,12 +80,42 @@ const es = {
   "case.disclaimer":
     "Este informe enumera los indicadores encontrados por comprobaciones locales deterministas. No es prueba de que un mensaje sea fraudulento, y la ausencia de indicadores no es prueba de que sea seguro. Verifica siempre por canales oficiales e independientes.",
   "notes.dynamicEnglish":
-    "Los títulos de los hallazgos, las citas de evidencia y las explicaciones detalladas las genera el motor de análisis local y actualmente se ofrecen en inglés.",
+    "Los detalles de cada hallazgo se muestran en el idioma seleccionado si hay traducción; en caso contrario, permanecen en inglés.",
   "skeleton.loading": "Analizando localmente…",
   "errors.network":
     "No se pudo contactar con el servicio de análisis. Asegúrate de que el backend se esté ejecutando en el puerto 8765.",
-  "errors.nothing": "Todavía no hay nada que analizar. Pega un mensaje o adjunta una captura de QR.",
+  "errors.nothing": "Todavía no hay nada que analizar. Pega un mensaje o adjunta una captura.",
   "errors.status": "La solicitud falló con estado {status}.",
+
+  "verdictreason.strong": "Coinciden señales fuertes de estafa: {ids}.",
+  "verdictreason.failed": "Una o más comprobaciones no se completaron; el análisis está incompleto.",
+  "verdictreason.indiaMedium": "Coinciden patrones de estafa característicos de la India: {ids}.",
+  "verdictreason.urlAnomalies": "Se encontraron {n} anomalías de URL distintas: {ids}.",
+  "verdictreason.textSignals": "Se encontraron {n} señales de apoyo distintas: {ids}.",
+  "verdictreason.weak": "Solo coinciden señales débiles, no determinantes: {ids}.",
+  "verdictreason.none": "Ninguna regla coincide con señales de estafa.",
+  "verdictdesc.highly_suspicious.headline": "Se hallaron señales fuertes de estafa",
+  "verdictdesc.highly_suspicious.summary":
+    "En este envío coinciden una o más señales fuertes usadas habitualmente en estafas. Considéralo fraudulento hasta verificarlo por canales oficiales.",
+  "verdictdesc.suspicious.headline": "Se hallaron señales de alerta",
+  "verdictdesc.suspicious.summary":
+    "Este envío presenta señales de alerta que coinciden con patrones de estafa conocidos. Verifícalo de forma independiente antes de actuar.",
+  "verdictdesc.no_strong_warning_signs_found.headline": "Sin señales fuertes de alerta",
+  "verdictdesc.no_strong_warning_signs_found.summary":
+    "Ninguna señal de alerta coincide con patrones de estafa conocidos. No es prueba de que el mensaje sea seguro: las estafas cambian. Verifica por canales oficiales si tienes dudas.",
+  "verdictdesc.unable_to_determine.headline": "No se pudo determinar",
+  "verdictdesc.unable_to_determine.summary":
+    "Una o más comprobaciones quedaron incompletas, por lo que la evidencia es parcial. El veredicto refleja solo lo verificado.",
+  "explain.untrustedEvidence": "El texto citado procede de una entrada sin verificar; no es un hecho confirmado",
+  "actions.default.highly_suspicious": "No pagues ni compartas códigos; no hagas clic en enlaces.",
+  "actions.default.suspicious": "No actúes sobre este mensaje hasta haberlo verificado.",
+  "actions.default.no_strong_warning_signs_found":
+    "Mantén la cautela; verifica solicitudes inesperadas por canales oficiales.",
+  "actions.default.unable_to_determine":
+    "Verifica tú mismo por canales oficiales; el análisis quedó incompleto.",
+  "reporting.indiaGuidance":
+    "En la India, reporta estafas sospechosas en el portal nacional de denuncia de ciberdelincuencia (cybercrime.gov.in) o en la línea de ayuda 1930. En fraudes económicos, avisa de inmediato a tu banco.",
+  "i18n.fallbackEnglish": "(inglés: sin traducción)",
 };
 
 export default es;

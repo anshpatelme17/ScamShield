@@ -17,6 +17,7 @@ from app.config import DEFAULT_DISCLAIMER, SCHEMA_VERSION
 class InputType(str, Enum):
     TEXT = "text"
     URL = "url"
+    PHONENUMBER = "phone_number"
     IMAGE = "image"
 
 
@@ -65,6 +66,20 @@ class VerdictCategory(str, Enum):
     UNABLE_TO_DETERMINE = "unable_to_determine"
 
 
+class ReasonSpec(BaseModel):
+    """Machine-readable verdict reason for localized frontend rendering.
+
+    `key` is a stable translation key (e.g. `verdictreason.strong`); `args`
+    carries the rule ids or counts the template interpolates. The raw English
+    sentence stays available in `verdict_reasons` for export and fallback.
+    """
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    key: str = Field(min_length=1, max_length=64)
+    args: tuple[str, ...] = ()
+
+
 class Finding(BaseModel):
     """A single, attributable piece of evidence about the submitted input."""
 
@@ -106,6 +121,7 @@ class ScamCaseFile(BaseModel):
     checks_not_completed: tuple[str, ...] = ()
     verdict: VerdictCategory | None = None
     verdict_reasons: tuple[str, ...] = ()
+    verdict_reason_specs: tuple[ReasonSpec, ...] = ()
     disclaimer: str = DEFAULT_DISCLAIMER
 
     @field_validator("input_sha256")

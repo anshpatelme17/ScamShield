@@ -5,7 +5,8 @@ import userEvent from "@testing-library/user-event";
 import App, { Dashboard } from "../App";
 import { LanguageProvider } from "../i18n/LanguageContext";
 import { resolveLanguage, translate } from "../i18n/LanguageContext";
-import { LANGUAGES } from "../i18n/translations";
+import { LANGUAGES, translations } from "../i18n/translations";
+import { resolveFindingFields } from "../i18n/findings";
 import payloads from "./fixtures";
 
 const fetchPayload = (payload) => ({
@@ -45,8 +46,8 @@ describe("i18n pure helpers", () => {
     expect(translate("en", "nonexistent.key")).toBe("nonexistent.key");
   });
 
-  it("defines all 15 languages with the required flags", () => {
-    expect(LANGUAGES).toHaveLength(15);
+  it("defines all 16 languages with the required flags", () => {
+    expect(LANGUAGES).toHaveLength(16);
     for (const language of LANGUAGES) {
       expect(typeof language.label).toBe("string");
       expect(language.label.length).toBeGreaterThan(0);
@@ -58,6 +59,13 @@ describe("i18n pure helpers", () => {
       "ur",
     ]);
   });
+
+  it("includes Odia in the language list", () => {
+    const odia = LANGUAGES.find((x) => x.code === "or");
+    expect(odia).toBeDefined();
+    expect(odia.label).toContain("ଓଡ଼ିଆ");
+    expect(odia.dir).toBe("ltr");
+  });
 });
 
 describe("i18n language selection UI", () => {
@@ -67,14 +75,15 @@ describe("i18n language selection UI", () => {
     expect(screen.getByPlaceholderText(/Paste a suspicious SMS/)).toBeInTheDocument();
   });
 
-  it("offers all 15 languages in the dropdown", async () => {
+  it("offers all 16 languages in the dropdown", async () => {
     const user = userEvent.setup();
     render(<App />);
     const listbox = await openLanguageMenu(user);
     expect(listbox).toBeInTheDocument();
-    expect(screen.getAllByRole("option")).toHaveLength(15);
+    expect(screen.getAllByRole("option")).toHaveLength(16);
     const labels = screen.getAllByRole("option").map((option) => option.textContent);
     expect(labels.some((text) => text.includes("हिन्दी"))).toBe(true);
+    expect(labels.some((text) => text.includes("ଓଡ଼ିଆ"))).toBe(true);
     expect(labels.some((text) => text.includes("المعربية") || text.includes("العربية"))).toBe(true);
     expect(labels.some((text) => text.includes("English"))).toBe(true);
   });
@@ -185,5 +194,37 @@ describe("i18n provider behaviour", () => {
       </LanguageProvider>,
     );
     expect(screen.getByText(/Investigate the Evidence/)).toBeInTheDocument();
+  });
+});
+
+describe("i18n dynamic finding catalog policy", () => {
+  const phoneFinding = payloads.phone_valid.case_file.findings[0];
+
+  it("resolves rule text in a full-catalog language (Hindi)", () => {
+    const resolved = resolveFindingFields(phoneFinding, "hi");
+    expect(resolved.title.text).toBe("भारतीय मोबाइल नंबर मान्य (केवल प्रारूप)");
+    expect(resolved.title.fallback).toBe(false);
+    expect(resolved.limitation.fallback).toBe(false);
+    expect(resolved.action.fallback).toBe(false);
+  });
+
+  it("falls back to English rule text with a marker in a statics-only language (Telugu)", () => {
+    const resolved = resolveFindingFields(phoneFinding, "te");
+    expect(resolved.title.text).toBe(
+      "Indian mobile number validated (format only)",
+    );
+    expect(resolved.title.fallback).toBe("i18n.fallbackEnglish");
+    expect(resolved.limitation.fallback).toBe("i18n.fallbackEnglish");
+  });
+
+  it("full dynamic catalogs exist only for en, hi and bn", () => {
+    for (const [code, dict] of Object.entries(translations)) {
+      const ruleKeys = Object.keys(dict).filter((key) => key.startsWith("rule."));
+      if (code === "en" || code === "hi" || code === "bn") {
+        expect(ruleKeys.length).toBeGreaterThan(0);
+      } else {
+        expect(ruleKeys).toHaveLength(0);
+      }
+    }
   });
 });

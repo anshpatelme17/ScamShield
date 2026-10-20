@@ -20,7 +20,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict
 
-from app.models import Finding, FindingStatus, VerdictCategory
+from app.models import Finding, FindingStatus, ReasonSpec, VerdictCategory
 
 _STRONG_RULES = frozenset(
     {
@@ -46,6 +46,7 @@ class VerdictResult(BaseModel):
 
     verdict: VerdictCategory
     reasons: tuple[str, ...] = ()
+    reason_specs: tuple[ReasonSpec, ...] = ()
 
 
 def determine_verdict(findings: tuple[Finding, ...]) -> VerdictResult:
@@ -70,6 +71,7 @@ def determine_verdict(findings: tuple[Finding, ...]) -> VerdictResult:
             reasons=(
                 "Strong scam indicator matched: " + ", ".join(strong) + ".",
             ),
+            reason_specs=(ReasonSpec(key="verdictreason.strong", args=strong),),
         )
 
     if failed:
@@ -79,6 +81,7 @@ def determine_verdict(findings: tuple[Finding, ...]) -> VerdictResult:
                 "One or more checks could not be completed, so the analysis is "
                 "incomplete.",
             ),
+            reason_specs=(ReasonSpec(key="verdictreason.failed"),),
         )
 
     if india_medium:
@@ -87,6 +90,7 @@ def determine_verdict(findings: tuple[Finding, ...]) -> VerdictResult:
             reasons=(
                 "India-specific scam pattern matched: " + ", ".join(india_medium) + ".",
             ),
+            reason_specs=(ReasonSpec(key="verdictreason.indiaMedium", args=india_medium),),
         )
 
     if len(url_anomalies) >= _URL_ANOMALY_MIN_COUNT:
@@ -97,6 +101,9 @@ def determine_verdict(findings: tuple[Finding, ...]) -> VerdictResult:
                 + ", ".join(url_anomalies)
                 + ".",
             ),
+            reason_specs=(
+                ReasonSpec(key="verdictreason.urlAnomalies", args=list(url_anomalies)),
+            ),
         )
 
     if len(text_signals) >= _TEXT_SIGNAL_MIN_COUNT:
@@ -106,6 +113,9 @@ def determine_verdict(findings: tuple[Finding, ...]) -> VerdictResult:
                 f"{len(text_signals)} distinct supporting signals found: "
                 + ", ".join(text_signals)
                 + ".",
+            ),
+            reason_specs=(
+                ReasonSpec(key="verdictreason.textSignals", args=list(text_signals)),
             ),
         )
 
@@ -118,9 +128,11 @@ def determine_verdict(findings: tuple[Finding, ...]) -> VerdictResult:
             reasons=(
                 "Only weak, non-conclusive signals found: " + ", ".join(weak) + ".",
             ),
+            reason_specs=(ReasonSpec(key="verdictreason.weak", args=weak),),
         )
 
     return VerdictResult(
         verdict=VerdictCategory.NO_STRONG_WARNING_SIGNS_FOUND,
         reasons=("No scam indicators matched any rule.",),
+        reason_specs=(ReasonSpec(key="verdictreason.none"),),
     )

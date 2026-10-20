@@ -39,3 +39,7 @@ its result inspected.
 | R-023 | Evaluation dataset v1.2 with OCR-image channel samples included in the gates | TESTED |
 | R-024 | Global language selector with 15 UI languages (static UI strings), RTL for Arabic/Urdu, persisted preference; dynamic backend-generated text stays English with an in-UI notice | TESTED |
 | R-025 | Dashboard result layout per UI reference: full-width summary/findings/unverified/actions bands, two-column findings grid on desktop, one column on mobile | TESTED |
+| R-026 | Universal input section: paste text/URL/phone or attach PNG/JPEG up to 2 MB in one form; live input-type detection; honest rejection of oversize/non-image/unsupported (audio/video) inputs | TESTED |
+| R-027 | Phone-number channel: format-only local validation (10 digits starting 6-9, optional +91/0091/0 prefix) emitted as `observed` finding `IN-PHONE-FMT-001` that cannot raise the verdict; no reputation data offline (documented) | TESTED |
+| R-028 | 16 UI languages with Odia added; machine-resolvable verdict reasons (`verdict_reason_specs`) and every finding title/limitation/action localized for en/hi/bn, with explicit per-sentence English fallback marker in the other 13 languages | TESTED |
+| R-029 | Results layout: evidence findings and unverified-checks rendered side by side, case-JSON copy/download under the recommended-actions band | TESTED |

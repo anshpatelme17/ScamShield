@@ -322,3 +322,42 @@
 - Committed as two commits: `1cda739` (Phase 16 i18n) and the layout commit
   (Phase 17).
 
+
+## Phase 18 — Universal input, phone channel, 16 languages with translated dynamic evidence
+- Status: COMPLETE
+- Backend: new `InputType.PHONENUMBER` channel. `app/validation.py` classifies a
+  pasted submission as a phone when it is 10-20 chars of digits/space/`+ - ( ) .`
+  (URLs win first, letters imply text, "1930" stays text). New
+  `app/analyzers/phone_number.py` emits `IN-PHONE-FMT-001` with status
+  `observed` (never `rule_match`, so a valid-looking number cannot raise the
+  verdict); format-only check: 10 digits starting 6-9 with optional
+  +91/0091/0 prefix. `verdict.py` gained `ReasonSpec` (machine-resolvable
+  verdict reasons) surfaced on the case file as `verdict_reason_specs`;
+  router wires both.
+- Frontend: ONE universal input (paste text/URL/phone, attach PNG/JPEG
+  up to 2 MB) replaces the old message/QR tabs. Live "Detected input:" chip;
+  honest errors for oversize, unreadable, non-PNG/JPEG and unsupported file
+  types (audio/video get an explicit refuses-locally message). Clear button.
+- Results layout: Row 3 puts Evidence findings and "What could not be
+  verified" side by side (`lg:grid-cols-[58fr_42fr]`); case-JSON buttons sit
+  under the recommended actions band as Row 5.
+- i18n: 16 languages now (Odia `or` added; `en hi bn` carry full dynamic
+  `rule.*` catalogs of 61 keys; the remaining 13 languages carry complete
+  statics incl. verdict reasons/headlines/summary/default actions/reporting
+  guidance). Rule-ID presentation catalog resolves every backend finding
+  title/limitation/action: event IDs alias `IN-H-*` -> base rule, QR state
+  suffixes (decoded/noSymbol/failed), OTP vs UPI-PIN variant for
+  `IN-SECRET-001`, valid/invalid variant for `IN-PHONE-FMT-001`. Where no
+  translation exists the sentence stays English with the visible marker
+  `(English - no translation)` in the selected language
+  (`i18n.fallbackEnglish`). `findings.js` renders `verdict_reason_specs`
+  into the selected language with the same fallback rule.
+  `frontend/i18n-audit.mjs` is the test harness: static-key parity vs en,
+  rule counts, malformed-string detection -> AUDIT OK for all 16.
+- Verified: 180 backend pytest + ruff clean; 67 frontend vitest (InputPanel
+  no-tab rewrite, 16-language parity + fallback-policy tests, resolver unit
+  tests, history label keys); `npm run build` clean; live headless-Chrome CDP
+  session confirmed: phone analysis with detected chip, Hindi UI + Hindi
+  verdict desc, Telugu UI with 26 marked English rule-text sentences, 3-width
+  layout screenshots (1440/800/390).
+- Not committed yet at time of writing.
