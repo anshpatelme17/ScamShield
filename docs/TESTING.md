@@ -135,3 +135,34 @@ ruff check .
   production build clean; live CDP session verified phone analysis, Hindi
   full UI, Telugu statics with marked-English rule sentences, and 3-width
   layout screenshots (1440/800/390).
+
+### Attachment menu, camera capture and export feedback (Phase 19)
+
+- New `src/test/AttachmentMenu.test.jsx`: menu open/close (Escape with focus
+  returned to the "+" button, outside-pointerdown close), all three sources
+  present, photo pick routed to `onFileSelected` via the hidden
+  `photo-input`, camera modal opens and reports the getUserMedia call
+  (`facingMode:"environment"`), canvas capture produces a
+  `camera-capture.png` result whose size comes from
+  `estimateBytesFromDataUrl` (base64 decoded), stream tracks are stopped,
+  and the unavailable-camera path shows the honest error plus the
+  `capture="environment"` fallback picker.
+- InputPanel tests rewritten for the menu-driven flow: photo-input /
+  media-input instead of the old single hidden input; attachment chip
+  assertions on name, type, size (`4 B`) and remove; the second attachment
+  replaces the first WITH the visible replaced notice; drag-and-drop into
+  the dropzone; type/byte mismatch (`application/pdf`) honestly rejected;
+  camera size math unit-tested (`formatFileSize`).
+- CaseFileActions feedback tests: copy success shows `Copied.` status,
+  clipboard failure shows the copy-failed message (red), download shows
+  `Downloaded.`
+- App test: after analysis the sections appear in stacked full-width
+  reference order (Analysis summary -> Evidence findings -> What could not
+  be verified -> Recommended actions -> Case export -> disclaimer),
+  asserted via `compareDocumentPosition`.
+- Executed results: frontend **82 passed** / backend **180 passed** / ruff
+  clean / `npm run build` clean (483 kB bundle); live headless-Chrome CDP
+  session with a fake camera device: "+" menu items, Escape close,
+  attachment chip populated via CDP `DOM.setFileInputFiles`, camera modal
+  with live preview, stacked-order section probe, Telugu fallback markers
+  still 26, mobile 390px menu screenshots.

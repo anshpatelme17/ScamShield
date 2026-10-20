@@ -117,6 +117,25 @@ const gu = {
   "reporting.indiaGuidance":
     "ભારતમાં શંકાસ્પદ છેતરપિંડી નેશનલ સાયબર ક્રાઈમ રિપોર્ટિંગ પોર્ટલ (cybercrime.gov.in) કે સાયબર હેલ્પલાઈન 1930 પર નોંધાવો. નાણાકીય છેતરપિંડીમાં તરત બેંકને જણાવો.",
   "i18n.fallbackEnglish": "(અંગ્રેજી — અનુવાદ નથી)",
+  "attach.plus": "અટેચમેન્ટ ઉમેરો",
+  "attach.menu.aria": "અટેચમેન્ટ વિકલ્પો",
+  "attach.menu.close": "અટેચમેન્ટ મેનુ બંધ કરો",
+  "attach.menu.camera": "કેમેરા",
+  "attach.menu.photos": "ફોટા",
+  "attach.menu.files": "મીડિયા / ફાઇલો",
+  "attach.menu.filesNote": "ચિત્ર, સ્ક્રીનશોટ કે કોઈપણ ફાઇલ સ્થાનિક સ્તરે ચકાસાય છે; બિનસમર્થિત સ્વરૂપ નકારાય છે.",
+  "attach.replaced": "અગાઉનું અટેચમેન્ટ બદલાયું: દરેક વિશ્લેષણ માટે એક જ ફાઇલ.",
+  "attach.meta.type": "પ્રકાર:",
+  "attach.meta.size": "કદ:",
+  "camera.title": "ફોટો લો",
+  "camera.hint": "QR કોડ કે સંદેશ ચોકઠીમાં લાવો, પછી કેપ્ચર કરો.",
+  "camera.capture": "કેપ્ચર",
+  "camera.cancel": "રદ કરો",
+  "camera.error": "કેમેરા ઉપલબ્ધ નથી કે પરવાનગી નથી. ફાઇલ પિકર વાપરો.",
+  "camera.fallback": "ફાઇલોમાંથી ફોટો ઉમેરો",
+  "casefile.copied": "કૉપિ થયું.",
+  "casefile.copyFailed": "કૉપિ નિષ્ફળ. ક્લિપબોર્ડ પરવાનગી આપો કે ડાઉનલોડ વાપરો.",
+  "casefile.downloaded": "ડાઉનલોડ થયું.",
 };
 
 export default gu;

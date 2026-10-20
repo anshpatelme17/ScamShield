@@ -106,19 +106,23 @@ export function Dashboard() {
             <VerdictSummary caseFile={result.case_file} explanation={result.explanation} />
           </section>
 
-          <section
-            aria-label="Evidence findings and unverified checks"
-            className="mt-6 grid items-start gap-4 lg:grid-cols-[58fr_42fr]"
-          >
+          <section aria-label="Evidence findings" className="mt-6">
             <FindingsList findings={result.case_file.findings} />
+          </section>
+
+          <section aria-label="What could not be verified" className="mt-6">
             <UnverifiedList explanation={result.explanation} />
           </section>
 
-          <section aria-label="Recommended actions" className="mt-6 space-y-4">
+          <section aria-label="Recommended actions" className="mt-6">
             <ActionsCard explanation={result.explanation} verdict={result.case_file.verdict} />
-            <CaseFileActions payload={result} />
-            <p className="text-xs text-slate-500">{t("case.disclaimer")}</p>
           </section>
+
+          <section aria-label="Case export" className="mt-4">
+            <CaseFileActions payload={result} />
+          </section>
+
+          <p className="mt-3 text-xs text-slate-500">{t("case.disclaimer")}</p>
         </>
       )}
     </main>

@@ -117,6 +117,25 @@ const pt = {
   "reporting.indiaGuidance":
     "Na Índia, denuncie golpes suspeitos no portal nacional de denúncias de crimes cibernéticos (cybercrime.gov.in) ou pelo telefone de ajuda 1930. Em fraudes financeiras, avise imediatamente seu banco.",
   "i18n.fallbackEnglish": "(inglês — sem tradução)",
+  "attach.plus": "Adicionar anexo",
+  "attach.menu.aria": "Opções de anexo",
+  "attach.menu.close": "Fechar menu de anexos",
+  "attach.menu.camera": "Câmera",
+  "attach.menu.photos": "Fotos",
+  "attach.menu.files": "Mídia / arquivos",
+  "attach.menu.filesNote": "Qualquer imagem, captura ou outro arquivo é verificado localmente; formatos não suportados são rejeitados.",
+  "attach.replaced": "Anexo anterior substituído: um arquivo por análise.",
+  "attach.meta.type": "Tipo:",
+  "attach.meta.size": "Tamanho:",
+  "camera.title": "Tirar foto",
+  "camera.hint": "Enquadre o código QR ou o texto da mensagem e capture.",
+  "camera.capture": "Capturar",
+  "camera.cancel": "Cancelar",
+  "camera.error": "Câmera indisponível ou permissão negada. Use o seletor de arquivos.",
+  "camera.fallback": "Anexar uma foto dos seus arquivos",
+  "casefile.copied": "Copiado.",
+  "casefile.copyFailed": "Falha na cópia. Conceda acesso à área de transferência ou use Baixar.",
+  "casefile.downloaded": "Baixado.",
 };
 
 export default pt;

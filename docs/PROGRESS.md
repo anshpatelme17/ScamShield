@@ -360,4 +360,46 @@
   session confirmed: phone analysis with detected chip, Hindi UI + Hindi
   verdict desc, Telugu UI with 26 marked English rule-text sentences, 3-width
   layout screenshots (1440/800/390).
-- Not committed yet at time of writing.
+- Not committed yet at time of writing. -> Committed as `e7c7e14`.
+
+## Phase 19 �?" Attachment menu, camera capture, export feedback, stacked result bands
+- Status: COMPLETE
+- New `frontend/src/components/AttachmentMenu.jsx`: ChatGPT-style "+" button
+  beside the input (`data-testid=attach-plus`, aria-haspopup/expanded,
+  `attach.plus` label) opening a `role="menu"` popover with three sources:
+  **Camera** (`getUserMedia` with `facingMode:"environment"`, live video
+  preview, canvas capture -> PNG pseudo-file `camera-capture.png` with
+  data-URL-derived byte size; on unavailability/permission error shows
+  `camera.error` and falls back to a file input with `capture="environment"`;
+  stream tracks are stopped on close), **Photos** (hidden input
+  `accept="image/*"`), **Media / files** (accepts anything incl. audio/video
+  but validation rejects non-images with the honest unsupported-file
+  message). Escape closes the menu and returns focus to the "+"; pointerdown
+  outside closes; menu close after every selection.
+- `InputPanel` rework: central `applyAttachment` validation (2 MB cap, type
+  then base64-magic-byte sniff, type/byte mismatch = invalid image), an
+  attachment chip showing name/type/human size/`Remove` button, dropzone
+  kept for drag-and-drop only, and a visible `attach.replaced` notice when a
+  second file replaces the first (backend accepts one image per analysis
+  nothing is silently discarded).
+- Layout (reverting the Phase-18 Row-3 split): every result section is now a
+  stacked full-width band in reference order -- Analysis summary, Evidence
+  findings (2-col card grid retained), What could not be verified,
+  Recommended next steps, Case export (Copy/Download) directly underneath,
+  disclaimer last. Input + Case History keep the 65/35 top row.
+- `CaseFileActions` now gives explicit feedback via `role="status"`:
+  `casefile.copied` / `casefile.copyFailed` / `casefile.downloaded`.
+- i18n: 19 new keys (attach.*, camera.*, casefile.*) translated in ALL 16
+  languages (audit harness extended count: 118 static keys each, AUDIT OK);
+  Gujarati/Malayalam `camera.cancel` corrected (3-char minimum, cancel vs
+  close).
+- Verified: **82 frontend vitest** (new AttachmentMenu camera/menu coverage,
+  rewritten InputPanel menu-flow tests incl. replace/drag-drop/mismatch,
+  CaseFileActions feedback tests, App stacked-order DOM test); **180 backend
+  pytest** + ruff clean; `npm run build` clean (483 kB bundle); live
+  headless-Chrome CDP run with fake camera device: + menu items, Escape
+  close, attachment chip (name type size, CDP `DOM.setFileInputFiles`),
+  camera modal with live preview, stacked section order probe (Universal
+  input . Case history -> Analysis summary -> Evidence findings -> What
+  could not be verified -> Recommended actions -> Case export), Telugu
+  fallback markers still 26, mobile 390px menu screenshots.

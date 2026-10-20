@@ -116,6 +116,25 @@ const ar = {
   "reporting.indiaGuidance":
     "في الهند، أبلِغ عن الاحتيال المشتبه به عبر البوابة الوطنية لبلاغات الجرائم الإلكترونية (cybercrime.gov.in) أو خط المساعدة السيبرانية 1930. وفي الاحتيال المالي، أبلِغ بنكك فورًا.",
   "i18n.fallbackEnglish": "(الإنجليزية — بلا ترجمة)",
+  "attach.plus": "إضافة مرفق",
+  "attach.menu.aria": "خيارات المرفقات",
+  "attach.menu.close": "إغلاق قائمة المرفقات",
+  "attach.menu.camera": "الكاميرا",
+  "attach.menu.photos": "الصور",
+  "attach.menu.files": "الوسائط / الملفات",
+  "attach.menu.filesNote": "تُفحَص محليًا أي صورة أو لقطة أو ملف آخر؛ تُرفَض الصيغ غير المدعومة.",
+  "attach.replaced": "استُبعد المرفق السابق: ملف واحد لكل تحليل.",
+  "attach.meta.type": "النوع:",
+  "attach.meta.size": "الحجم:",
+  "camera.title": "التقاط صورة",
+  "camera.hint": "أطِر رمز QR أو نص الرسالة ثم التقط الصورة.",
+  "camera.capture": "التقاط",
+  "camera.cancel": "إلغاء",
+  "camera.error": "الكاميرا غير متاحة أو رُفض الإذن. استخدم منتقي الملفات.",
+  "camera.fallback": "إرفاق صورة من ملفاتك",
+  "casefile.copied": "تم النسخ.",
+  "casefile.copyFailed": "فشل النسخ. امنح الوصول إلى الحافظة أو استخدم التنزيل.",
+  "casefile.downloaded": "تم التنزيل.",
 };
 
 export default ar;

@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -151,5 +151,59 @@ describe("CaseFileActions", () => {
 
     expect(click).toHaveBeenCalled();
     expect(revoke).toHaveBeenCalledWith("blob:case");
+  });
+});
+
+describe("CaseFileActions feedback", () => {
+  afterEach(() => {
+    delete navigator.clipboard;
+  });
+
+  it("confirms a successful copy with a status message", async () => {
+    const user = userEvent.setup();
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText: vi.fn().mockResolvedValue() },
+      configurable: true,
+    });
+    render(<CaseFileActions payload={scam} />);
+    await user.click(screen.getByRole("button", { name: /copy case json/i }));
+    const status = await screen.findByRole("status");
+    expect(status).toHaveTextContent("Copied.");
+    expect(status).toHaveClass("text-emerald-700");
+  });
+
+  it("reports a failed copy without crashing", async () => {
+    const user = userEvent.setup();
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText: vi.fn().mockRejectedValue(new Error("denied")) },
+      configurable: true,
+    });
+    render(<CaseFileActions payload={scam} />);
+    await user.click(screen.getByRole("button", { name: /copy case json/i }));
+    const status = await screen.findByRole("status");
+    expect(status).toHaveTextContent(/Copy failed\. Grant clipboard access or use Download\./);
+    expect(status).toHaveClass("text-red-600");
+  });
+
+  it("confirms a successful download with a status message", async () => {
+    const user = userEvent.setup();
+    const realCreate = document.createElement.bind(document);
+    vi.stubGlobal("URL", {
+      createObjectURL: vi.fn(() => "blob:case"),
+      revokeObjectURL: vi.fn(),
+    });
+    vi.spyOn(document, "createElement").mockImplementation((tag) => {
+      const el = realCreate(tag);
+      if (tag === "a") {
+        Object.defineProperty(el, "click", { value: vi.fn() });
+      }
+      return el;
+    });
+
+    render(<CaseFileActions payload={scam} />);
+    await user.click(screen.getByRole("button", { name: /download case json/i }));
+    const status = await screen.findByRole("status");
+    expect(status).toHaveTextContent("Downloaded.");
+    vi.unstubAllGlobals();
   });
 });

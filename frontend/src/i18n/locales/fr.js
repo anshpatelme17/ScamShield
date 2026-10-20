@@ -118,6 +118,25 @@ const fr = {
   "reporting.indiaGuidance":
     "En Inde, signalez les arnaques suspectes sur le portail national de signalement de la cybercriminalité (cybercrime.gov.in) ou à la ligne d'assistance cyber 1930. En cas de fraude financière, prévenez immédiatement votre banque.",
   "i18n.fallbackEnglish": "(anglais : sans traduction)",
+  "attach.plus": "Ajouter une pièce jointe",
+  "attach.menu.aria": "Options de pièces jointes",
+  "attach.menu.close": "Fermer le menu des pièces jointes",
+  "attach.menu.camera": "Appareil photo",
+  "attach.menu.photos": "Photos",
+  "attach.menu.files": "Médias / fichiers",
+  "attach.menu.filesNote": "Toute image, capture ou autre fichier est vérifié localement ; les formats non pris en charge sont refusés.",
+  "attach.replaced": "Pièce jointe précédente remplacée : un fichier par analyse.",
+  "attach.meta.type": "Type :",
+  "attach.meta.size": "Taille :",
+  "camera.title": "Prendre une photo",
+  "camera.hint": "Encadrez le code QR ou le texte du message, puis capturez.",
+  "camera.capture": "Capturer",
+  "camera.cancel": "Annuler",
+  "camera.error": "Appareil photo indisponible ou permission refusée. Utilisez le sélecteur de fichiers.",
+  "camera.fallback": "Joindre une photo de vos fichiers",
+  "casefile.copied": "Copié.",
+  "casefile.copyFailed": "Échec de la copie. Accordez l'accès au presse-papiers ou utilisez Télécharger.",
+  "casefile.downloaded": "Téléchargé.",
 };
 
 export default fr;

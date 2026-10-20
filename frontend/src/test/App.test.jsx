@@ -39,6 +39,39 @@ describe("App integration", () => {
     expect(screen.getByText(/cybercrime\.gov\.in/)).toBeInTheDocument();
   });
 
+  it("stacks result sections full-width in the reference order with the export under actions", async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(fetchPayload(payloads.scam_url)));
+
+    render(<App />);
+    await user.type(screen.getByRole("textbox"), "You won a lottery, pay the fee now");
+    await user.click(screen.getByRole("button", { name: /analyze/i }));
+
+    await waitFor(() => expect(screen.getByLabelText("Case export")).toBeInTheDocument());
+
+    const labels = [
+      "Analysis summary",
+      "Evidence findings",
+      "What could not be verified",
+      "Recommended actions",
+      "Case export",
+    ];
+    let previous = null;
+    for (const label of labels) {
+      const section = screen.getByLabelText(label);
+      if (previous) {
+        expect(
+          previous.compareDocumentPosition(section) & Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy();
+      }
+      previous = section;
+    }
+    const disclaimer = await screen.findByText(/not proof that a message is fraudulent/i);
+    expect(
+      previous.compareDocumentPosition(disclaimer) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
   it("shows a busy skeleton and then the result", async () => {
     const user = userEvent.setup();
     let resolveFetch;

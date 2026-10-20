@@ -117,6 +117,25 @@ const mr = {
   "reporting.indiaGuidance":
     "भारतात संशयास्पद घोटाळा राष्ट्रीय सायबर क्राइम रिपोर्टिंग पोर्टलवर (cybercrime.gov.in) किंवा सायबर हेल्पलाइन 1930 वर नोंदवा. आर्थिक घोटाळ्यात लगेच तुमच्या बँकेला कळवा.",
   "i18n.fallbackEnglish": "(इंग्रजी — अनुवाद नाही)",
+  "attach.plus": "अटॅचमेंट जोडा",
+  "attach.menu.aria": "अटॅचमेंट पर्याय",
+  "attach.menu.close": "अटॅचमेंट मेनू बंद करा",
+  "attach.menu.camera": "कॅमेरा",
+  "attach.menu.photos": "फोटो",
+  "attach.menu.files": "मीडिया / फायली",
+  "attach.menu.filesNote": "चित्र, स्क्रीनशॉट किंवा कोणतीही फाइल स्थानिक पातळीवर तपासली जाते; असमर्थित स्वरूप नाकारले जाते.",
+  "attach.replaced": "मागील अटॅचमेंट बदलले: प्रति विश्लेषण एकच फाइल.",
+  "attach.meta.type": "प्रकार:",
+  "attach.meta.size": "आकार:",
+  "camera.title": "फोटो घ्या",
+  "camera.hint": "QR कोड किंवा संदेश चौकटीत आणा, नंतर कॅप्चर करा.",
+  "camera.capture": "कॅप्चर",
+  "camera.cancel": "रद्द",
+  "camera.error": "कॅमेरा उपलब्ध नाही किंवा परवानगी नाही. फाइल पिकर वापरा.",
+  "camera.fallback": "फायलीतून फोटो जोडा",
+  "casefile.copied": "कॉपी झाले.",
+  "casefile.copyFailed": "कॉपी झाले नाही. क्लिपबोर्ड परवानगी द्या किंवा डाउनलोड वापरा.",
+  "casefile.downloaded": "डाउनलोड झाले.",
 };
 
 export default mr;

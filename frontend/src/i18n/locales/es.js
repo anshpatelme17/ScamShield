@@ -116,6 +116,25 @@ const es = {
   "reporting.indiaGuidance":
     "En la India, reporta estafas sospechosas en el portal nacional de denuncia de ciberdelincuencia (cybercrime.gov.in) o en la línea de ayuda 1930. En fraudes económicos, avisa de inmediato a tu banco.",
   "i18n.fallbackEnglish": "(inglés: sin traducción)",
+  "attach.plus": "Añadir archivo adjunto",
+  "attach.menu.aria": "Opciones de adjuntos",
+  "attach.menu.close": "Cerrar menú de adjuntos",
+  "attach.menu.camera": "Cámara",
+  "attach.menu.photos": "Fotos",
+  "attach.menu.files": "Medios / archivos",
+  "attach.menu.filesNote": "Se comprueba localmente cualquier imagen, captura u otro archivo; los formatos no admitidos se rechazan.",
+  "attach.replaced": "Adjunto anterior reemplazado: un archivo por análisis.",
+  "attach.meta.type": "Tipo:",
+  "attach.meta.size": "Tamaño:",
+  "camera.title": "Tomar foto",
+  "camera.hint": "Encuadra el código QR o el texto del mensaje y captura la imagen.",
+  "camera.capture": "Capturar",
+  "camera.cancel": "Cancelar",
+  "camera.error": "La cámara no está disponible o se denegó el permiso. Usa el selector de archivos.",
+  "camera.fallback": "Adjuntar una foto de tus archivos",
+  "casefile.copied": "Copiado.",
+  "casefile.copyFailed": "No se pudo copiar. Da acceso al portapapeles o usa Descargar.",
+  "casefile.downloaded": "Descargado.",
 };
 
 export default es;

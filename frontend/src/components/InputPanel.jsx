@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useLanguage } from "../i18n/LanguageContext";
+import AttachmentMenu from "./AttachmentMenu";
 
 const MAX_LENGTH = 10000;
 const MAX_IMAGE_BYTES = 2000000;
@@ -23,84 +24,96 @@ function readAsDataUrl(file) {
   });
 }
 
-export function detectImageKind(file, dataUrl) {
-  if (file.type && !file.type.startsWith("image/")) {
-    return "unsupportedFile";
-  }
-  if (!file.type || file.type === "image/png" || file.type === "image/jpeg") {
-    const base64 = dataUrl.split(",")[1] ?? "";
-    if (base64.startsWith(PNG_B64_PREFIX)) return "png";
-    if (file.type === "image/jpeg" || base64.startsWith(JPEG_B64_PREFIX)) return "jpeg";
-    return "invalidImage";
-  }
-  return "unsupportedFile";
+export function sniffImageKind(dataUrl) {
+  const base64 = dataUrl.split(",")[1] ?? "";
+  if (base64.startsWith(PNG_B64_PREFIX)) return "image/png";
+  if (base64.startsWith(JPEG_B64_PREFIX)) return "image/jpeg";
+  return null;
+}
+
+export function formatFileSize(bytes) {
+  if (typeof bytes !== "number" || Number.isNaN(bytes)) return "";
+  if (bytes >= 1_000_000) return `${(bytes / 1_000_000).toFixed(1)} MB`;
+  if (bytes >= 1_000) return `${(bytes / 1_000).toFixed(1)} KB`;
+  return `${bytes} B`;
 }
 
 export default function InputPanel({ onSubmit, loading }) {
   const { t, tEnum } = useLanguage();
   const [text, setText] = useState("");
-  const [imageB64, setImageB64] = useState(null);
-  const [imageName, setImageName] = useState(null);
+  const [image, setImage] = useState(null);
   const [imageError, setImageError] = useState(null);
-  const fileInputRef = useRef(null);
+  const [replacedNote, setReplacedNote] = useState(false);
 
-  const hasContent = Boolean(text.trim()) || Boolean(imageB64);
+  const hasContent = Boolean(text.trim()) || Boolean(image);
   const textType = detectInputType(text);
 
-  async function handleImageSelection(file) {
-    if (!file) return;
-    if (file.size > MAX_IMAGE_BYTES) {
+  function applyAttachment({ name, type, size, dataUrl }) {
+    if (size > MAX_IMAGE_BYTES) {
       setImageError(t("input.error.oversize"));
       return;
     }
-    let dataUrlPixels = "";
-    try {
-      dataUrlPixels = await readAsDataUrl(file);
-    } catch {
-      setImageError(t("input.error.read"));
-      return;
-    }
-    if (!dataUrlPixels.split(",")[1]) {
-      setImageError(t("input.error.read"));
-      return;
-    }
-    const kind = detectImageKind(file, dataUrlPixels);
-    if (kind === "unsupportedFile") {
+    if (type && !type.startsWith("image/")) {
       setImageError(t("input.unsupportedFile"));
       return;
     }
-    if (kind === "invalidImage") {
+    const sniffed = sniffImageKind(dataUrl);
+    if (!sniffed) {
+      setImageError(t("input.invalidImage"));
+      return;
+    }
+    if (type && type !== sniffed && !(type === "image/jpg" && sniffed === "image/jpeg")) {
       setImageError(t("input.invalidImage"));
       return;
     }
     setImageError(null);
-    setImageB64(`data:${kind === "png" ? "image/png" : "image/jpeg"};base64,${dataUrlPixels.split(",")[1]}`);
-    setImageName(file.name);
+    setImage((prev) => {
+      if (prev) setReplacedNote(true);
+      return { name, type: sniffed, size, dataUrl };
+    });
   }
 
-  function handleImageChange(event) {
-    const file = event.target.files?.[0];
-    event.target.value = "";
-    handleImageSelection(file);
+  async function handleFileSelected(file) {
+    if (!file) return;
+    let dataUrl = "";
+    try {
+      dataUrl = await readAsDataUrl(file);
+    } catch {
+      setImageError(t("input.error.read"));
+      return;
+    }
+    if (!dataUrl.split(",")[1]) {
+      setImageError(t("input.error.read"));
+      return;
+    }
+    applyAttachment({
+      name: file.name,
+      type: file.type || sniffImageKind(dataUrl),
+      size: file.size,
+      dataUrl,
+    });
   }
 
-  function clearImage() {
-    setImageB64(null);
-    setImageName(null);
+  function handleCameraCapture(result) {
+    applyAttachment(result);
+  }
+
+  function removeAttachment() {
+    setImage(null);
     setImageError(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    setReplacedNote(false);
   }
 
   async function handleDrop(event) {
     event.preventDefault();
     const file = event.dataTransfer.files?.[0];
-    if (file) handleImageSelection(file);
+    if (file) handleFileSelected(file);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (!hasContent) return;
-    onSubmit({ text, imageB64 });
+    if (!hasContent || loading) return;
+    onSubmit({ text, imageB64: image?.dataUrl ?? null });
   }
 
   return (
@@ -128,55 +141,52 @@ export default function InputPanel({ onSubmit, loading }) {
         )}
       </div>
 
-      <div
-        data-testid="image-dropzone"
-        className="mt-3 rounded border border-dashed border-slate-300 p-4 text-center"
-        onDragOver={(event) => event.preventDefault()}
-        onDrop={handleDrop}
-      >
-        {imageB64 ? (
-          <div className="flex flex-col items-center gap-2">
-            <img
-              src={imageB64}
-              alt={t("input.imageAlt")}
-              className="max-h-48 rounded border border-slate-200"
-            />
-            <span className="max-w-64 truncate text-xs text-slate-500" dir="ltr">
-              {imageName}
+      <div className="mt-2 flex flex-wrap items-center gap-2" data-testid="attachment-bar">
+        <AttachmentMenu
+          onFileSelected={handleFileSelected}
+          onCameraCapture={handleCameraCapture}
+        />
+        {image ? (
+          <span
+            className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 rounded border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-600"
+            data-testid="attachment-chip"
+          >
+            <span className="max-w-56 truncate font-medium text-slate-800" dir="ltr">
+              {image.type === "image/png" ? "🖼️" : "📷"} {image.name}
             </span>
+            <span dir="ltr">{image.type}</span>
+            <span dir="ltr">{formatFileSize(image.size)}</span>
             <button
               type="button"
-              onClick={clearImage}
-              className="rounded border border-slate-300 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100"
+              onClick={removeAttachment}
+              className="rounded border border-slate-300 px-2 py-0.5 font-medium text-slate-600 hover:bg-slate-100"
+              aria-label={t("input.remove")}
             >
-              {t("input.remove")}
+              ✕
             </button>
-          </div>
+          </span>
         ) : (
-          <p className="text-sm text-slate-600">{t("input.dropzone")}</p>
+          imageError && <p className="text-xs text-red-600">{imageError}</p>
         )}
-        <input
-          ref={fileInputRef}
-          id="image-input"
-          data-testid="image-input"
-          type="file"
-          accept="image/png,image/jpeg"
-          className="hidden"
-          onChange={handleImageChange}
-        />
-        <label
-          htmlFor="image-input"
-          className="mt-3 inline-block cursor-pointer rounded bg-slate-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-slate-700"
-        >
-          {t("input.attach")}
-        </label>
       </div>
 
-      {imageError && <p className="mt-2 text-xs text-red-600">{imageError}</p>}
+      {image && imageError && <p className="mt-1 text-xs text-red-600">{imageError}</p>}
+      {replacedNote && (
+        <p className="mt-1 text-xs text-amber-700">{t("attach.replaced")}</p>
+      )}
 
-      {hasContent ? (
-        <p className="mt-2 text-xs text-slate-500">{t("input.supported")}</p>
-      ) : null}
+      {!image && (
+        <div
+          data-testid="image-dropzone"
+          className="mt-3 rounded border border-dashed border-slate-300 p-4 text-center"
+          onDragOver={(event) => event.preventDefault()}
+          onDrop={handleDrop}
+        >
+          <p className="text-sm text-slate-600">{t("input.dropzone")}</p>
+        </div>
+      )}
+
+      <p className="mt-2 text-xs text-slate-500">{t("input.supported")}</p>
 
       <div className="mt-3 flex gap-2">
         <button
@@ -190,7 +200,7 @@ export default function InputPanel({ onSubmit, loading }) {
           type="button"
           onClick={() => {
             setText("");
-            clearImage();
+            removeAttachment();
           }}
           disabled={!hasContent || loading}
           className="rounded border border-slate-300 px-4 py-2 font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-50"

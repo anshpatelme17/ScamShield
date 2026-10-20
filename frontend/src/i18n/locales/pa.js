@@ -114,6 +114,25 @@ const pa = {
   "reporting.indiaGuidance":
     "ਭਾਰਤ ਵਿੱਚ ਸ਼ੱਕੀ ਠੱਗੀ ਨੂੰ ਨੈਸ਼ਨਲ ਸਾਈਬਰ ਕ੍ਰਾਈਮ ਰਿਪੋਰਟਿੰਗ ਪੋਰਟਲ (cybercrime.gov.in) ਜਾਂ ਸਾਈਬਰ ਹੈਲਪਲਾਈਨ 1930 ਤੇ ਰਿਪੋਰਟ ਕਰੋ। ਪੈਸਿਆਂ ਵਾਲੀ ਠੱਗੀ ਵਿੱਚ ਫ਼ੌਰਨ ਬੈਂਕ ਨੂੰ ਦੱਸੋ.",
   "i18n.fallbackEnglish": "(ਅੰਗਰੇਜ਼ੀ — ਅਨੁਵਾਦ ਨਹੀਂ)",
+  "attach.plus": "ਅਟੈਚਮੈਂਟ ਜੋੜੋ",
+  "attach.menu.aria": "ਅਟੈਚਮੈਂਟ ਵਿਕਲਪ",
+  "attach.menu.close": "ਅਟੈਚਮੈਂਟ ਮੀਨੂ ਬੰਦ ਕਰੋ",
+  "attach.menu.camera": "ਕੈਮਰਾ",
+  "attach.menu.photos": "ਫੋਟੋਆਂ",
+  "attach.menu.files": "ਮੀਡੀਆ / ਫਾਇਲਾਂ",
+  "attach.menu.filesNote": "ਤਸਵੀਰ, ਸਕਰੀਨਸ਼ਾਟ ਜਾਂ ਕੋਈ ਵੀ ਫਾਇਲ ਲੋਕਲ ਪੱਧਰ 'ਤੇ ਜਾਂਚੀ ਜਾਂਦੀ ਹੈ; ਗ਼ੈਰ-ਸਮਰਥਿਤ ਫਾਰਮੈਟ ਰੱਦ ਹੁੰਦੇ ਹਨ।",
+  "attach.replaced": "ਪਿਛਲੀ ਅਟੈਚਮੈਂਟ ਬਦਲ ਗਈ: ਹਰ ਜਾਂਚ ਲਈ ਇੱਕ ਫਾਇਲ।",
+  "attach.meta.type": "ਕਿਸਮ:",
+  "attach.meta.size": "ਆਕਾਰ:",
+  "camera.title": "ਫੋਟੋ ਲਵੋ",
+  "camera.hint": "QR ਕੋਡ ਜਾਂ ਸੁਨੇਹੇ ਨੂੰ ਖਾਨੇ ਵਿੱਚ ਲਿਆਓ, ਫਿਰ ਕੈਪਚਰ ਕਰੋ।",
+  "camera.capture": "ਕੈਪਚਰ",
+  "camera.cancel": "ਰੱਦ",
+  "camera.error": "ਕੈਮਰਾ ਉਪਲਬਧ ਨਹੀਂ ਜਾਂ ਇਜਾਜ਼ਤ ਨਹੀਂ। ਫਾਇਲ ਚੋਣਕਾਰ ਵਰਤੋ।",
+  "camera.fallback": "ਫਾਇਲਾਂ ਤੋਂ ਫੋਟੋ ਜੋੜੋ",
+  "casefile.copied": "ਕਾਪੀ ਹੋ ਗਿਆ।",
+  "casefile.copyFailed": "ਕਾਪੀ ਫੇਲ। ਕਲਿੱਪਬੋਰਡ ਇਜਾਜ਼ਤ ਦਿਓ ਜਾਂ ਡਾਊਨਲੋਡ ਵਰਤੋ।",
+  "casefile.downloaded": "ਡਾਊਨਲੋਡ ਹੋ ਗਿਆ।",
 };
 
 export default pa;

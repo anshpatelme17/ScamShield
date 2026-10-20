@@ -114,6 +114,25 @@ const ur = {
   "reporting.indiaGuidance":
     "ہندوستان میں مشکوک فراڈ نیشنل سائبر کرائم رپورٹنگ پورٹل (cybercrime.gov.in) یا سائبر ہیلپ لائن 1930 پر رپورٹ کریں۔ مالیاتی فراڈ میں فوراً بینک کو بتائیں۔",
   "i18n.fallbackEnglish": "(انگریزی — ترجمہ نہیں)",
+  "attach.plus": "اٹیچمنٹ شامل کریں",
+  "attach.menu.aria": "اٹیچمنٹ کے اختیارات",
+  "attach.menu.close": "اٹیچمنٹ مینو بند کریں",
+  "attach.menu.camera": "کیمرہ",
+  "attach.menu.photos": "تصاویر",
+  "attach.menu.files": "میڈیا / فائلیں",
+  "attach.menu.filesNote": "تصویر، اسکرین شاٹ یا کوئی فائل مقامی طور پر ہی جانچی جاتی ہے؛ غیر معاون فارمیٹ مسترد ہوتے ہیں۔",
+  "attach.replaced": "پچھلی اٹیچمنٹ بدل گئی: ہر تجزیے کے لیے ایک فائل۔",
+  "attach.meta.type": "قسم:",
+  "attach.meta.size": "حجم:",
+  "camera.title": "تصویر لیں",
+  "camera.hint": "کیو آر کوڈ یا پیغام فریم میں لائیں، پھر کیپچر کریں۔",
+  "camera.capture": "کیپچر",
+  "camera.cancel": "منسوخ",
+  "camera.error": "کیمرہ دستیاب نہیں یا اجازت نہیں ملی۔ فائل انتخابگر استعمال کریں۔",
+  "camera.fallback": "فائلوں سے تصویر شامل کریں",
+  "casefile.copied": "کاپی ہو گئی۔",
+  "casefile.copyFailed": "کاپی ناکام۔ کلپ بورڈ کی اجازت دیں یا ڈاؤن لوڈ استعمال کریں۔",
+  "casefile.downloaded": "ڈاؤن لوڈ ہو گیا۔",
 };
 
 export default ur;
