@@ -1,3 +1,5 @@
+const API_BASE = import.meta.env.VITE_API_BASE || "/api";
+
 export async function analyzeApi({ text, imageB64 }) {
   const body = {};
   if (text && text.trim()) {
@@ -12,14 +14,14 @@ export async function analyzeApi({ text, imageB64 }) {
 
   let response;
   try {
-    response = await fetch("/api/analyze", {
+    response = await fetch(`${API_BASE}/analyze`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
   } catch {
     throw errorWithKey(
-      "Could not reach the analysis service. Make sure the backend is running on port 8765.",
+      "Could not reach the analysis service. Make sure the backend is running.",
       "errors.network"
     );
   }
